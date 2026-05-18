@@ -1,7 +1,11 @@
 # sas_robot_driver_gazebo
 
+gz transport version on MacOS
+gz-transport13-13.5.0_11.arm64_sequoia.bottle.tar.gz
+
 Things to add
 
+```xml
 <world name="default">
     <plugin
       filename="gz-sim-physics-system"
@@ -36,3 +40,4 @@ Things to add
   </model>
   
   </world>
+```
