@@ -27,12 +27,12 @@ def main():
 
     publisher_actuators = node.advertise("/actuators", Actuators)
     actuators_msg = Actuators()
-    actuators_msg.velocity.append(0.1)
-    actuators_msg.velocity.append(0.1)
-    actuators_msg.velocity.append(0.1)
-    actuators_msg.velocity.append(0.1)
-    actuators_msg.velocity.append(0.1)
-    actuators_msg.velocity.append(0.1)
+    actuators_msg.position.append(0.1)
+    actuators_msg.position.append(0.1)
+    actuators_msg.position.append(0.1)
+    actuators_msg.position.append(0.1)
+    actuators_msg.position.append(0.1)
+    actuators_msg.position.append(0.1)
 
     if node.subscribe(Model, topic, joint_state_cb):
         print("Subscribing to type {} on topic [{}]".format(
