@@ -1,5 +1,12 @@
 # sas_robot_driver_gazebo
 
+## Licenses
+
+Check any licenses in repositories in `vendor` if you decide to use them. This repository holds no
+liability for misuse. 
+
+## Info
+
 gz transport version on MacOS
 gz-transport13-13.5.0_11.arm64_sequoia.bottle.tar.gz
 
