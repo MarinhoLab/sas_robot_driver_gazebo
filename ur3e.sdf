@@ -10,6 +10,7 @@
   </plugin>
 
     <model name='test'>
+      <self_collide>True</self_collide>
       <joint name='base_joint' type='fixed'>
       <pose relative_to='__model__'>0 0 0 0 0 0</pose>
       <parent>world</parent>
