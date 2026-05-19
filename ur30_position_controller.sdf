@@ -1,7 +1,6 @@
 <sdf version='1.11'>
 
-    <world name="ur30_position_world">
-    <model name="ur30_position_model">
+    <model name="ur30_position_controller">
 
     <include>
         <name>ur30_1</name>
@@ -63,13 +62,6 @@
 
     </include>
 
-    <joint name='base_joint' type='fixed'>
-        <pose relative_to='__model__'>0 0 0 0 0 0</pose>
-        <parent>world</parent>
-        <child>ur30_1::base_link</child>
-    </joint>
-
     </model>
-</world>
 
 </sdf>

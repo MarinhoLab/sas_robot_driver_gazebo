@@ -1,6 +1,6 @@
 <sdf version='1.11'>
 
-    <model name="ur3e_position_model">
+    <model name="ur3e_position_controller">
 
     <include>
         <name>ur3e_1</name>
