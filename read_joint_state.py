@@ -23,7 +23,7 @@ def joint_state_cb(msg: Model):
 def main():
     # create a transport node
     node = Node()
-    topic = "/world/default/model/test/joint_state"
+    topic = "/world/default/model/ur30_1/joint_state"
 
     publisher_actuators = node.advertise("/actuators", Actuators)
     actuators_msg = Actuators()
