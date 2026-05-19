@@ -1,0 +1,79 @@
+<sdf version='1.11'>
+
+<include>
+  <name>ur30_1</name>
+  <static>false</static>
+  <uri>model://ur30.sdf</uri>
+
+      <plugin
+      filename="gz-sim-joint-position-controller-system"
+      name="gz::sim::systems::JointPositionController">
+      <joint_name>shoulder_pan_joint</joint_name>
+      <use_velocity_commands>True</use_velocity_commands>
+      <cmd_max>0.25</cmd_max>
+
+      <use_actuator_msg>True</use_actuator_msg>
+      <actuator_number>0</actuator_number>
+      </plugin>
+
+      <plugin
+      filename="gz-sim-joint-position-controller-system"
+      name="gz::sim::systems::JointPositionController">
+      <joint_name>shoulder_lift_joint</joint_name>
+      <use_velocity_commands>True</use_velocity_commands>
+      <cmd_max>0.25</cmd_max>
+
+      <use_actuator_msg>True</use_actuator_msg>
+      <actuator_number>1</actuator_number>
+      </plugin>
+
+      <plugin
+      filename="gz-sim-joint-position-controller-system"
+      name="gz::sim::systems::JointPositionController">
+      <joint_name>elbow_joint</joint_name>
+      <use_velocity_commands>True</use_velocity_commands>
+      <cmd_max>0.25</cmd_max>
+
+      <use_actuator_msg>True</use_actuator_msg>
+      <actuator_number>2</actuator_number>
+      </plugin>
+
+      <plugin
+      filename="gz-sim-joint-position-controller-system"
+      name="gz::sim::systems::JointPositionController">
+      <joint_name>wrist_1_joint</joint_name>
+      <use_velocity_commands>True</use_velocity_commands>
+      <cmd_max>0.25</cmd_max>
+
+      <use_actuator_msg>True</use_actuator_msg>
+      <actuator_number>3</actuator_number>
+      </plugin>
+
+      <plugin
+      filename="gz-sim-joint-position-controller-system"
+      name="gz::sim::systems::JointPositionController">
+      <joint_name>wrist_2_joint</joint_name>
+      <use_velocity_commands>True</use_velocity_commands>
+      <cmd_max>0.25</cmd_max>
+
+      <use_actuator_msg>True</use_actuator_msg>
+      <actuator_number>4</actuator_number>
+      </plugin>
+
+      <plugin
+      filename="gz-sim-joint-position-controller-system"
+      name="gz::sim::systems::JointPositionController">
+      <joint_name>wrist_3_joint</joint_name>
+      <use_velocity_commands>True</use_velocity_commands>
+      <cmd_max>0.25</cmd_max>
+      <use_actuator_msg>True</use_actuator_msg>
+      <actuator_number>5</actuator_number>
+      </plugin>
+
+      <plugin
+      filename="gz-sim-joint-state-publisher-system"
+      name="gz::sim::systems::JointStatePublisher">
+      </plugin>
+
+    </include>
+</sdf>
