@@ -4,3 +4,6 @@
 [submodule "vendor/unitree_ros"]
 	path = vendor/unitree_ros
 	url = https://github.com/unitreerobotics/unitree_ros.git
+[submodule "vendor/bota_driver_ros2"]
+	path = vendor/bota_driver_ros2
+	url = https://gitlab.com/botasys/drivers/bota_driver_ros2.git
