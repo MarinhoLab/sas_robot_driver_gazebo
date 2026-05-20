@@ -39,23 +39,23 @@ class RobotDriverGazebo(RobotDriver):
                  configuration: RobotDriverGazeboConfiguration):
         RobotDriver.__init__(self, ss)
 
+        self.configuration: RobotDriverGazeboConfiguration = configuration
         self.DOF: int = len(self.configuration.joint_names)
         self.joint_positions_topic_postfix: str = "/0/cmd_pos"
         self.joint_publishers = []
         self.joint_positions = [None] * self.DOF
         self.node = None
-        self.configuration: RobotDriverGazeboConfiguration = configuration
 
     def connect(self):
         self.node = Node()
         for joint_name in self.configuration.joint_names:
             self.joint_publishers.append(self.node.advertise(f""
-                                                   f"{self.command_topic_prefix}"
+                                                   f"{self.configuration.joint_positions_topic_prefix}"
                                                    f"{joint_name}"
-                                                   f"{self.command_topic_postfix}", Double))
+                                                   f"{self.joint_positions_topic_postfix}", Double))
         if not self.node.subscribe(
                 Model,
-                self.joint_states_topic,
+                self.configuration.joint_states_topic,
                 self.joint_states_callback):
             raise RuntimeError(f"Failed to subscribe to topic [{self.joint_states_topic}]")
 
