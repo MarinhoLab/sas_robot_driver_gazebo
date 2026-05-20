@@ -3,16 +3,14 @@ LABEL authors="murilomarinho"
 SHELL ["/bin/bash", "-c"]
 ENV BASH_ENV="/etc/bash_env"
 
-RUN sudo apt-get update && sudo apt-get upgrade -y
+RUN apt-get update && apt-get upgrade -y
 #RUN sudo sudo apt-get remove -y ros-jazzy-sas-robot-driver-ur
 RUN mkdir -p /root/sas_robot_driver_gazebo_devel/src/
 
 RUN curl -s --compressed "https://smartarmstack.github.io/smart_arm_stack_ROS2/KEY.gpg" \
 | gpg --dearmor \
-| sudo tee /etc/apt/trusted.gpg.d/smartarmstack_lgpl.gpg >/dev/null \
-
+| sudo tee /etc/apt/trusted.gpg.d/smartarmstack_lgpl.gpg >/dev/null
 RUN sudo curl -s --compressed -o /etc/apt/sources.list.d/smartarmstack_lgpl.list \
-"https://smartarmstack.github.io/smart_arm_stack_ROS2/smartarmstack_lgpl.list" \
-
+"https://smartarmstack.github.io/smart_arm_stack_ROS2/smartarmstack_lgpl.list"
 RUN sudo apt-get update
-Run sudo apt-get install -y ros-jazzy-sas-*
+RUN sudo apt-get install ros-jazzy-sas-*

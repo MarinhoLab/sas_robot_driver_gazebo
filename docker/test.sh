@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sudo apt-get install tree
+sudo apt-get update && sudo apt-get upgrade -y
 
 cd /root/sas_robot_driver_gazebo_devel
 ls .
