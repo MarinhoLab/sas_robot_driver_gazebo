@@ -1,6 +1,30 @@
-from gz.msgs10.actuators_pb2 import Actuators
-from gz.msgs10.model_pb2 import Model
+"""
+# Copyright (c) 2026 Murilo Marques Marinho
+#
+#    This file is part of sas_robot_driver_gazebo.
+#
+#    sas_robot_driver_gazebo is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Lesser General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    sas_robot_driver_gazebo is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Lesser General Public License for more details.
+#
+#    You should have received a copy of the GNU Lesser General Public License
+#    along with sas_robot_driver_gazebo.  If not, see <https://www.gnu.org/licenses/>.
+#
+# #######################################################################################
+#
+#   Author: Murilo M. Marinho, email: murilomarinho@ieee.org
+#
+# #######################################################################################
+"""
 from gz.transport13 import Node
+from gz.msgs10.model_pb2 import Model
+from gz.msgs10.double_pb2 import Double
 
 import time
 
@@ -25,14 +49,22 @@ def main():
     node = Node()
     topic = "/world/default/model/ur30_1/joint_state"
 
-    publisher_actuators = node.advertise("/actuators", Actuators)
-    actuators_msg = Actuators()
-    actuators_msg.position.append(6)
-    actuators_msg.position.append(6)
-    actuators_msg.position.append(6)
-    actuators_msg.position.append(6)
-    actuators_msg.position.append(6)
-    actuators_msg.position.append(6)
+    command_topic_prefix = "/model/ur30_1/joint/"
+    command_topic_postfix = "/0/cmd_pos"
+    joint_names = [
+        "elbow_joint",
+        "shoulder_lift_joint",
+        "shoulder_pan_joint",
+        "wrist_1_joint",
+        "wrist_2_joint",
+        "wrist_3_joint"
+    ]
+    joint_publishers = []
+    for joint_name in joint_names:
+        joint_publishers.append(node.advertise(f""
+                                               f"{command_topic_prefix}"
+                                               f"{joint_name}"
+                                               f"{command_topic_postfix}", Double))
 
     if node.subscribe(Model, topic, joint_state_cb):
         print("Subscribing to type {} on topic [{}]".format(
@@ -45,8 +77,10 @@ def main():
     try:
         while True:
             time.sleep(0.001)
-            if not publisher_actuators.publish(actuators_msg):
-                print("?")
+            for i in range(len(joint_publishers)):
+                double_msg = Double()
+                double_msg.data = 1.0
+                joint_publishers[i].publish(double_msg)
     except KeyboardInterrupt:
         pass
     print("Done")
