@@ -1,6 +1,6 @@
 services:
   gazebo:
-    image: ghcr.io/marinholab/gazebo:jazzy
+    build: .
     stop_signal: SIGINT
     environment:
       - DISPLAY
@@ -12,7 +12,13 @@ services:
       - ../:/root/gazebo/ # Share base repository folder with container
       - /tmp/.X11-unix:/tmp/.X11-unix # x server related
       - ~/.Xauthority:/root/.Xauthority # x server related
+      - ../../sas_robot_driver_gazebo:/root/sas_robot_driver_gazebo_devel/src/sas_robot_driver_gazebo
     command: /bin/bash -c "
       export GZ_SIM_RESOURCE_PATH=$$GZ_SIM_RESOURCE_PATH:/root/gazebo
       && cd "$$CONTAINER_SDF_PATH"
-      && gz sim "$$SDF_FILE""
+      && (gz sim "$$SDF_FILE" &)
+      && cd /root/sas_robot_driver_gazebo_devel
+      && ls .
+      && colcon build
+      && source install/setup.bash
+      && ros2 run sas_robot_driver_gazebo sas_robot_driver_ros_gazebo.py"

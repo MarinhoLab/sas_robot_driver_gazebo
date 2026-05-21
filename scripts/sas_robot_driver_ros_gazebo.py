@@ -19,13 +19,13 @@ def main():
         "wrist_2_joint",
         "wrist_3_joint"
     ]
-    gazebo_cfg.joint_positions_topic_prefix = "/model/ur30_1/joint/"
-    gazebo_cfg.joint_states_topic = "/world/default/model/ur30_1/joint_state"
+    gazebo_cfg.joint_positions_topic_prefix = "/model/ur3e_1/joint/"
+    gazebo_cfg.joint_states_topic = "/world/ur3e_position_world/model/ur3e_1/model/ur3e_1_position_controller/model/ur3e_1/joint_state"
 
     srdg = RobotDriverGazebo(ss, gazebo_cfg)
 
     rdrg_cfg = RobotDriverROSConfiguration()
-    rdrg_cfg.robot_driver_provider_prefix = "test"
+    rdrg_cfg.robot_driver_provider_prefix = "ur3e_1"
     rdrg_cfg.thread_sampling_time_sec = 0.001
 
     sas_robot_driver_ros = RobotDriverROS(roscpp_node,
