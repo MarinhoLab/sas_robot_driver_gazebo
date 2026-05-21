@@ -47,6 +47,8 @@ class RobotDriverGazebo(RobotDriver):
         self.joint_positions_topic_postfix: str = "/0/cmd_pos"
         self.joint_publishers = []
         self.joint_positions = [None] * self.DOF
+        self.limit_lower = [None] * self.DOF
+        self.limit_upper = [None] * self.DOF
         self.node = None
 
     def connect(self):
@@ -69,6 +71,12 @@ class RobotDriverGazebo(RobotDriver):
         while (None in self.joint_positions) or (True in np.isnan(self.joint_positions)):
             print(f"Waiting for valid joint position messages from Gazebo for {self.configuration.joint_positions_topic_prefix}...")
             time.sleep(0.1)
+        while (None in self.limit_lower) or (True in np.isnan(self.limit_lower)):
+            time.sleep(0.1)
+        while (None in self.limit_upper) or (True in np.isnan(self.limit_upper)):
+            time.sleep(0.1)
+        self.set_joint_limits((self.limit_lower, self.limit_upper))
+        print(f"get_joint_limits({self.get_joint_limits()})")
 
     def deinitialize(self):
         pass
@@ -86,5 +94,9 @@ class RobotDriverGazebo(RobotDriver):
 
     def joint_states_callback(self, msg: Model):
         joints = msg.joint
-        for i in range(self.DOF):
-            self.joint_positions[i] = joints[i].axis1.position
+        for joint in joints:
+            for i in range(self.DOF):
+                if joint.name == self.configuration.joint_names[i]:
+                    self.joint_positions[i] = joint.axis1.position
+                    self.limit_lower[i] = joint.axis1.limit_lower
+                    self.limit_upper[i] = joint.axis1.limit_upper
