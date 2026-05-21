@@ -17,7 +17,8 @@ int main(int argc, char **argv)
 {
   gz::transport::Node node;
   gz::msgs::Pose req;
-  req.set_name("pose_x");
+  req.set_name("frame_x");
+  //req.set_id(35);
   req.mutable_position()->set_z(2.0);
 
   std::cout << "Press <CTRL-C> to exit" << std::endl;
