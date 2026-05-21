@@ -1,0 +1,17 @@
+services:
+  gazebo:
+    image: ghcr.io/marinholab/gazebo:jazzy
+    stop_signal: SIGINT
+    environment:
+      - DISPLAY
+      - ROS_DOMAIN_ID
+      - SDF_FILE=ur3e_world.sdf
+      - CONTAINER_SDF_PATH=/root/gazebo/sdf
+    privileged: true # Needed for some gpu configurations.
+    volumes:
+      - ../:/root/gazebo/ # Share base repository folder with container
+      - /tmp/.X11-unix:/tmp/.X11-unix # x server related
+      - ~/.Xauthority:/root/.Xauthority # x server related
+    command: /bin/bash -c "
+      export GZ_SIM_RESOURCE_PATH=$$GZ_SIM_RESOURCE_PATH:/root/gazebo/vendor
+      && gz sim "$$CONTAINER_SDF_PATH/$$SDF_FILE""
