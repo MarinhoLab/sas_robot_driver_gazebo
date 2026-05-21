@@ -13,6 +13,9 @@ find_package(sas_core REQUIRED)
 find_package(sas_common REQUIRED)
 find_package(sas_robot_driver REQUIRED)
 
+# Find the Gazebo Transport library
+find_package(gz-transport13 REQUIRED)
+
 ament_python_install_package(${PROJECT_NAME})
 
 #########################
@@ -27,5 +30,21 @@ install(DIRECTORY
 # ^^^^^^^^^^^^^^^^^^^ #
 # Scripts Block [END] #
 #######################
+
+##### CPP BINARY #####
+
+add_executable(requester_async
+    src/requester_async.cpp)
+
+target_link_libraries(requester_async
+    PRIVATE
+    gz-transport13::core
+    )
+
+install(TARGETS
+    requester_async
+    DESTINATION lib/${PROJECT_NAME})
+
+##END## CPP BINARY #####
 
 ament_package()    

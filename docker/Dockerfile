@@ -14,3 +14,5 @@ RUN sudo curl -s --compressed -o /etc/apt/sources.list.d/smartarmstack_lgpl.list
 RUN sudo apt-get update
 RUN sudo apt-get install ros-jazzy-sas-*
 RUN sudo sudo apt-get remove -y ros-jazzy-sas-robot-driver-gazebo
+
+RUN sudo apt-get install libgz-transport13-dev
