@@ -1,6 +1,3 @@
-[submodule "vendor/Universal_Robots_ROS2_Description"]
-	path = vendor/Universal_Robots_ROS2_Description
-	url = https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
 [submodule "vendor/unitree_ros"]
 	path = vendor/unitree_ros
 	url = https://github.com/unitreerobotics/unitree_ros.git
