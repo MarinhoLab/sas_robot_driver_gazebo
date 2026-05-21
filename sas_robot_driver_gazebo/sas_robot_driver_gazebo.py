@@ -20,6 +20,9 @@
 #   Author: Murilo M. Marinho, email: murilomarinho@ieee.org
 #
 # ################################################################
+import time
+import numpy as np
+
 from sas_core import RobotDriver, ShutdownSignaler
 
 from gz.transport13 import Node
@@ -63,13 +66,15 @@ class RobotDriverGazebo(RobotDriver):
         pass
 
     def initialize(self):
-        pass
+        while (None in self.joint_positions) or (True in np.isnan(self.joint_positions)):
+            print(f"Waiting for valid joint position messages from Gazebo for {self.configuration.joint_positions_topic_prefix}...")
+            time.sleep(0.1)
 
     def deinitialize(self):
         pass
 
     def get_joint_positions(self):
-        if self.joint_positions is None:
+        if None in self.joint_positions:
             raise RuntimeError("Joint positions not initialized")
         return self.joint_positions
 

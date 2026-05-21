@@ -1,0 +1,14 @@
+services:
+
+  gazebo:
+    extends:
+      file: service_gazebo.yml
+      service: gazebo
+
+  joint_interface_example_1:
+    image: murilomarinho/sas:jazzy
+    environment:
+      - ROS_DOMAIN_ID
+    command: /bin/bash -c "
+      sudo apt-get update && sudo apt-get upgrade -y
+      && ros2 run sas_robot_driver_coppeliasim joint_interface_example.py --ros-args -p robot_topic_name:=/ur3e_1"
