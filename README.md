@@ -2,7 +2,7 @@
 
 ## Licenses
 
-Check any licenses in repositories in `vendor` if you decide to use them. This repository holds no
+Check any licenses in repositories in `vendor` if you decide to use them. This repository's owner holds no
 liability for misuse. 
 
 ## Info
