@@ -1,0 +1,48 @@
+<sdf version='1.11'>
+  <model name='frame'>
+        <pose>0 1 0 0 0 0</pose>
+        <static>true</static>
+        <link name="reference_link_z">
+            <pose>0 0 0.05 0 0 0</pose>
+            <visual name="reference_visual_z">
+                <geometry>
+                    <cylinder>
+                        <radius>0.0025</radius>
+                        <length>0.10</length>
+                    </cylinder>
+                </geometry>
+                <material>
+                    <emissive>0 0 1 0.5</emissive>
+                </material>
+            </visual>
+        </link>
+        <link name="reference_link_x">
+            <pose degrees="true">0.05 0 0 0 90 0</pose>
+            <visual name="reference_visual_x">
+                <geometry>
+                    <cylinder>
+                        <radius>0.0025</radius>
+                        <length>0.10</length>
+                    </cylinder>
+                </geometry>
+                <material>
+                    <emissive>1 0 0 0.5</emissive>
+                </material>
+            </visual>
+        </link>
+        <link name="reference_link_y">
+            <pose degrees="true">0 0.05 0 90 0 0</pose>
+            <visual name="reference_visual_y">
+                <geometry>
+                    <cylinder>
+                        <radius>0.0025</radius>
+                        <length>0.10</length>
+                    </cylinder>
+                </geometry>
+                <material>
+                    <emissive>0 1 0 0.5</emissive>
+                </material>
+            </visual>
+        </link>
+  </model>
+</sdf>
