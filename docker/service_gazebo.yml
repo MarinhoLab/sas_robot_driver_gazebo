@@ -14,4 +14,5 @@ services:
       - ~/.Xauthority:/root/.Xauthority # x server related
     command: /bin/bash -c "
       export GZ_SIM_RESOURCE_PATH=$$GZ_SIM_RESOURCE_PATH:/root/gazebo/vendor
-      && gz sim "$$CONTAINER_SDF_PATH/$$SDF_FILE""
+      && cd "$$CONTAINER_SDF_PATH"
+      && gz sim "$$SDF_FILE""
