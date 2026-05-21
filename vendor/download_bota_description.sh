@@ -1,1 +1,3 @@
+#!/bin/bash
+set -e
 git clone https://gitlab.com/botasys/drivers/bota_driver_ros2.git --depth 1
