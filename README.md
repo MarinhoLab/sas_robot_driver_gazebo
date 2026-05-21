@@ -5,11 +5,11 @@
 Check any licenses in repositories in `vendor` if you decide to use them. This repository's owner holds no
 liability for misuse. 
 
-## Info
+## Folder structure
 
-Is this needed?
+The two folders below have special meanings, the others follow usual naming.
 
-```console
-sudo apt-get install -y python3-gz-transport13
-python3 -m pip install protobuf --user --break-system-packages
-```
+| Folder    | Meaning                                                                                                    |
+|-----------|------------------------------------------------------------------------------------------------------------|
+| `sdf`     | Base Gazebo scene files.                                                                                   |
+| `vendor`  | Vendor models. Check the licenses if you decide to use them in your work. They are not shared in this repo |
