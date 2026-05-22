@@ -18,6 +18,8 @@ The two folders below have special meanings, the others follow usual naming.
 
 Each relevant joint to be controlled should have a plugin specification similar to the following, using `gz::sim::systems::JointPositionController`.
 
+## Joint Position Control
+
 ```xml
 <plugin
 filename="gz-sim-joint-position-controller-system"
@@ -28,7 +30,7 @@ name="gz::sim::systems::JointPositionController">
 </plugin>
 ```
 
-### Technical Overview
+## Joint State Reading
 
 Joints are read from a default `gz::sim::systems::JointStatePublisher`.
 
@@ -39,6 +41,19 @@ Joints are read from a default `gz::sim::systems::JointStatePublisher`.
 </plugin>
 ```
 
+## Joint State Reading
+
+```xml
+<plugin filename="gz-sim-scene-broadcaster-system"  name="gz::sim::systems::SceneBroadcaster"/>
+```
+
+## Joint State Reading
+
+```xml
+<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+```
+
 ## Considerations
 
 - `gz::sim::systems::PosePublisher` has been considered to read poses of entities. However, it's more convenient for `tf2` given how the frames are described. 
+- The translation tool inside Gazebo can be used to move objects and reading their pose works only after the motion is finished. The intermediate state is not reflected in the `pose` topic.
