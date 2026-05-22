@@ -44,10 +44,13 @@ int main(int argc, char **argv)
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_object_server_gazebo_node");
 
-    std::string world_topic = "/world/ur3e_world/pose/info";
+    std::string set_pose_service_name = "/world/ur3e_world/set_pose";
+    std::string get_pose_topic_name = "/world/ur3e_world/pose/info";
 
-    auto os = std::make_shared<sas::ObjectServer>(node);
-    sas::ObjectServerGazebo osg{os,"frame_x","/world/ur3e_world/set_pose",world_topic};
+    auto osx = std::make_shared<sas::ObjectServer>(node, "frame_x");
+    sas::ObjectServerGazebo osg_x{osx,"frame_x",set_pose_service_name,get_pose_topic_name};
+    auto osxd = std::make_shared<sas::ObjectServer>(node, "frame_xd");
+    sas::ObjectServerGazebo osg_xd{osxd,"frame_xd",set_pose_service_name,get_pose_topic_name};
 
     sas::Clock clock{0.001};
 
@@ -58,7 +61,8 @@ int main(int argc, char **argv)
         {
             rclcpp::spin_some(node);
             clock.update_and_sleep();
-            osg.update();
+            osg_x.update();
+            osg_xd.update();
         }
     }
     catch (const std::exception& e)
