@@ -69,6 +69,7 @@ class ObjectServerGazebo: private sas::Object
     public:
         ObjectServerGazebo() = delete;
         ObjectServerGazebo(const ObjectServerGazebo&) = delete;
+        ObjectServerGazebo(ObjectServerGazebo&&) = default;
 
         ObjectServerGazebo(const std::shared_ptr<ObjectServer>& object_server,
                            const std::string& gazebo_entity_name,
