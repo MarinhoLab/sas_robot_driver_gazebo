@@ -31,6 +31,9 @@
 #include <gz/msgs.hh>
 #include <gz/transport.hh>
 
+#include <sas_core/sas_object.hpp>
+#include <sas_common/sas_object_server.hpp>
+
 using namespace DQ_robotics;
 
 namespace sas

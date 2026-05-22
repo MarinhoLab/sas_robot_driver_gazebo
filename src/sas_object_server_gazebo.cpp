@@ -34,7 +34,7 @@ void ObjectServerGazebo::_set_pose_service_response_callback(const gz::msgs::Boo
     //TODO if needed add something here
 }
 
-ObjectServerGazebo::ObjectServerGazeboObjectServerGazebo(const std::shared_ptr<ObjectServer>& object_server,
+ObjectServerGazebo::ObjectServerGazebo(const std::shared_ptr<ObjectServer>& object_server,
                                                          const std::string& gazebo_entity_name,
                                                          const std::string& gazebo_set_pose_service_name):
        sas::Object("sas::ObjectServerGazebo"),

@@ -3,13 +3,13 @@
 #include <gz/transport.hh>
 #include <sas_core/sas_clock.hpp>
 
-void response_callback(const gz::msgs::Boolean &_rep, const bool _result)
+void response_callback(const gz::msgs::Boolean&, const bool)
 {
 
 }
 
 //////////////////////////////////////////////////
-int main(int argc, char **argv)
+int main(int, char**)
 {
   sas::Clock clock{0.001};
 
@@ -35,5 +35,6 @@ int main(int argc, char **argv)
   std::cout << "  Mean effective thread sampling time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::EffectiveSampling) << std::endl;
 
   // Zzzzzz.
-  gz::transport::waitForShutdown();
+  // gz::transport::waitForShutdown();
+  return 0;
 }
