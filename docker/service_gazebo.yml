@@ -22,4 +22,4 @@ services:
       && colcon build
       && source install/setup.bash
       && gz topic -l
-      && ros2 run sas_robot_driver_gazebo gazebo_subscription_frequency_checker"
+      && ros2 run sas_robot_driver_gazebo sas_object_server_gazebo_node"
