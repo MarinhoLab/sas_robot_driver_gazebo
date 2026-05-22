@@ -1,5 +1,5 @@
 <sdf version='1.11'>
-    <world name="ur3e_position_world">
+    <world name="ur30_world">
 
     <light type="directional" name="sun">
         <cast_shadows>true</cast_shadows>
