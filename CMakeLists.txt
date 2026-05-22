@@ -68,5 +68,43 @@ unset(RCLCPP_LOCAL_BINARY_NAME)
 # CPP Binary Block [END] #
 ##########################
 
+############################
+# CPP Binary Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvvvvv #
+# https://ros2-tutorial.readthedocs.io/en/latest/
+# While we cant use blocks https://cmake.org/cmake/help/latest/command/block.html#command:block
+# we use set--unset
+set(RCLCPP_LOCAL_BINARY_NAME sas_object_server_gazebo_node)
+
+add_executable(${RCLCPP_LOCAL_BINARY_NAME}
+    src/sas_object_server_gazebo.cpp
+
+    )
+
+ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME}
+    sas_core
+    sas_common
+
+    )
+
+target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME}
+    gz-transport13::core
+
+    )
+
+target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
+
+target_compile_features(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC c_std_99 cxx_std_17)
+
+install(TARGETS ${RCLCPP_LOCAL_BINARY_NAME}
+    DESTINATION lib/${PROJECT_NAME})
+
+unset(RCLCPP_LOCAL_BINARY_NAME)
+# ^^^^^^^^^^^^^^^^^^^^^^ #
+# CPP Binary Block [END] #
+##########################
+
 
 ament_package()    
