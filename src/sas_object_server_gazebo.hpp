@@ -25,7 +25,6 @@
 # Contributors:
 #   ---
 */
-
 #include <dqrobotics/DQ.h>
 
 #include <gz/msgs.hh>
@@ -42,6 +41,22 @@ namespace sas
 class ObjectServerGazebo: private sas::Object
 {
     private:
+        class PoseSubscriberSingleton
+        {
+            public:
+            std::mutex msg_mutex;
+            void _get_pose_subscriber_callback(const gz::msgs::Pose_V& msg)
+            {
+                std::unique_lock<std::mutex> lock(msg_mutex, std::try_to_lock);
+                if (lock.owns_lock()) {
+                    poses_from_gazebo_ = msg;
+                }
+            }
+            gz::transport::Node gazebo_node_;
+            gz::msgs::Pose_V poses_from_gazebo_;
+        };
+
+        static std::unique_ptr<PoseSubscriberSingleton> pose_subscriber_;
         std::shared_ptr<ObjectServer> object_server_;
 
         std::string gazebo_entity_name_;
@@ -57,7 +72,8 @@ class ObjectServerGazebo: private sas::Object
 
         ObjectServerGazebo(const std::shared_ptr<ObjectServer>& object_server,
                            const std::string& gazebo_entity_name,
-                           const std::string& gazebo_set_pose_service_name);
+                           const std::string& gazebo_set_pose_service_name,
+                           const std::string& gazebo_world_dynamic_pose_topic);
 
         void update();
 };
