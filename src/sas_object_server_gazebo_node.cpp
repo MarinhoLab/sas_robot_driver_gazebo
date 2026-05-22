@@ -56,15 +56,16 @@ int main(int argc, char **argv)
         "frame_xd"
         };
 
-    std::vector<sas::ObjectServerGazebo> object_server_gazebo_list;
-    for(const auto& entity_name: configuration.entity_names)
+    std::vector<std::unique_ptr<sas::ObjectServerGazebo>> object_server_gazebo_list;
+    for(const std::string& entity_name: configuration.entity_names)
     {
-        auto a = std::make_shared<sas::ObjectServer>(node, entity_name);
         object_server_gazebo_list.emplace_back(
-            a,
+            std::make_unique<sas::ObjectServerGazebo>(
+            std::make_shared<sas::ObjectServer>(node, entity_name),
             entity_name,
             configuration.set_pose_service_name,
             configuration.get_pose_topic_name
+            )
         );
     }
 
@@ -85,7 +86,7 @@ int main(int argc, char **argv)
 
             for(auto& object_server_gazebo: object_server_gazebo_list)
             {
-                object_server_gazebo.update();
+                object_server_gazebo->update();
             }
         }
     }

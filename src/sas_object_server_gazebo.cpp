@@ -92,11 +92,13 @@ void ObjectServerGazebo::update()
                 pose.orientation().z()
             );
             auto pose_t = DQ(
+                0.0,
                 pose.position().x(),
                 pose.position().y(),
                 pose.position().z()
             );
-            object_server_->send_pose(pose_r + 0.5 * E_ * pose_t * pose_r);
+            auto dq = (pose_r + 0.5 * E_ * pose_t * pose_r).normalize();
+            object_server_->send_pose(dq);
         }
     }
 }
