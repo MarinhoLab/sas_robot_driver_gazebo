@@ -24,9 +24,45 @@
 # Contributors:
 #   ---
 */
+#include <rclcpp/rclcpp.hpp>
 #include "sas_object_server_gazebo.hpp"
+#include <sas_core/sas_clock.hpp>
+#include <sas_core/sas_shutdown_signaler.hpp>
+
+/*********************************************
+ * SIGNAL HANDLER
+ * *******************************************/
+#include<signal.h>
+static sas::ShutdownSignaler ss;
+void sig_int_handler(int)
+{
+    ss.shutdown();
+}
 
 int main(int argc, char **argv)
 {
+    rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
+    auto node = std::make_shared<rclcpp::Node>("sas_object_server_gazebo_node");
+
+    auto os = std::make_shared<sas::ObjectServer>(node);
+    sas::ObjectServerGazebo osg{os,"frame_x","/world/ur3e_position_world/set_pose"};
+
+    sas::Clock clock{0.001};
+
+    try
+    {
+        clock.init();
+        while(!ss.should_shutdown())
+        {
+            rclcpp::spin_some(node);
+            clock.update_and_sleep();
+            osg.update();
+        }
+    }
+    catch (const std::exception& e)
+    {
+        RCLCPP_ERROR_STREAM_ONCE(node->get_logger(), std::string("::Exception::") + e.what());
+    }
+
     return 0;
 }
