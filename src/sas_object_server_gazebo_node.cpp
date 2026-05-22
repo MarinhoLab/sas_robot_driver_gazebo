@@ -44,13 +44,34 @@ int main(int argc, char **argv)
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_object_server_gazebo_node");
 
-    std::string set_pose_service_name = "/world/ur3e_world/set_pose";
-    std::string get_pose_topic_name = "/world/ur3e_world/pose/info";
+    //std::string
+    //std::string
+    //std::vector<string>
 
-    auto osx = std::make_shared<sas::ObjectServer>(node, "frame_x");
-    sas::ObjectServerGazebo osg_x{osx,"frame_x",set_pose_service_name,get_pose_topic_name};
-    auto osxd = std::make_shared<sas::ObjectServer>(node, "frame_xd");
-    sas::ObjectServerGazebo osg_xd{osxd,"frame_xd",set_pose_service_name,get_pose_topic_name};
+    sas::ObjectServerGazeboConfiguration configuration;
+    configuration.set_pose_service_name = "/world/ur3e_world/set_pose";
+    configuration.get_pose_topic_name = "/world/ur3e_world/pose/info";
+    configuration.entity_names = std::vector<std::string>{
+        "frame_x",
+        "frame_xd"
+        };
+
+    std::vector<sas::ObjectServerGazebo> object_server_gazebo_list;
+    for(const auto& entity_name: configuration.entity_names)
+    {
+        auto a = std::make_shared<sas::ObjectServer>(node, entity_name);
+        object_server_gazebo_list.emplace_back(
+            a,
+            entity_name,
+            configuration.set_pose_service_name,
+            configuration.get_pose_topic_name
+        );
+    }
+
+    //auto osx = std::make_shared<sas::ObjectServer>(node, "frame_x");
+    //sas::ObjectServerGazebo osg_x{osx,"frame_x",set_pose_service_name,get_pose_topic_name};
+    //auto osxd = std::make_shared<sas::ObjectServer>(node, "frame_xd");
+    //sas::ObjectServerGazebo osg_xd{osxd,"frame_xd",set_pose_service_name,get_pose_topic_name};
 
     sas::Clock clock{0.001};
 
@@ -61,8 +82,11 @@ int main(int argc, char **argv)
         {
             rclcpp::spin_some(node);
             clock.update_and_sleep();
-            osg_x.update();
-            osg_xd.update();
+
+            for(auto& object_server_gazebo: object_server_gazebo_list)
+            {
+                object_server_gazebo.update();
+            }
         }
     }
     catch (const std::exception& e)

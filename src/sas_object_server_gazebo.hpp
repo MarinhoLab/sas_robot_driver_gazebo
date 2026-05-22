@@ -38,6 +38,13 @@ using namespace DQ_robotics;
 namespace sas
 {
 
+struct ObjectServerGazeboConfiguration
+{
+    std::string set_pose_service_name;
+    std::string get_pose_topic_name;
+    std::vector<std::string> entity_names;
+};
+
 class ObjectServerGazebo: private sas::Object
 {
     private:
