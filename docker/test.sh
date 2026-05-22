@@ -9,4 +9,4 @@ colcon build
 source install/setup.bash
 
 #ros2 run sas_robot_driver_gazebo sas_robot_driver_ros_gazebo.py
-ros2 run sas_robot_driver_gazebo requester_async
+ros2 run sas_robot_driver_gazebo gazebo_service_frequency_checker

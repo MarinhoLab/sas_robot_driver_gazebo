@@ -77,6 +77,7 @@ unset(RCLCPP_LOCAL_BINARY_NAME)
 set(RCLCPP_LOCAL_BINARY_NAME sas_object_server_gazebo_node)
 
 add_executable(${RCLCPP_LOCAL_BINARY_NAME}
+    src/${RCLCPP_LOCAL_BINARY_NAME}.cpp
     src/sas_object_server_gazebo.cpp
 
     )
