@@ -24,39 +24,48 @@
 # Contributors:
 #   ---
 */
+#include "sas_object_server_gazebo.hpp"
 
-#include <sas_core/sas_clock.hpp>
-
-using namespace DQ_robotics;
-
-void response_callback(const gz::msgs::Boolean &_rep, const bool _result)
+namespace sas
 {
+
+void ObjectServerGazebo::_set_pose_service_response_callback(const gz::msgs::Boolean&, const bool)
+{
+    //TODO if needed add something here
+}
+
+ObjectServerGazebo::ObjectServerGazeboObjectServerGazebo(const std::shared_ptr<ObjectServer>& object_server,
+                                                         const std::string& gazebo_entity_name,
+                                                         const std::string& gazebo_set_pose_service_name):
+       sas::Object("sas::ObjectServerGazebo"),
+       object_server_(object_server),
+       gazebo_entity_name_(gazebo_entity_name),
+       gazebo_set_pose_service_name_(gazebo_set_pose_service_name)
+{
+
 
 }
 
-int main(int argc, char **argv)
+void ObjectServerGazebo::update()
 {
-  sas::Clock clock{0.001};
+    if(object_server_->is_enabled())
+    {
+        //Send target pose to Gazebo
+        auto target_pose{object_server_->get_target_pose()};
+        auto r{target_pose.rotation()};
+        auto t{target_pose.translation()};
 
-  gz::transport::Node node;
-  gz::msgs::Pose req;
-  req.set_name("frame_x");
+        pose_to_gazebo_msg_.mutable_position()->set_x(t.q[1]);
+        pose_to_gazebo_msg_.mutable_position()->set_y(t.q[2]);
+        pose_to_gazebo_msg_.mutable_position()->set_z(t.q[3]);
 
-  std::cout << "Press <CTRL-C> to exit" << std::endl;
+        pose_to_gazebo_msg_.mutable_orientation()->set_w(r.q[0]);
+        pose_to_gazebo_msg_.mutable_orientation()->set_x(r.q[1]);
+        pose_to_gazebo_msg_.mutable_orientation()->set_y(r.q[2]);
+        pose_to_gazebo_msg_.mutable_orientation()->set_z(r.q[3]);
 
-  clock.init();
-  for(int i=0;i<50;i++)
-  {
-      auto z = 0.001 * i;
-      req.mutable_position()->set_z(z);
-      node.Request("/world/ur3e_position_world/set_pose", req, response_callback);
-      clock.update_and_sleep();
-  }
+        //Get current pose from Gazebo
+    }
+}
 
-  std::cout << "Statistics for the entire loop" << std::endl;
-  std::cout << "  Mean computation time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Computational) << std::endl;
-  std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Idle) << std::endl;
-  std::cout << "  Mean effective thread sampling time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::EffectiveSampling) << std::endl;
-
-  gz::transport::waitForShutdown();
 }
