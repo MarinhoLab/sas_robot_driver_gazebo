@@ -73,6 +73,11 @@ void ObjectServerGazebo::update()
         pose_to_gazebo_msg_.mutable_orientation()->set_x(r.q[1]);
         pose_to_gazebo_msg_.mutable_orientation()->set_y(r.q[2]);
         pose_to_gazebo_msg_.mutable_orientation()->set_z(r.q[3]);
+
+        gazebo_node_.Request(gazebo_set_pose_service_name_,
+                             pose_to_gazebo_msg_,
+                             &ObjectServerGazebo::_set_pose_service_response_callback,
+                             this);
     }
     //Get current pose from Gazebo
     gz::msgs::Pose_V poses_from_gazebo;

@@ -26,7 +26,7 @@
 """
 import time
 
-from math import sin, pi
+from math import sin, cos, pi
 
 import numpy
 from dqrobotics import *  # Despite what PyCharm might say, this is very much necessary or DQs will not be recognized
@@ -35,8 +35,11 @@ from dqrobotics.utils.DQ_Math import deg2rad
 import rclpy
 from rclpy.node import Node
 
-from sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown
-from sas_robot_driver import RobotDriverClient
+from sas_common import (rclcpp_init, 
+                        rclcpp_Node, 
+                        rclcpp_spin_some, 
+                        rclcpp_shutdown,
+                        ObjectClient)
 
 from sas_core import Clock, Statistics
 
@@ -44,42 +47,41 @@ from sas_core import Clock, Statistics
 def main(args=None):
     try:
         rclpy.init(args=args)
-        rospy_node = Node('sas_robot_driver_gazebo_joint_space_example_node_py')
+        rospy_node = Node('sas_robot_driver_gazebo_object_client_example_node_py')
 
         rclcpp_init()
-        node = rclcpp_Node("sas_robot_driver_gazebo_joint_space_example_node_cpp")
+        node = rclcpp_Node("sas_robot_driver_gazebo_object_client_example_node_cpp")
 
-        rospy_node.declare_parameter('robot_topic_name', 'sas_robot_driver_gazebo/UR5')
-        robot_topic_name = rospy_node.get_parameter('robot_topic_name').get_parameter_value().string_value
+        rospy_node.declare_parameter('object_name', 'frame_x')
+        object_name = rospy_node.get_parameter('object_name').get_parameter_value().string_value
 
-        # 10 ms clock
-        clock = Clock(0.01)
+        sampling_time = 0.01
+        clock = Clock(sampling_time)
         clock.init()
 
-        # Initialize the RobotDriverClient
-        rdi = RobotDriverClient(node, robot_topic_name)
+        oc = ObjectClient(node, object_name)
 
-        # Wait for RobotDriverClient to be enabled
-        while not rdi.is_enabled():
+        while not oc.is_enabled():
             rclcpp_spin_some(node)
             time.sleep(0.1)
 
-        # Get topic information
-        print(f"topic prefix = {rdi.get_topic_prefix()}")
+        print(f"topic prefix = {oc.get_topic_prefix()}")
 
-        # Read the values sent by the RobotDriverServer
-        joint_positions = rdi.get_joint_positions()
-        DOF = len(joint_positions)
-        print(f"joint positions = {joint_positions}")
+        x = oc.get_pose()
 
         # For some iterations. Note that this can be stopped with CTRL+C.
         for i in range(0, 5000):
             clock.update_and_sleep()
 
-            # Move the joints
-            target_joint_positions = joint_positions + deg2rad([10.0 * sin(i / (50.0 * pi))] * DOF)
-            # print(target_joint_positions)
-            rdi.send_target_joint_positions(target_joint_positions)
+            A = 1.0
+            w = 1.0
+
+            tx = A * sin(2*pi*w*i*sampling_time)
+            ty = A * cos(2*pi*w*i*sampling_time)
+
+            xd = x * (1 + 0.5 * E_ * (i_ * tx + j_ * ty))
+
+            oc.send_pose(xd)
 
             rclcpp_spin_some(node)
 
