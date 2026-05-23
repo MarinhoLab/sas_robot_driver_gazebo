@@ -18,3 +18,17 @@ services:
       && source install/setup.bash
       && ros2 topic list
       && ros2 run sas_robot_driver_gazebo object_client_example.py --ros-args -p object_name:=frame_x"
+
+  ros2_hz_1:
+    image: murilomarinho/sas:jazzy
+    environment:
+      - ROS_DOMAIN_ID
+    command: /bin/bash -c "
+      ros2 topic hz /frame_x/get/pose"
+
+  ros2_hz_2:
+    image: murilomarinho/sas:jazzy
+    environment:
+      - ROS_DOMAIN_ID
+    command: /bin/bash -c "
+      ros2 topic hz /frame_x/set/pose"

@@ -55,7 +55,7 @@ def main(args=None):
         rospy_node.declare_parameter('object_name', 'frame_x')
         object_name = rospy_node.get_parameter('object_name').get_parameter_value().string_value
 
-        sampling_time = 0.01
+        sampling_time = 0.001
         clock = Clock(sampling_time)
         clock.init()
 
