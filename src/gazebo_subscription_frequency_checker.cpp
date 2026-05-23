@@ -7,7 +7,7 @@
 
 static int message_count = 0;
 
-void cb(const gz::msgs::Pose_V &_msg)
+void cb(const gz::msgs::Pose_V&)
 {
   message_count++;
 }

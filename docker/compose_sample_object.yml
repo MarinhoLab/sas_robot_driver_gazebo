@@ -1,0 +1,20 @@
+services:
+
+  gazebo:
+    extends:
+      file: service_gazebo.yml
+      service: gazebo
+
+  object_client_example_1:
+    build: .
+    environment:
+       - ROS_DOMAIN_ID
+       - TIMEOUT=20
+    volumes:
+      - ../../sas_robot_driver_gazebo:/root/sas_robot_driver_gazebo_devel/src/sas_robot_driver_gazebo
+    command: /bin/bash -c "
+      cd /root/sas_robot_driver_gazebo_devel/
+      && colcon build
+      && source install/setup.bash
+      && ros2 topic list
+      && ros2 run sas_robot_driver_gazebo object_client_example.py --ros-args -p object_name:=frame_x"
