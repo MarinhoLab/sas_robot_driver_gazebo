@@ -28,6 +28,7 @@
 #include "sas_object_server_gazebo.hpp"
 #include <sas_core/sas_clock.hpp>
 #include <sas_core/sas_shutdown_signaler.hpp>
+#include <sas_common/sas_common.hpp>
 
 /*********************************************
  * SIGNAL HANDLER
@@ -44,17 +45,19 @@ int main(int argc, char **argv)
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_object_server_gazebo_node");
 
-    //std::string
-    //std::string
-    //std::vector<string>
-
     sas::ObjectServerGazeboConfiguration configuration;
-    configuration.set_pose_service_name = "/world/ur3e_world/set_pose";
-    configuration.get_pose_topic_name = "/world/ur3e_world/pose/info";
-    configuration.entity_names = std::vector<std::string>{
-        "frame_x",
-        "frame_xd"
-        };
+
+    sas::get_ros_parameter(node,"set_pose_service_name",configuration.set_pose_service_name);
+    sas::get_ros_parameter(node,"get_pose_topic_name",configuration.get_pose_topic_name);
+    sas::get_ros_parameter(node,"entity_names",configuration.entity_names);
+
+    ///Example:
+    //configuration.set_pose_service_name = "/world/ur3e_world/set_pose";
+    //configuration.get_pose_topic_name = "/world/ur3e_world/pose/info";
+    //configuration.entity_names = std::vector<std::string>{
+    //    "frame_x",
+    //    "frame_xd"
+    //    };
 
     std::vector<std::unique_ptr<sas::ObjectServerGazebo>> object_server_gazebo_list;
     for(const std::string& entity_name: configuration.entity_names)
@@ -69,13 +72,7 @@ int main(int argc, char **argv)
         );
     }
 
-    //auto osx = std::make_shared<sas::ObjectServer>(node, "frame_x");
-    //sas::ObjectServerGazebo osg_x{osx,"frame_x",set_pose_service_name,get_pose_topic_name};
-    //auto osxd = std::make_shared<sas::ObjectServer>(node, "frame_xd");
-    //sas::ObjectServerGazebo osg_xd{osxd,"frame_xd",set_pose_service_name,get_pose_topic_name};
-
     sas::Clock clock{0.001};
-
     try
     {
         clock.init();
@@ -95,12 +92,11 @@ int main(int argc, char **argv)
         RCLCPP_ERROR_STREAM_ONCE(node->get_logger(), std::string("::Exception::") + e.what());
     }
 
-      //Statistics
-      std::cout << "Statistics for the entire loop" << std::endl;
-      std::cout << "  Mean computation time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Computational) << std::endl;
-      std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Idle) << std::endl;
-      std::cout << "  Mean effective thread sampling time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::EffectiveSampling) << std::endl;
-
+    //Statistics
+    std::cout << "Statistics for the entire loop" << std::endl;
+    std::cout << "  Mean computation time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Computational) << std::endl;
+    std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Idle) << std::endl;
+    std::cout << "  Mean effective thread sampling time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::EffectiveSampling) << std::endl;
 
     return 0;
 }
