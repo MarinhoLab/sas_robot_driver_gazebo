@@ -13,21 +13,15 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'joint_names',
-            default_value='''[
-        "elbow_joint",
-        "shoulder_lift_joint",
-        "shoulder_pan_joint",
-        "wrist_1_joint",
-        "wrist_2_joint",
-        "wrist_3_joint"]'''
+            default_value='''["elbow_joint","shoulder_lift_joint","shoulder_pan_joint","wrist_1_joint","wrist_2_joint","wrist_3_joint"]'''
         ),
         DeclareLaunchArgument(
             'joint_positions_topic_prefix',
-            default_value="/model/ur3e_1/joint/"
+            default_value="/model/ur3e/joint/"
         ),
         DeclareLaunchArgument(
             'joint_states_topic',
-            default_value="/world/ur3e_position_world/model/ur3e_1/model/ur3e_1_position_controller/model/ur3e_1/joint_state"
+            default_value="/world/ur3e_world/model/ur3e/model/ur3e_position_controller/model/ur3e/joint_state"
         ),
         DeclareLaunchArgument(
             'robot_name',

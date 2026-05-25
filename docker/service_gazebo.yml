@@ -22,5 +22,6 @@ services:
       && colcon build
       && source install/setup.bash
       && gz topic -l
-      && ros2 launch sas_robot_driver_gazebo robot_driver_server_launch.py
+      && gz service -l
+      && (ros2 launch sas_robot_driver_gazebo robot_driver_server_launch.py &)
       && ros2 launch sas_robot_driver_gazebo server_launch.py"
