@@ -47,6 +47,8 @@ class RobotDriverGazebo(RobotDriver):
         self.joint_positions_topic_postfix: str = "/0/cmd_pos"
         self.joint_publishers = []
         self.joint_positions = [None] * self.DOF
+        self.joint_velocities = [None] * self.DOF
+        self.joint_torques = [None] * self.DOF
         self.limit_lower = [None] * self.DOF
         self.limit_upper = [None] * self.DOF
         self.node = None
@@ -86,6 +88,16 @@ class RobotDriverGazebo(RobotDriver):
             raise RuntimeError("Joint positions not initialized")
         return self.joint_positions
 
+    def get_joint_velocities(self):
+        if None in self.joint_velocities:
+            raise RuntimeError("Joint velocities not initialized")
+        return self.joint_velocities
+
+    def get_joint_torques(self):
+        if None in self.joint_torques:
+            raise RuntimeError("Joint torques not initialized")
+        return self.joint_torques
+
     def set_target_joint_positions(self, target_joint_positions_rad):
         for i in range(len(self.joint_publishers)):
             double_msg = Double()
@@ -98,5 +110,7 @@ class RobotDriverGazebo(RobotDriver):
             for i in range(self.DOF):
                 if joint.name == self.configuration.joint_names[i]:
                     self.joint_positions[i] = joint.axis1.position
+                    self.joint_velocities[i] = joint.axis1.velocity
+                    self.joint_torques[i] = joint.axis1.force
                     self.limit_lower[i] = joint.axis1.limit_lower
                     self.limit_upper[i] = joint.axis1.limit_upper
