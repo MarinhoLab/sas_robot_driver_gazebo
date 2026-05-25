@@ -20,10 +20,10 @@
         </light>
 
 
-        <model name="ur3e_1">
+        <model name="ur3e">
 
             <include>
-                <name>ur3e_1_position_controller</name>
+                <name>ur3e_position_controller</name>
                 <static>false</static>
                 <uri>model://ur3e_position_controller.sdf</uri>
             </include>
@@ -31,7 +31,7 @@
             <joint name='base_joint' type='fixed'>
                 <pose relative_to='__model__'>0 0 0 0 0 0</pose>
                 <parent>world</parent>
-                <child>ur3e_1_position_controller::ur3e_1::base_link</child>
+                <child>ur3e_position_controller::ur3e::base_link</child>
             </joint>
 
         </model>

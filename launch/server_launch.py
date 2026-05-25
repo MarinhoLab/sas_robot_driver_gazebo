@@ -25,7 +25,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'control_service_name',
-            default_value="/world/shapes/control"
+            default_value="/world/ur3e_world/control"
         ),
         Node(
             package='sas_robot_driver_gazebo',
