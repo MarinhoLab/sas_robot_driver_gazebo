@@ -69,37 +69,39 @@ int main(int argc, char **argv)
 {
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_simulator_server_gazebo_node");
-    gz::transport::Node gazebo_node;
-
-    std::string service_name; //Example: {"/world/shapes/control"};
-    sas::get_ros_parameter(node,"service_name",service_name);
-
-    auto simulator_server = sas::SimulatorServer(node);
-    auto f1 = [&gazebo_node, &service_name](){start_simulation_callback(gazebo_node, service_name);};
-    auto f2 = [&gazebo_node, &service_name](){stop_simulation_callback(gazebo_node, service_name);};
-    simulator_server.set_start_simulation_callback(f1);
-    simulator_server.set_stop_simulation_callback(f2);
-
     sas::Clock clock{0.001};
+
     try
     {
+        gz::transport::Node gazebo_node;
+
+        std::string service_name; //Example: {"/world/shapes/control"};
+        sas::get_ros_parameter(node,"service_name",service_name);
+
+        auto simulator_server = sas::SimulatorServer(node);
+        auto f1 = [&gazebo_node, &service_name](){start_simulation_callback(gazebo_node, service_name);};
+        auto f2 = [&gazebo_node, &service_name](){stop_simulation_callback(gazebo_node, service_name);};
+        simulator_server.set_start_simulation_callback(f1);
+        simulator_server.set_stop_simulation_callback(f2);
+
         clock.init();
         while(!ss.should_shutdown())
         {
             rclcpp::spin_some(node);
             clock.update_and_sleep();
         }
+
+        //Statistics
+        std::cout << "Statistics for the entire loop" << std::endl;
+        std::cout << "  Mean computation time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Computational) << std::endl;
+        std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Idle) << std::endl;
+        std::cout << "  Mean effective thread sampling time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::EffectiveSampling) << std::endl;
+
     }
     catch (const std::exception& e)
     {
         RCLCPP_ERROR_STREAM_ONCE(node->get_logger(), std::string("::Exception::") + e.what());
     }
-
-    //Statistics
-    std::cout << "Statistics for the entire loop" << std::endl;
-    std::cout << "  Mean computation time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Computational) << std::endl;
-    std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Idle) << std::endl;
-    std::cout << "  Mean effective thread sampling time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::EffectiveSampling) << std::endl;
 
     return 0;
 }
