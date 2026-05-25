@@ -29,6 +29,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sas_core/sas_clock.hpp>
 #include <sas_core/sas_shutdown_signaler.hpp>
+#include <sas_common/sas_common.hpp>
 #include <sas_common/sas_simulator_server.hpp>
 
 /*********************************************
@@ -70,7 +71,8 @@ int main(int argc, char **argv)
     auto node = std::make_shared<rclcpp::Node>("sas_simulator_server_gazebo_node");
     gz::transport::Node gazebo_node;
 
-    std::string service_name{"/world/shapes/control"};
+    std::string service_name; //Example: {"/world/shapes/control"};
+    sas::get_ros_parameter(node,"service_name",service_name);
 
     auto simulator_server = sas::SimulatorServer(node);
     auto f1 = [&gazebo_node, &service_name](){start_simulation_callback(gazebo_node, service_name);};
