@@ -31,6 +31,18 @@ install(DIRECTORY
 # Scripts Block [END] #
 #######################
 
+########################
+# Launch Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvv #
+# According to https://github.com/SmartArmStack/sas_robot_driver/blob/ros2/CMakeLists.txt
+install(DIRECTORY
+        launch
+        DESTINATION share/${PROJECT_NAME}/
+)
+# ^^^^^^^^^^^^^^^^^^ #
+# Launch Block [END] #
+######################
+
 ############################
 # CPP Binary Block [BEGIN] #
 # vvvvvvvvvvvvvvvvvvvvvvvv #
