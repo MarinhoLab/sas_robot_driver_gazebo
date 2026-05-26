@@ -50,6 +50,9 @@ def main():
         rospy_node.declare_parameter('robot_name')
         robot_name = rospy_node.get_parameter('robot_name').get_parameter_value().string_value
 
+        rospy_node.declare_parameter('thread_sampling_time_sec', 0.002)
+        sampling_time = rospy_node.get_parameter('thread_sampling_time_sec').get_parameter_value().double_value
+
         ss = ShutdownSignaler()
         gazebo_cfg = RobotDriverGazeboConfiguration()
         gazebo_cfg.joint_names = joint_names
@@ -61,7 +64,7 @@ def main():
 
         rdrg_cfg = RobotDriverROSConfiguration()
         rdrg_cfg.robot_driver_provider_prefix = robot_name
-        rdrg_cfg.thread_sampling_time_sec = 0.001
+        rdrg_cfg.thread_sampling_time_sec = sampling_time
 
         sas_robot_driver_ros = RobotDriverROS(roscpp_node,
                                               srdg,
