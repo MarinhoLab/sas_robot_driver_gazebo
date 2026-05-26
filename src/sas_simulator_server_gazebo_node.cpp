@@ -69,7 +69,6 @@ int main(int argc, char **argv)
 {
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_simulator_server_gazebo_node");
-    sas::Clock clock{0.001};
 
     try
     {
@@ -77,6 +76,10 @@ int main(int argc, char **argv)
 
         std::string service_name; //Example: {"/world/shapes/control"};
         sas::get_ros_parameter(node,"service_name",service_name);
+        double sampling_time;
+        sas::get_ros_optional_parameter(node, "thread_sampling_time_sec",sampling_time,0.01);
+
+        sas::Clock clock{sampling_time};
 
         auto simulator_server = sas::SimulatorServer(node);
         auto f1 = [&gazebo_node, &service_name](){start_simulation_callback(gazebo_node, service_name);};

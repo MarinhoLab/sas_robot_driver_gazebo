@@ -44,7 +44,6 @@ int main(int argc, char **argv)
 {
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_object_server_gazebo_node");
-    sas::Clock clock{0.001};
 
     try
     {
@@ -53,6 +52,10 @@ int main(int argc, char **argv)
         sas::get_ros_parameter(node,"set_pose_service_name",configuration.set_pose_service_name);
         sas::get_ros_parameter(node,"get_pose_topic_name",configuration.get_pose_topic_name);
         sas::get_ros_parameter(node,"entity_names",configuration.entity_names);
+        double sampling_time;
+        sas::get_ros_optional_parameter(node, "thread_sampling_time_sec",sampling_time,0.01);
+
+        sas::Clock clock{sampling_time};
 
         ///Example:
         //configuration.set_pose_service_name = "/world/ur3e_world/set_pose";
