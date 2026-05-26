@@ -71,6 +71,7 @@ class ObjectServerGazebo: private sas::Object
 
         gz::transport::Node gazebo_node_;
         gz::msgs::Pose pose_to_gazebo_msg_;
+        DQ last_pose_to_gazebo_{0};
 
         void _set_pose_service_response_callback(const gz::msgs::Boolean&, const bool);
     public:

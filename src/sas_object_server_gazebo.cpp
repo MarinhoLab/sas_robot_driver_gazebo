@@ -62,22 +62,28 @@ void ObjectServerGazebo::update()
     {
         //Send target pose to Gazebo
         auto target_pose{object_server_->get_target_pose()};
-        auto r{target_pose.rotation()};
-        auto t{target_pose.translation()};
+        if(target_pose != last_pose_to_gazebo_)
+        {
+            auto r{target_pose.rotation()};
+            auto t{target_pose.translation()};
 
-        pose_to_gazebo_msg_.mutable_position()->set_x(t.q[1]);
-        pose_to_gazebo_msg_.mutable_position()->set_y(t.q[2]);
-        pose_to_gazebo_msg_.mutable_position()->set_z(t.q[3]);
+            pose_to_gazebo_msg_.mutable_position()->set_x(t.q[1]);
+            pose_to_gazebo_msg_.mutable_position()->set_y(t.q[2]);
+            pose_to_gazebo_msg_.mutable_position()->set_z(t.q[3]);
 
-        pose_to_gazebo_msg_.mutable_orientation()->set_w(r.q[0]);
-        pose_to_gazebo_msg_.mutable_orientation()->set_x(r.q[1]);
-        pose_to_gazebo_msg_.mutable_orientation()->set_y(r.q[2]);
-        pose_to_gazebo_msg_.mutable_orientation()->set_z(r.q[3]);
+            pose_to_gazebo_msg_.mutable_orientation()->set_w(r.q[0]);
+            pose_to_gazebo_msg_.mutable_orientation()->set_x(r.q[1]);
+            pose_to_gazebo_msg_.mutable_orientation()->set_y(r.q[2]);
+            pose_to_gazebo_msg_.mutable_orientation()->set_z(r.q[3]);
 
-        gazebo_node_.Request(gazebo_set_pose_service_name_,
-                             pose_to_gazebo_msg_,
-                             &ObjectServerGazebo::_set_pose_service_response_callback,
-                             this);
+            gazebo_node_.Request(gazebo_set_pose_service_name_,
+                                 pose_to_gazebo_msg_,
+                                 &ObjectServerGazebo::_set_pose_service_response_callback,
+                                 this);
+
+            last_pose_to_gazebo_ = target_pose;
+        }
+
     }
     //Get current pose from Gazebo
     gz::msgs::Pose_V poses_from_gazebo;
