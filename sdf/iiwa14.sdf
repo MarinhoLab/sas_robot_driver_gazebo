@@ -1,0 +1,444 @@
+<sdf version='1.11'>
+  <model name='converted_robot'>
+    <joint name='world2base_fixed' type='fixed'>
+      <pose relative_to='__model__'>0 0 0 0 0 0</pose>
+      <parent>world</parent>
+      <child>base</child>
+    </joint>
+    <link name='base'>
+      <pose relative_to='world2base_fixed'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.10000000000000001 0 0.070000000000000007 0 0 0</pose>
+        <mass>5</mass>
+        <inertia>
+          <ixx>0.050000000000000003</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.059999999999999998</iyy>
+          <iyz>0</iyz>
+          <izz>0.029999999999999999</izz>
+        </inertia>
+      </inertial>
+      <visual name='base_fixed_joint_lump__link_0_visual'>
+        <pose>-0.01261167122700449 -3.2540969856734131e-07 0.07039070638127487 -3.1406330260149349 -1.4930811981613767 -0.00088985524124485368</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_0_666666ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='joint1' type='revolute'>
+      <pose relative_to='base'>0 0 0.1575 0 0 0</pose>
+      <parent>base</parent>
+      <child>joint1_jointbody</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.96706</lower>
+          <upper>2.96706</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='joint1_jointbody'>
+      <pose relative_to='joint1'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 -0.02999479257073424 0.119979170282937 0 0 0</pose>
+        <mass>5.7610000000000001</mass>
+        <inertia>
+          <ixx>0.03331529834421109</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.033014398500433959</iyy>
+          <iyz>3.599375108489456e-06</iyz>
+          <izz>0.012300900843777119</izz>
+        </inertia>
+      </inertial>
+      <visual name='joint1_jointbody_fixed_joint_lump__link_1_visual'>
+        <pose>-1.9467006956065569e-06 -0.03351071875139483 0.12307399450484061 -5.6995778251811152e-05 -0.21504380001445417 1.5709677059154581</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_1_666666ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='joint2' type='revolute'>
+      <pose relative_to='joint1_jointbody'>0 0 0.20250000000000001 1.5707963267948959 3.7109275873535113e-33 3.1415926535897931</pose>
+      <parent>joint1_jointbody</parent>
+      <child>joint2_jointbody</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.0943999999999998</lower>
+          <upper>2.0943999999999998</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='joint2_jointbody'>
+      <pose relative_to='joint2'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.0002999527633443552 0.058990710124389861 0.041993386868209727 0 0 0</pose>
+        <mass>6.351</mass>
+        <inertia>
+          <ixx>0.030505245174145799</ixx>
+          <ixy>-1.769721303966535e-08</ixy>
+          <ixz>-1.259801606044824e-08</ixz>
+          <iyy>0.011001764812234289</iyy>
+          <iyz>-2.477609825228337e-06</iyz>
+          <izz>0.030403481541883159</izz>
+        </inertia>
+      </inertial>
+      <visual name='joint2_jointbody_fixed_joint_lump__link_2_orange_visual'>
+        <pose>5.8332434960880928e-06 -0.0013649111339534309 0.08664810682832555 -3.1413084297767169 -1.3661334244729548 -1.5709650880838832</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_2_orange_ff6c0aff.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+      <visual name='joint2_jointbody_fixed_joint_lump__link_2_grey_visual_1'>
+        <pose>0.00043793493861049077 0.1028961667147313 0.01521023913606589 0.0016576673364870642 -1.5322290241696956 1.5691159451565311</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_2_grey_666666ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='joint3' type='revolute'>
+      <pose relative_to='joint2_jointbody'>0 0.20449999999999999 0 1.5707963267948959 3.7109275873535113e-33 3.1415926535897931</pose>
+      <parent>joint2_jointbody</parent>
+      <child>joint3_jointbody</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.96706</lower>
+          <upper>2.96706</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='joint3_jointbody'>
+      <pose relative_to='joint3'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0.029991431019708661 0.12996286775207089 0 0 0</pose>
+        <mass>3.5009999999999999</mass>
+        <inertia>
+          <ixx>0.025017795915738359</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.023816896172807769</iyy>
+          <iyz>-3.8988860325580958e-06</iyz>
+          <izz>0.0076009007429305893</izz>
+        </inertia>
+      </inertial>
+      <visual name='joint3_jointbody_fixed_joint_lump__link_3_visual'>
+        <pose>1.4079955059051841e-06 0.032971200728359053 0.1363955973320741 0.0029220508029157819 0.23613841319999529 1.5832927568612389</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_3_666666ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='joint3_jointbody_fixed_joint_lump__band_visual_1'>
+        <pose>-3.5052711079717897e-05 -1.838585198643754e-05 0.016549965935683291 -3.0803831135190398 -1.5707963267948966 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_band_999999ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='joint3_jointbody_fixed_joint_lump__kuka_visual_2'>
+        <pose>1.051373642038026e-06 -2.864459744481528e-06 0.016135466494431941 1.6301255363357112 -1.5707963267948966 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_kuka_000000ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='joint4' type='revolute'>
+      <pose relative_to='joint3_jointbody'>0 0 0.2155 1.5707963267948959 0 0</pose>
+      <parent>joint3_jointbody</parent>
+      <child>joint4_jointbody</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.0943999999999998</lower>
+          <upper>2.0943999999999998</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='joint4_jointbody'>
+      <pose relative_to='joint4'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0.066980862610682673 0.033990288489003137 0 0 0</pose>
+        <mass>3.5009999999999999</mass>
+        <inertia>
+          <ixx>0.01700564438760354</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0060011566698086258</iyy>
+          <iyz>-2.277349328761331e-06</iyz>
+          <izz>0.016404488717794909</izz>
+        </inertia>
+      </inertial>
+      <visual name='joint4_jointbody_fixed_joint_lump__link_4_orange_visual'>
+        <pose>4.8249804184235769e-06 0.0079688552714835513 0.079761534750219437 3.1414123357037496 -1.3520160965960955 -1.5708312876241148</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_4_orange_ff6c0aff.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+      <visual name='joint4_jointbody_fixed_joint_lump__link_4_grey_visual_1'>
+        <pose>-7.191555879988226e-07 0.099246338729811964 0.012969840121518901 0.0023581594407875825 -1.5072370203283645 1.5684105762133538</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_4_grey_666666ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='joint5' type='revolute'>
+      <pose relative_to='joint4_jointbody'>0 0.1845 0 1.5707963267948959 3.7109275873535113e-33 3.1415926535897931</pose>
+      <parent>joint4_jointbody</parent>
+      <child>joint5_jointbody</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.96706</lower>
+          <upper>2.96706</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='joint5_jointbody'>
+      <pose relative_to='joint5'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>9.9971436732362184e-05 0.020994001713796059 0.075978291916595275 0 0 0</pose>
+        <mass>3.5009999999999999</mass>
+        <inertia>
+          <ixx>0.01000621622422164</ixx>
+          <ixy>-2.0994001713784809e-09</ixy>
+          <ixz>-7.5978291916526307e-09</ixz>
+          <iyy>0.0087057753601827957</iyy>
+          <iyz>-1.59554413024603e-06</iyz>
+          <izz>0.0044904418840331344</izz>
+        </inertia>
+      </inertial>
+      <visual name='joint5_jointbody_fixed_joint_lump__link_5_visual'>
+        <pose>0.00381194920576787 0.028707793498580748 0.093610149753383193 -0.058285529334915653 0.40618148786929659 1.5076633989229997</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_5_666666ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='joint5_jointbody_fixed_joint_lump__band_visual_1'>
+        <pose>-3.5052711079717897e-05 -1.838585198643754e-05 0.016549965935683291 -3.0803831135190398 -1.5707963267948966 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_band_999999ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='joint5_jointbody_fixed_joint_lump__kuka_visual_2'>
+        <pose>1.051373642038026e-06 -2.864459744481528e-06 0.016135466494431941 1.6301255363357112 -1.5707963267948966 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_kuka_000000ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='joint6' type='revolute'>
+      <pose relative_to='joint5_jointbody'>0 0 0.2155 1.5707963267948959 0 0</pose>
+      <parent>joint5_jointbody</parent>
+      <child>joint6_jointbody</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.0943999999999998</lower>
+          <upper>2.0943999999999998</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='joint6_jointbody'>
+      <pose relative_to='joint6'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0.00059966685174902841 0.00039977790116601901 0 0 0</pose>
+        <mass>1.8009999999999999</mass>
+        <inertia>
+          <ixx>0.0049000015197112716</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0036000011599111609</iyy>
+          <iyz>-2.3986674038779227e-10</iyz>
+          <izz>0.0047000013598001112</izz>
+        </inertia>
+      </inertial>
+      <visual name='joint6_jointbody_fixed_joint_lump__link_6_orange_visual'>
+        <pose>-1.173265442395859e-06 -0.032810575356971121 0.025841151571891961 3.1404471117136921 -1.0516466426619555 -1.5709595261648188</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_6_orange_ff6c0aff.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+      <visual name='joint6_jointbody_fixed_joint_lump__link_6_grey_visual_1'>
+        <pose>-4.1669810009744231e-06 0.02953027794651189 -0.021364754377460889 3.141365631955773 -0.95349883921182832 -1.570684363068793</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_6_grey_666666ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='joint7' type='revolute'>
+      <pose relative_to='joint6_jointbody'>0 0.081000000000000003 0 1.5707963267948959 3.7109275873535113e-33 3.1415926535897931</pose>
+      <parent>joint6_jointbody</parent>
+      <child>joint7_jointbody</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-3.0543300000000002</lower>
+          <upper>3.0543300000000002</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='joint7_jointbody'>
+      <pose relative_to='joint7'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0.019983347210657788 0 0 0</pose>
+        <mass>1.2010000000000001</mass>
+        <inertia>
+          <ixx>0.001000400666944213</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001000400666944213</iyy>
+          <iyz>0</iyz>
+          <izz>0.0010000009999999999</izz>
+        </inertia>
+      </inertial>
+      <visual name='joint7_jointbody_fixed_joint_lump__link_7_visual'>
+        <pose>-9.6610768496038946e-06 -9.1533803358094512e-07 0.01686968091357946 1.571918295470861 -1.5707963267948966 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_7_666666ff.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <frame name='joint1_offset' attached_to='joint1_jointbody'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='link1' attached_to='joint1_offset'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='joint2_offset' attached_to='joint2_jointbody'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='link2' attached_to='joint2_offset'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='joint3_offset' attached_to='joint3_jointbody'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='link3' attached_to='joint3_offset'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='joint4_offset' attached_to='joint4_jointbody'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='link4' attached_to='joint4_offset'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='joint5_offset' attached_to='joint5_jointbody'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='link5' attached_to='joint5_offset'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='joint6_offset' attached_to='joint6_jointbody'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='link6' attached_to='joint6_offset'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='joint7_offset' attached_to='joint7_jointbody'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='link7' attached_to='joint7_offset'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>
