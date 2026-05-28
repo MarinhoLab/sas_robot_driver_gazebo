@@ -1,5 +1,9 @@
 # sas_robot_driver_gazebo
 
+> [!TIP]
+> Repository for this module: https://github.com/MarinhoLab/sas_robot_driver_gazebo \
+> More information about SmartArmStack is available in https://smartarmstack.github.io/.
+
 ## Licenses
 
 Check any licenses in repositories in `vendor` if you decide to use them. This repository's owner holds no
