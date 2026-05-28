@@ -1,0 +1,759 @@
+<sdf version='1.11'>
+  <model name='r820'>
+
+    <link name='robot_base'>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.061949499980467997</ixx>
+          <ixy>-4.2022489491937001e-06</ixy>
+          <ixz>3.5043295529543e-05</ixz>
+          <iyy>0.062637049123665994</iyy>
+          <iyz>0.0075376077254162999</iyz>
+          <izz>0.029407721075839</izz>
+        </inertia>
+      </inertial>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_1.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_1'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_2.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_2'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_3.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_3'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_4.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_4'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_5.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_5'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_6.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_6'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_7.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_7'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_8.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_8'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_9.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_9'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_10.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_10'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_11.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_11'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_12.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_12'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_13.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_13'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_14.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_14'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_15.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_15'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_16.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='robot_base_fixed_joint_lump__LBRiiwa14R820_collision_16'>
+        <pose>-0.207261 -0.32505400000000001 0.078662999999999997 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_robot_base_coll_17.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='robot_base_fixed_joint_lump__link_visual'>
+        <pose>-0.207292 -0.32500000000000001 0.078750000000000001 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_vis_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+      <visual name='robot_base_fixed_joint_lump__link_visual_1'>
+        <pose>-0.207292 -0.32500000000000001 0.078750000000000001 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_vis_2.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='joint' type='revolute'>
+      <pose relative_to='robot_base'>-0.20000000000000001 -0.32500000000000001 0.1525 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+      <parent>robot_base</parent>
+      <child>link2_resp</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.9670596122742001</lower>
+          <upper>2.9670596122742001</upper>
+          <effort>176</effort>
+          <velocity>1.9198621511459</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='link2_resp'>
+      <pose relative_to='joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>4.3999999999999999e-05 -0.022527999999999999 0.12831500000000001 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.061949499980467997</ixx>
+          <ixy>-4.2022489491937001e-06</ixy>
+          <ixz>3.5043295529543e-05</ixz>
+          <iyy>0.062637049123665994</iyy>
+          <iyz>0.0075376077254162999</iyz>
+          <izz>0.029407721075839</izz>
+        </inertia>
+      </inertial>
+      <collision name='link2_resp_collision'>
+        <pose>0.00014200000000000001 -0.015037 0.14860799999999999 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link2_resp_coll_1.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='link2_resp_collision_1'>
+        <pose>0.00014200000000000001 -0.015037 0.14860799999999999 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link2_resp_coll_2.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='link2_resp_fixed_joint_lump__link_visual'>
+        <pose>0 -0.015099 0.14890200000000001 -3.4641020661940041e-07 -3.4641020661940057e-07 -3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_2_vis_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='joint_2' type='revolute'>
+      <pose relative_to='link2_resp'>0 0 0.20749999999999999 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+      <parent>link2_resp</parent>
+      <child>link3_resp</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.094395160675</lower>
+          <upper>2.094395160675</upper>
+          <effort>176</effort>
+          <velocity>1.9198621511459</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='link3_resp'>
+      <pose relative_to='joint_2'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.00038400000000000001 0.064676999999999998 0.031906999999999998 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.065480944205794006</ixx>
+          <ixy>-5.5093983987736001e-05</ixy>
+          <ixz>0.00010297341964241001</ixz>
+          <iyy>0.064074811587275002</iyy>
+          <iyz>0.0099419432019577994</iyz>
+          <izz>0.027901361880772999</izz>
+        </inertia>
+      </inertial>
+      <collision name='link3_resp_collision'>
+        <pose>0.00059500000000000004 0.059485999999999997 0.032034 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link3_resp_coll_1.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='link3_resp_collision_1'>
+        <pose>0.00059500000000000004 0.059485999999999997 0.032034 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link3_resp_coll_2.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='link3_resp_fixed_joint_lump__link_visual'>
+        <pose>0.00043600000000000003 0.059508999999999999 0.032053999999999999 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_3_vis_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+      <visual name='link3_resp_fixed_joint_lump__link_visual_1'>
+        <pose>0.00043600000000000003 0.059508999999999999 0.032053999999999999 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_3_vis_2.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='joint_3' type='revolute'>
+      <pose relative_to='link3_resp'>0 0.221 0 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+      <parent>link3_resp</parent>
+      <child>link4_resp</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.9670596122742001</lower>
+          <upper>2.9670596122742001</upper>
+          <effort>100</effort>
+          <velocity>2.2340214252471999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='link4_resp'>
+      <pose relative_to='joint_3'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-9.0000000000000002e-06 0.023397999999999999 0.112798 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.069628312223766003</ixx>
+          <ixy>-1.4946658783049001e-05</ixy>
+          <ixz>1.6690215523111999e-05</ixz>
+          <iyy>0.066355727860679004</iyy>
+          <iyz>-0.010164441111686</iyz>
+          <izz>0.025493437364201</izz>
+        </inertia>
+      </inertial>
+      <collision name='link4_resp_collision'>
+        <pose>-3.4999999999999997e-05 0.023255000000000001 0.12531300000000001 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link4_resp_coll_1.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='link4_resp_collision_1'>
+        <pose>-3.4999999999999997e-05 0.023255000000000001 0.12531300000000001 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link4_resp_coll_2.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='link4_resp_fixed_joint_lump__link_visual'>
+        <pose>5.0000000000000004e-06 0.023139 0.125246 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_4_vis_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+      <visual name='link4_resp_fixed_joint_lump__link_visual_1'>
+        <pose>5.0000000000000004e-06 0.023139 0.125246 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_4_vis_2.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+      <visual name='link4_resp_fixed_joint_lump__link_visual_2'>
+        <pose>5.0000000000000004e-06 0.023139 0.125246 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_4_vis_3.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='joint_4' type='revolute'>
+      <pose relative_to='link4_resp'>0 0 0.19900000000000001 -1.5707956535897929 -3.4641020661940057e-07 3.1415926535897931</pose>
+      <parent>link4_resp</parent>
+      <child>link5_resp</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.094395160675</lower>
+          <upper>2.094395160675</upper>
+          <effort>100</effort>
+          <velocity>2.2340214252471999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='link5_resp'>
+      <pose relative_to='joint_4'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 -0.069988999999999996 0.025510999999999999 -1.5707956535897929 -3.4641020661940057e-07 3.1415926535897931</pose>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.065627000638938005</ixx>
+          <ixy>-3.0720793249862002e-06</ixy>
+          <ixz>-1.4229045826541e-05</ixz>
+          <iyy>0.062370498386876999</iyy>
+          <iyz>-0.0095846156137264996</iyz>
+          <izz>0.02849143762768</izz>
+        </inertia>
+      </inertial>
+      <collision name='link5_resp_collision'>
+        <pose>-0.00023000000000000001 -0.058243999999999997 0.023172000000000002 -1.5707956535897929 -3.4641020661940057e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link5_resp_coll_1.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='link5_resp_collision_1'>
+        <pose>-0.00023000000000000001 -0.058243999999999997 0.023172000000000002 -1.5707956535897929 -3.4641020661940057e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link5_resp_coll_2.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='link5_resp_fixed_joint_lump__link_visual'>
+        <pose>0 -0.058255000000000001 0.023238999999999999 -1.5707956535897929 -3.4641020661940057e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_5_vis_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+      <visual name='link5_resp_fixed_joint_lump__link_visual_1'>
+        <pose>0 -0.058255000000000001 0.023238999999999999 -1.5707956535897929 -3.4641020661940057e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_5_vis_2.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='joint_5' type='revolute'>
+      <pose relative_to='link5_resp'>0 -0.17949999999999999 0 -1.5707956535897929 -3.4641020661940057e-07 3.1415926535897931</pose>
+      <parent>link5_resp</parent>
+      <child>link6_resp</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.9670596122742001</lower>
+          <upper>2.9670596122742001</upper>
+          <effort>100</effort>
+          <velocity>3.5604715347289999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='link6_resp'>
+      <pose relative_to='joint_5'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-5.8e-05 -0.025083999999999999 0.105264 3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.070361056744539005</ixx>
+          <ixy>1.4296320014811e-05</ixy>
+          <ixz>-1.5400706466743e-06</ixz>
+          <iyy>0.065353014054758005</iyy>
+          <iyz>0.017439321283930002</iyz>
+          <izz>0.028704240272089</izz>
+        </inertia>
+      </inertial>
+      <collision name='link6_resp_collision'>
+        <pose>0.00010399999999999999 -0.015498 0.138539 3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link6_resp_coll_1.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='link6_resp_collision_1'>
+        <pose>0.00010399999999999999 -0.015498 0.138539 3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link6_resp_coll_2.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='link6_resp_collision_2'>
+        <pose>0.00010399999999999999 -0.015498 0.138539 3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link6_resp_coll_3.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='link6_resp_fixed_joint_lump__link_visual'>
+        <pose>2.0999999999999999e-05 -0.015462 0.13850000000000001 3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_6_vis_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+      <visual name='link6_resp_fixed_joint_lump__link_visual_1'>
+        <pose>2.0999999999999999e-05 -0.015462 0.13850000000000001 3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_6_vis_2.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+      <visual name='link6_resp_fixed_joint_lump__link_visual_2'>
+        <pose>2.0999999999999999e-05 -0.015462 0.13850000000000001 3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_6_vis_3.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='joint_6' type='revolute'>
+      <pose relative_to='link6_resp'>0 -0.065699999999999995 0.2205 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+      <parent>link6_resp</parent>
+      <child>link7_resp</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.094395160675</lower>
+          <upper>2.094395160675</upper>
+          <effort>38</effort>
+          <velocity>3.2114057540893999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='link7_resp'>
+      <pose relative_to='joint_6'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1.9999999999999999e-06 0.0030869999999999999 0.065833000000000003 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.054369928773880999</ixx>
+          <ixy>-1.2216953536765e-05</ixy>
+          <ixz>-1.0268024492953e-05</ixz>
+          <iyy>0.052919941658458002</iyy>
+          <iyz>0.0028934553396823999</iyz>
+          <izz>0.038594863015146003</izz>
+        </inertia>
+      </inertial>
+      <collision name='link7_resp_collision'>
+        <pose>-0.00043399999999999998 -0.0026199999999999999 0.068751999999999994 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link7_resp_coll_1.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='link7_resp_fixed_joint_lump__link_visual'>
+        <pose>9.9999999999999995e-07 -0.002604 0.068806999999999993 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_7_vis_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+      <visual name='link7_resp_fixed_joint_lump__link_visual_1'>
+        <pose>9.9999999999999995e-07 -0.002604 0.068806999999999993 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_7_vis_2.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0.713698745 0.325342476 1</diffuse>
+          <ambient>1 0.713698745 0.325342476 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='joint_7' type='revolute'>
+      <pose relative_to='link7_resp'>0 0.076100000000000001 0.065699999999999995 1.570796653589793 -3.4641020661940036e-07 3.1415926535897931</pose>
+      <parent>link7_resp</parent>
+      <child>link8_resp</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-3.0543260574340998</lower>
+          <upper>3.0543260574340998</upper>
+          <effort>38</effort>
+          <velocity>3.2114057540893999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='link8_resp'>
+      <pose relative_to='joint_7'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.00013799999999999999 -1.8e-05 0.017092 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.0066026421413774997</ixx>
+          <ixy>1.5490255466962999e-05</ixy>
+          <ixz>-5.5030304772895997e-06</ixz>
+          <iyy>0.0066607662650792999</iyy>
+          <iyz>-9.1508271951731007e-06</iyz>
+          <izz>0.011642093361783</izz>
+        </inertia>
+      </inertial>
+      <collision name='link8_resp_collision'>
+        <pose>-0.00025599999999999999 0 0.019982 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link8_resp_coll_1.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='link8_resp_collision_1'>
+        <pose>-0.00025599999999999999 0 0.019982 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link8_resp_coll_2.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='link8_resp_collision_2'>
+        <pose>-0.00025599999999999999 0 0.019982 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link8_resp_coll_3.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='link8_resp_fixed_joint_lump__link_visual'>
+        <pose>-0.00035500000000000001 0 0.019949999999999999 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_8_vis_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+      <visual name='link8_resp_fixed_joint_lump__link_visual_1'>
+        <pose>-0.00035500000000000001 0 0.019949999999999999 -3.4641020661940041e-07 -3.4641020661940057e-07 3.4641020661940041e-07</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://mesh/iiwa_link_8_vis_2.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
