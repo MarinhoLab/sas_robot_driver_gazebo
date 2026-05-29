@@ -7,6 +7,43 @@
     </joint>
     <link name='base'>
       <pose relative_to='world2base_fixed'>0 0 0 0 0 0</pose>
+
+      <collision name='base_collision_1'>
+        <pose>0 0 0.03 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.12</radius>
+            </sphere>
+          </geometry>
+      </collision>
+
+      <collision name='base_collision_2'>
+        <pose>-0.08 0 0.103 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+      </collision>
+
+      <collision name='base_collision_3'>
+        <pose>-0.08 0 0.04 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+      </collision>
+
+      <collision name='base_collision_4'>
+        <pose>0 0 0.14 0 0 0</pose>
+          <geometry>
+             <sphere>
+              <radius>0.1</radius>
+            </sphere>
+          </geometry>
+      </collision>
+
       <inertial>
         <pose>-0.10000000000000001 0 0.070000000000000007 0 0 0</pose>
         <mass>5</mass>
@@ -48,6 +85,53 @@
       </axis>
     </joint>
     <link name='joint1_jointbody'>
+
+      <collision name='joint1_collision_1'>
+        <pose>0 0 -0.0005 0 0 0</pose>
+          <geometry>
+             <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+      </collision>
+
+
+      <collision name='joint1_collision_2'>
+        <pose>0.01 -0.025 0.0425 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.075</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint1_collision_3'>
+        <pose>-0.01 -0.025 0.0425 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.075</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint1_collision_4'>
+        <pose>0.01 -0.045 0.1025 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.07</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint1_collision_5'>
+        <pose>-0.01 -0.045 0.1025 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.07</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
       <pose relative_to='joint1'>0 0 0 0 0 0</pose>
       <inertial>
         <pose>0 -0.02999479257073424 0.119979170282937 0 0 0</pose>
@@ -90,6 +174,88 @@
       </axis>
     </joint>
     <link name='joint2_jointbody'>
+
+      <collision name='joint2_collision_1'>
+        <pose>0 0 -0.01 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.095</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint2_collision_2'>
+        <pose>0 0 0.045 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.09</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint2_collision_3'>
+        <pose>-0.01 0.04 0.054 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.07</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint2_collision_4'>
+        <pose>-0.01 0.09 0.04 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint2_collision_5'>
+        <pose>-0.01 0.13 0.02 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint2_collision_6'>
+        <pose>0.01 0.04 0.054 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.07</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint2_collision_7'>
+        <pose>0.01 0.09 0.04 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint2_collision_8'>
+        <pose>0.01 0.13 0.02 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint2_collision_9'>
+        <pose>0 0.18 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.075</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
       <pose relative_to='joint2'>0 0 0 0 0 0</pose>
       <inertial>
         <pose>0.0002999527633443552 0.058990710124389861 0.041993386868209727 0 0 0</pose>
@@ -145,6 +311,88 @@
       </axis>
     </joint>
     <link name='joint3_jointbody'>
+
+      <collision name='joint3_collision_1'>
+        <pose>0 0 0.0355 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.075</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint3_collision_2'>
+        <pose>0.01 0.023 0.0855 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.06</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint3_collision_3'>
+        <pose>0.01 0.048 0.1255 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.055</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint3_collision_4'>
+        <pose>0.01 0.056 0.1755 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.06</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint3_collision_5'>
+        <pose>-0.01 0.023 0.0855 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.06</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint3_collision_6'>
+        <pose>-0.01 0.048 0.1255 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.055</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint3_collision_7'>
+        <pose>-0.01 0.056 0.1755 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.06</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint3_collision_8'>
+        <pose>0 0.045 0.2155 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.075</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint3_collision_9'>
+        <pose>0 0 0.2155 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.075</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
       <pose relative_to='joint3'>0 0 0 0 0 0</pose>
       <inertial>
         <pose>0 0.029991431019708661 0.12996286775207089 0 0 0</pose>
@@ -205,6 +453,61 @@
       </axis>
     </joint>
     <link name='joint4_jointbody'>
+
+      <collision name='joint4_collision_1'>
+        <pose>0 0.01 0.046 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.078</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint4_collision_2'>
+        <pose>0.01 0.06 0.052 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.06</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint4_collision_3'>
+        <pose>0.01 0.12 0.034 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint4_collision_4'>
+        <pose>-0.01 0.06 0.052 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.06</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint4_collision_5'>
+        <pose>-0.01 0.12 0.034 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint4_collision_6'>
+        <pose>0 0.184 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.075</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
       <pose relative_to='joint4'>0 0 0 0 0 0</pose>
       <inertial>
         <pose>0 0.066980862610682673 0.033990288489003137 0 0 0</pose>
@@ -260,6 +563,88 @@
       </axis>
     </joint>
     <link name='joint5_jointbody'>
+
+      <collision name='joint5_collision_1'>
+        <pose>0 0 0.0335 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.075</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint5_collision_2'>
+        <pose>-0.012 0.031 0.0755 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint5_collision_3'>
+        <pose>0.012 0.031 0.0755 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint5_collision_4'>
+        <pose>-0.012 0.06 0.1155 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.04</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint5_collision_5'>
+        <pose>0.012 0.06 0.1155 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.04</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint5_collision_6'>
+        <pose>-0.01 0.065 0.1655 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.04</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint5_collision_7'>
+        <pose>0.01 0.065 0.1655 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.04</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint5_collision_8'>
+        <pose>-0.012 0.065 0.1855 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.035</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint5_collision_9'>
+        <pose>0.012 0.065 0.1855 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.035</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
       <pose relative_to='joint5'>0 0 0 0 0 0</pose>
       <inertial>
         <pose>9.9971436732362184e-05 0.020994001713796059 0.075978291916595275 0 0 0</pose>
@@ -320,6 +705,34 @@
       </axis>
     </joint>
     <link name='joint6_jointbody'>
+
+      <collision name='joint6_collision_1'>
+        <pose>0 0 -0.059 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.055</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint6_collision_2'>
+        <pose>0 -0.03 0.011 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint6_collision_3'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.08</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
       <pose relative_to='joint6'>0 0 0 0 0 0</pose>
       <inertial>
         <pose>0 0.00059966685174902841 0.00039977790116601901 0 0 0</pose>
@@ -375,6 +788,34 @@
       </axis>
     </joint>
     <link name='joint7_jointbody'>
+
+      <collision name='joint7_collision_1'>
+        <pose>0 0 -0.059 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.055</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint7_collision_2'>
+        <pose>0 -0.03 0.011 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <collision name='joint7_collision_3'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.08</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
       <pose relative_to='joint7'>0 0 0 0 0 0</pose>
       <inertial>
         <pose>0 0 0.019983347210657788 0 0 0</pose>
