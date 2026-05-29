@@ -5,7 +5,7 @@
     <include>
         <name>r820</name>
         <static>false</static>
-        <uri>model://iiwa14.sdf</uri>
+        <uri>model://r820.sdf</uri>
 
         <plugin
         filename="gz-sim-joint-position-controller-system"
