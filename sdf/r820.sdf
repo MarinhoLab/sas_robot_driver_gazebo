@@ -1,12 +1,12 @@
 <sdf version='1.11'>
-  <model name='converted_robot'>
-    <joint name='world2base_fixed' type='fixed'>
+  <model name='r820'>
+    <!--<joint name='world2base_fixed' type='fixed'>
       <pose relative_to='__model__'>0 0 0 0 0 0</pose>
       <parent>world</parent>
       <child>base</child>
-    </joint>
+    </joint>-->
     <link name='base'>
-      <pose relative_to='world2base_fixed'>0 0 0 0 0 0</pose>
+      <!--<pose relative_to='world2base_fixed'>0 0 0 0 0 0</pose>-->
 
       <collision name='base_collision_1'>
         <pose>0 0 0.03 0 0 0</pose>

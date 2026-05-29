@@ -51,11 +51,18 @@
             <include>
                 <name>r820_position_controller</name>
                 <static>false</static>
-                <uri>model://iiwa14_position_controller.sdf</uri>
+                <uri>model://r820_position_controller.sdf</uri>
             </include>
 
 
+            <joint name='base_joint' type='fixed'>
+                <pose relative_to='__model__'>0 0 0 0 0 0</pose>
+                <parent>world</parent>
+                <child>r820_position_controller::r820::base</child>
+            </joint>
+
         </model>
+
 
         <include>
             <name>frame_x</name>
