@@ -32,15 +32,17 @@ install(DIRECTORY
 #######################
 
 ########################
-# Launch Block [BEGIN] #
+# Share Block [BEGIN]  #
 # vvvvvvvvvvvvvvvvvvvv #
 # According to https://github.com/SmartArmStack/sas_robot_driver/blob/ros2/CMakeLists.txt
 install(DIRECTORY
         launch
+        sdf
+        vendor
         DESTINATION share/${PROJECT_NAME}/
 )
 # ^^^^^^^^^^^^^^^^^^ #
-# Launch Block [END] #
+# Share Block [END]  #
 ######################
 
 ############################
