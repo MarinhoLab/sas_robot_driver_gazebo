@@ -4,7 +4,6 @@ SHELL ["/bin/bash", "-c"]
 ENV BASH_ENV="/etc/bash_env"
 
 RUN apt-get update && apt-get upgrade -y
-RUN mkdir -p /root/sas_robot_driver_gazebo_devel/src/
 
 RUN curl -s --compressed "https://smartarmstack.github.io/smart_arm_stack_ROS2/KEY.gpg" \
 | gpg --dearmor \
@@ -13,6 +12,4 @@ RUN sudo curl -s --compressed -o /etc/apt/sources.list.d/smartarmstack_lgpl.list
 "https://smartarmstack.github.io/smart_arm_stack_ROS2/smartarmstack_lgpl.list"
 RUN sudo apt-get update
 RUN sudo apt-get install ros-jazzy-sas-*
-RUN sudo sudo apt-get remove -y ros-jazzy-sas-robot-driver-gazebo
-
 RUN sudo apt-get install libgz-transport13-dev
