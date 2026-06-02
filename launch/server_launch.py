@@ -45,7 +45,8 @@ def generate_launch_description():
             package='sas_robot_driver_gazebo',
             executable='sas_simulator_server_gazebo_node',
             parameters=[{
-                "service_name": control_service_name
+                "service_name": control_service_name,
+                "autostart": autostart
             }]
         )
     ])
