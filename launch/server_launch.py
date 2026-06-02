@@ -9,6 +9,7 @@ def generate_launch_description():
     get_pose_topic_name = LaunchConfiguration('get_pose_topic_name')
     entity_names = LaunchConfiguration('entity_names')
     control_service_name = LaunchConfiguration('control_service_name')
+    autostart = LaunchConfiguration('autostart')
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -26,6 +27,10 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'control_service_name',
             default_value="/world/ur3e_world/control"
+        ),
+        DeclareLaunchArgument(
+            'autostart',
+            default_value="false"
         ),
         Node(
             package='sas_robot_driver_gazebo',

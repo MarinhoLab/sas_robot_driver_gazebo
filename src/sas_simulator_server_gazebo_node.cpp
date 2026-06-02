@@ -78,6 +78,8 @@ int main(int argc, char **argv)
         sas::get_ros_parameter(node,"service_name",service_name);
         double sampling_time;
         sas::get_ros_optional_parameter(node, "thread_sampling_time_sec",sampling_time,0.01);
+        bool autostart;
+        sas::get_ros_optional_parameter(node,"autostart",autostart,false);
 
         sas::Clock clock{sampling_time};
 
@@ -86,6 +88,12 @@ int main(int argc, char **argv)
         auto f2 = [&gazebo_node, &service_name](){stop_simulation_callback(gazebo_node, service_name);};
         simulator_server.set_start_simulation_callback(f1);
         simulator_server.set_stop_simulation_callback(f2);
+
+        if (autostart)
+        {
+            RCLCPP_INFO(node->get_logger(), "Autostarting the simulation...");
+            start_simulation_callback(gazebo_node, service_name);
+        }
 
         clock.init();
         while(!ss.should_shutdown())
