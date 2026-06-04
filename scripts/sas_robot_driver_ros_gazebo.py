@@ -22,7 +22,13 @@
 #   Author: Murilo M. Marinho, email: murilomarinho@ieee.org
 #
 # #######################################################################################
+
+@file sas_robot_driver_ros_gazebo.py
+@brief Gazebo robot driver bridge.
+
+Creates a RobotDriverROS instance backed by RobotDriverGazebo.
 """
+
 import rclpy
 from rclpy.node import Node
 from sas_core import ShutdownSignaler
@@ -31,6 +37,14 @@ from sas_robot_driver import RobotDriverROS, RobotDriverROSConfiguration
 from sas_robot_driver_gazebo import RobotDriverGazebo, RobotDriverGazeboConfiguration
 
 def main():
+    """
+    @brief Run the Gazebo robot driver bridge.
+
+    Reads ROS parameters, constructs the Gazebo driver and ROS bridge objects,
+    and executes the robot driver control loop.
+
+    @return None
+    """
 
     rclcpp_init()
     roscpp_node = rclcpp_Node("sas_robot_driver_ros_gazebo_cpp")

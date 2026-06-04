@@ -25,6 +25,14 @@
 # Contributors:
 #   ---
 */
+
+/**
+ * @file sas_object_server_gazebo.hpp
+ * @brief Gazebo object server class.
+ *
+ * Declares ObjectServerGazebo and its configuration data.
+ */
+
 #include <dqrobotics/DQ.h>
 
 #include <gz/msgs.hh>
@@ -38,13 +46,24 @@ using namespace DQ_robotics;
 namespace sas
 {
 
+/**
+ * @struct ObjectServerGazeboConfiguration
+ * @brief Parameters for ObjectServerGazebo.
+ */
 struct ObjectServerGazeboConfiguration
 {
-    std::string set_pose_service_name;
-    std::string get_pose_topic_name;
-    std::vector<std::string> entity_names;
+    std::string set_pose_service_name; ///< Gazebo service used to set entity poses.
+    std::string get_pose_topic_name;   ///< Gazebo topic used to read entity poses.
+    std::vector<std::string> entity_names; ///< Entity names managed by the node.
 };
 
+/**
+ * @class ObjectServerGazebo
+ * @brief Interface between ObjectServer and Gazebo.
+ *
+ * Receives target poses from an ObjectServer instance, forwards them to Gazebo,
+ * and publishes the current Gazebo pose back through the ObjectServer.
+ */
 class ObjectServerGazebo: private sas::Object
 {
     private:
@@ -79,11 +98,25 @@ class ObjectServerGazebo: private sas::Object
         ObjectServerGazebo(const ObjectServerGazebo&) = delete;
         ObjectServerGazebo(ObjectServerGazebo&&) = default;
 
+        /**
+         * @brief Construct an ObjectServerGazebo instance.
+         *
+         * @param object_server ObjectServer instance used for ROS communication.
+         * @param gazebo_entity_name Gazebo entity name handled by this object.
+         * @param gazebo_set_pose_service_name Gazebo service used to set poses.
+         * @param gazebo_world_dynamic_pose_topic Gazebo topic used to read poses.
+         */
         ObjectServerGazebo(const std::shared_ptr<ObjectServer>& object_server,
                            const std::string& gazebo_entity_name,
                            const std::string& gazebo_set_pose_service_name,
                            const std::string& gazebo_world_dynamic_pose_topic);
 
+        /**
+         * @brief Synchronize ObjectServer and Gazebo poses.
+         *
+         * Sends a new target pose to Gazebo when it changes and updates the
+         * ObjectServer with the current pose reported by Gazebo.
+         */
         void update();
 };
 

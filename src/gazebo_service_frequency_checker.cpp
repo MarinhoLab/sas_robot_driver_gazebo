@@ -1,14 +1,29 @@
 #include <iostream>
+
+/**
+ * @file gazebo_service_frequency_checker.cpp
+ * @brief Gazebo service timing tool.
+ *
+ * Sends repeated Gazebo set-pose requests.
+ */
+
 #include <gz/msgs.hh>
 #include <gz/transport.hh>
 #include <sas_core/sas_clock.hpp>
 
+/**
+ * @brief Receive Gazebo service responses.
+ */
 void response_callback(const gz::msgs::Boolean&, const bool)
 {
-
 }
 
-//////////////////////////////////////////////////
+/**
+ * @brief Run the Gazebo service timing tool.
+ *
+ * Publishes a sequence of set-pose requests and reports timing statistics.
+ *
+ */
 int main(int, char**)
 {
   sas::Clock clock{0.001};

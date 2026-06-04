@@ -1,3 +1,10 @@
+"""
+@file robot_driver_server_launch.py
+@brief Robot driver launch file.
+
+Launches the Gazebo robot driver ROS bridge node.
+"""
+
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
@@ -5,6 +12,14 @@ from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
+    """
+    @brief Create the robot driver launch description.
+
+    Declares launch arguments for Gazebo joint command and state topics and
+    starts the ROS-to-Gazebo robot driver bridge.
+
+    @return launch.LaunchDescription Launch description for the robot driver node.
+    """
     joint_names = LaunchConfiguration('joint_names')
     joint_positions_topic_prefix = LaunchConfiguration('joint_positions_topic_prefix')
     joint_states_topic = LaunchConfiguration('joint_states_topic')

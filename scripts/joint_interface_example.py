@@ -23,7 +23,13 @@
 #   Based on `joint_interface_example.py` from `sas_ur_control_template`
 #
 # #######################################################################################
+
+@file joint_interface_example.py
+@brief Joint command example script.
+
+Sends sinusoidal joint position targets through RobotDriverClient.
 """
+
 import time
 
 from math import sin, pi
@@ -42,6 +48,14 @@ from sas_core import Clock, Statistics
 
 
 def main(args=None):
+    """
+    @brief Run the joint command example.
+
+    Initializes ROS interfaces, waits for the robot driver client to become
+    enabled, and sends target joint positions in a loop.
+
+    @return None
+    """
     try:
         rclpy.init(args=args)
         rospy_node = Node('sas_robot_driver_gazebo_joint_space_example_node_py')

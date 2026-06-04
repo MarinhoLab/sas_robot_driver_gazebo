@@ -24,6 +24,14 @@
 # Contributors:
 #   ---
 */
+
+/**
+ * @file sas_object_server_gazebo_node.cpp
+ * @brief Gazebo object server node.
+ *
+ * Runs ROS and Gazebo object pose interface.
+ */
+
 #include <rclcpp/rclcpp.hpp>
 #include "sas_object_server_gazebo.hpp"
 #include <sas_core/sas_clock.hpp>
@@ -40,6 +48,12 @@ void sig_int_handler(int)
     ss.shutdown();
 }
 
+/**
+ * @brief Run the Gazebo object server node.
+ *
+ * Reads ROS parameters, constructs one ObjectServerGazebo instance per entity,
+ * and executes the interface loop until shutdown.
+ */
 int main(int argc, char **argv)
 {
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);

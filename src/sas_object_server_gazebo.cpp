@@ -24,6 +24,14 @@
 # Contributors:
 #   ---
 */
+
+/**
+ * @file sas_object_server_gazebo.cpp
+ * @brief Gazebo object server implementation.
+ *
+ * Implements the ObjectServerGazebo class.
+ */
+
 #include "sas_object_server_gazebo.hpp"
 
 namespace sas
