@@ -1,3 +1,10 @@
+"""
+@file server_launch.py
+@brief Server launch file.
+
+Launches the Gazebo object and simulator server nodes.
+"""
+
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
@@ -5,6 +12,14 @@ from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
+    """
+    @brief Create the server launch description.
+
+    Declares launch arguments for Gazebo pose synchronization and simulator
+    control, then starts the corresponding ROS nodes.
+
+    @return launch.LaunchDescription Launch description for the server nodes.
+    """
     set_pose_service_name = LaunchConfiguration('set_pose_service_name')
     get_pose_topic_name = LaunchConfiguration('get_pose_topic_name')
     entity_names = LaunchConfiguration('entity_names')

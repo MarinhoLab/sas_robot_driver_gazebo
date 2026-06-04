@@ -1,5 +1,13 @@
 //Initial version based on official example.
 #include <iostream>
+
+/**
+ * @file gazebo_subscription_frequency_checker.cpp
+ * @brief Gazebo subscription timing tool.
+ *
+ * Measures the rate of Gazebo pose updates.
+ */
+
 #include <string>
 #include <gz/msgs.hh>
 #include <gz/transport.hh>
@@ -7,11 +15,22 @@
 
 static int message_count = 0;
 
+/**
+ * @brief Count Gazebo pose messages.
+ *
+ */
 void cb(const gz::msgs::Pose_V&)
 {
   message_count++;
 }
 
+/**
+ * @brief Run the Gazebo subscription timing tool.
+ *
+ * Subscribes to a Gazebo pose topic and reports timing statistics after a
+ * fixed number of messages.
+ *
+ */
 int main(int, char **)
 {
   sas::Clock clock{0.001};

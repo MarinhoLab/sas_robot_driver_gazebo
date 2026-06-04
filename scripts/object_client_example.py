@@ -23,7 +23,13 @@
 #   Based on `joint_interface_example.py` from `sas_ur_control_template`
 #
 # #######################################################################################
+
+@file object_client_example.py
+@brief Object pose example script.
+
+Moves a Gazebo object through ObjectClient commands.
 """
+
 import time
 
 from math import sin, cos, pi
@@ -45,6 +51,15 @@ from sas_core import Clock, Statistics
 
 
 def main(args=None):
+    """
+    @brief Run the object pose example.
+
+    Initializes ROS interfaces, waits for the object client to become enabled,
+    and sends target poses in a loop.
+
+    @param args Optional ROS command-line arguments.
+    @return None
+    """
     try:
         rclpy.init(args=args)
         rospy_node = Node('sas_robot_driver_gazebo_object_client_example_node_py')

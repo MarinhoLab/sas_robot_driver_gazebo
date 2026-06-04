@@ -24,6 +24,14 @@
 # Contributors:
 #   ---
 */
+
+/**
+ * @file sas_simulator_server_gazebo_node.cpp
+ * @brief Gazebo simulator server node.
+ *
+ * Exposes Gazebo simulation control through ROS.
+ */
+
 #include <gz/msgs.hh>
 #include <gz/transport.hh>
 #include <rclcpp/rclcpp.hpp>
@@ -42,11 +50,22 @@ void sig_int_handler(int)
     ss.shutdown();
 }
 
+/**
+ * @brief Receive Gazebo world control responses.
+ */
 void world_control_callback(const gz::msgs::Boolean&, const bool)
 {
     //TODO add something here if needed
 }
 
+/**
+ * @brief Request simulation start.
+ *
+ * Sends a Gazebo world control request with pause disabled.
+ *
+ * @param node Gazebo transport node used for the request.
+ * @param service_name Gazebo world control service name.
+ */
 void start_simulation_callback(gz::transport::Node& node, const std::string& service_name)
 {
     gz::msgs::WorldControl msg;
@@ -56,6 +75,14 @@ void start_simulation_callback(gz::transport::Node& node, const std::string& ser
         &world_control_callback);
 }
 
+/**
+ * @brief Request simulation stop.
+ *
+ * Sends a Gazebo world control request with pause enabled.
+ *
+ * @param node Gazebo transport node used for the request.
+ * @param service_name Gazebo world control service name.
+ */
 void stop_simulation_callback(gz::transport::Node& node, const std::string& service_name)
 {
     gz::msgs::WorldControl msg;
@@ -65,6 +92,12 @@ void stop_simulation_callback(gz::transport::Node& node, const std::string& serv
         &world_control_callback);
 }
 
+/**
+ * @brief Run the Gazebo simulator server node.
+ *
+ * Reads ROS parameters, binds Gazebo control requests to a SimulatorServer,
+ * and processes ROS callbacks until shutdown.
+ */
 int main(int argc, char **argv)
 {
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
