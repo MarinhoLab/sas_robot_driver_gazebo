@@ -20,7 +20,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/base.stl</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/base.stl</uri>
           </mesh>
         </geometry>
       </collision>
@@ -29,7 +29,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/base.dae</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/base.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -73,7 +73,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/shoulder.stl</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/shoulder.stl</uri>
           </mesh>
         </geometry>
       </collision>
@@ -82,7 +82,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/shoulder.dae</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/shoulder.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -126,7 +126,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur30/collision/upperarm.stl</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur30/collision/upperarm.stl</uri>
           </mesh>
         </geometry>
       </collision>
@@ -135,7 +135,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur30/visual/upperarm.dae</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur30/visual/upperarm.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -179,7 +179,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur30/collision/forearm.stl</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur30/collision/forearm.stl</uri>
           </mesh>
         </geometry>
       </collision>
@@ -188,7 +188,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur30/visual/forearm.dae</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur30/visual/forearm.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -232,7 +232,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/wrist1.stl</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/wrist1.stl</uri>
           </mesh>
         </geometry>
       </collision>
@@ -241,7 +241,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/wrist1.dae</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/wrist1.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -285,7 +285,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/wrist2.stl</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/wrist2.stl</uri>
           </mesh>
         </geometry>
       </collision>
@@ -294,7 +294,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/wrist2.dae</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/wrist2.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -338,7 +338,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/wrist3.stl</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/collision/wrist3.stl</uri>
           </mesh>
         </geometry>
       </collision>
@@ -347,7 +347,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>./vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/wrist3.dae</uri>
+            <uri>model://../vendor/Universal_Robots_ROS2_Description/meshes/ur20/visual/wrist3.dae</uri>
           </mesh>
         </geometry>
       </visual>
