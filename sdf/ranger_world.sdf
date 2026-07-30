@@ -46,8 +46,15 @@
           </link>
         </model>
 
+        <include>
+            <pose>0 1.4 0.40 0 0 0</pose>
+            <name>glovebox</name>
+            <static>true</static>
+            <uri>model://glovebox.sdf</uri>
+        </include>
+
         <model name="ranger">
-            <pose>0 0 0.45 0 0 0</pose>
+            <pose>0 0 0.40 0 0 0</pose>
 
             <include>
                 <name>ranger</name>
