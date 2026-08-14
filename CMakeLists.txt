@@ -20,6 +20,10 @@ add_subdirectory(src/plugins/absolute_pose_publisher)
 install(TARGETS AbsolutePosePublisher
     LIBRARY DESTINATION share/${PROJECT_NAME}/plugins)
 
+add_subdirectory(src/plugins/scoped_set_pose_plugin)
+install(TARGETS ScopedSetPose
+    LIBRARY DESTINATION share/${PROJECT_NAME}/plugins)
+
 ament_python_install_package(${PROJECT_NAME})
 
 #########################
