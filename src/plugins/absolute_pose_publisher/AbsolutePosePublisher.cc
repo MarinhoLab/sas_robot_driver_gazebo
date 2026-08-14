@@ -114,9 +114,8 @@ private:
     auto *poseMsg = _output.add_pose();
     poseMsg->set_id(_entity);
 
-    // Example: robot::arm_link. The world name is excluded.
     poseMsg->set_name(
-        gz::sim::scopedName(_entity, _ecm, "::", false));
+        gz::sim::scopedName(_entity, _ecm, "/", false));
 
     gz::msgs::Set(poseMsg, worldPose);
   }
