@@ -114,8 +114,16 @@ private:
     auto *poseMsg = _output.add_pose();
     poseMsg->set_id(_entity);
 
-    poseMsg->set_name(
-        gz::sim::scopedName(_entity, _ecm, "/", false));
+    std::string name =
+        gz::sim::scopedName(_entity, _ecm, "/", false);
+
+    const auto firstSlash = name.find('/');
+    if (firstSlash != std::string::npos)
+    {
+        name.erase(0, firstSlash + 1);
+    }
+
+    poseMsg->set_name(name);
 
     gz::msgs::Set(poseMsg, worldPose);
   }
