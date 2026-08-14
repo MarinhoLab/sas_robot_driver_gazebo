@@ -10,6 +10,7 @@ cd /root/sas_robot_driver_gazebo_devel
 ls .
 colcon build
 source install/setup.bash
+echo "GZ_SIM_SYSTEM_PLUGIN_PATH = $GZ_SIM_SYSTEM_PLUGIN_PATH"
 
 cd $(ros2 pkg prefix sas_robot_driver_gazebo --share)
 tree .

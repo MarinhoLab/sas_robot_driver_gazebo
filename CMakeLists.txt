@@ -16,6 +16,10 @@ find_package(sas_robot_driver REQUIRED)
 # Find the Gazebo Transport library
 find_package(gz-transport13 REQUIRED)
 
+add_subdirectory(src/plugins/absolute_pose_publisher)
+install(TARGETS AbsolutePosePublisher
+    LIBRARY DESTINATION share/${PROJECT_NAME}/plugins)
+
 ament_python_install_package(${PROJECT_NAME})
 
 #########################
@@ -195,5 +199,10 @@ unset(RCLCPP_LOCAL_BINARY_NAME)
 # ^^^^^^^^^^^^^^^^^^^^^^ #
 # CPP Binary Block [END] #
 ##########################
+
+# Environment hook for GZ_SIM_SYSTEM_PLUGIN_PATH
+ament_environment_hooks(
+    "${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sas_robot_driver_gazebo.dsv.in"
+)
 
 ament_package()
