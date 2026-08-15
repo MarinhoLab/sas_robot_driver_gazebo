@@ -1,12 +1,12 @@
 services:
   sas_robot_driver_gazebo:
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     environment:
       TIMEOUT: 20
       DISPLAY: ":99"
-    volumes:
-      - ../../sas_robot_driver_gazebo:/root/sas_robot_driver_gazebo_devel/src/sas_robot_driver_gazebo
     command: /bin/bash -c "
       cd /root/sas_robot_driver_gazebo_devel/src/sas_robot_driver_gazebo/docker
-      && chmod +x test.sh 
+      && chmod +x test.sh
       && ./test.sh"
