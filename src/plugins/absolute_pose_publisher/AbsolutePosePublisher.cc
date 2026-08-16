@@ -9,6 +9,7 @@
 #include <gz/sim/EntityComponentManager.hh>
 #include <gz/sim/System.hh>
 #include <gz/sim/Util.hh>
+#include <gz/sim/components/Joint.hh>
 #include <gz/sim/components/Link.hh>
 #include <gz/sim/components/Model.hh>
 #include <gz/transport/Node.hh>
@@ -37,6 +38,9 @@ public:
 
     if (_sdf->HasElement("publish_links"))
       this->publishLinks = _sdf->Get<bool>("publish_links");
+
+    if (_sdf->HasElement("publish_joints"))
+      this->publishJoints = _sdf->Get<bool>("publish_joints");
 
     this->publisher =
         this->node.Advertise<gz::msgs::Pose_V>(this->topic);
@@ -97,6 +101,18 @@ public:
           });
     }
 
+    // Optionally publish every joint in the world.
+    if (this->publishJoints)
+    {
+      _ecm.Each<gz::sim::components::Joint>(
+          [&](const gz::sim::Entity &_entity,
+              const gz::sim::components::Joint *) -> bool
+          {
+            this->AddWorldPose(_entity, _ecm, output);
+            return true;
+          });
+    }
+
     this->publisher.Publish(output);
     this->lastPublicationTime = _info.simTime;
     this->hasPublished = true;
@@ -135,6 +151,7 @@ private:
   std::string topic{"/absolute_pose/info"};
   double updateRate{50.0};
   bool publishLinks{true};
+  bool publishJoints{false};
 
   bool hasPublished{false};
   std::chrono::steady_clock::duration lastPublicationTime{0};
