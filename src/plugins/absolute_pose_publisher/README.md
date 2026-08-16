@@ -1,7 +1,7 @@
 # Absolute Pose Publisher for Gazebo Harmonic
 
 A minimal world-level Gazebo system plugin that publishes world-frame poses for
-all models and, optionally, all links.
+all models and, optionally, all links and joints.
 
 Each `gz.msgs.Pose` entry contains:
 
@@ -55,6 +55,7 @@ Place this inside the world's `<world>` element:
   <topic>/world/my_world/absolute_pose/info</topic>
   <update_rate>50</update_rate>
   <publish_links>true</publish_links>
+  <publish_joints>true</publish_joints>
 </plugin>
 ```
 
@@ -70,5 +71,6 @@ export GZ_SIM_SYSTEM_PLUGIN_PATH="/absolute/path/to/absolute_pose_publisher/buil
 - `update_rate`: publication rate in Hz; a non-positive value publishes every
   unpaused simulation iteration
 - `publish_links`: whether link poses are included; default is `true`
+- `publish_joints`: whether joint poses are included; default is `false`
 
 Models are always published.

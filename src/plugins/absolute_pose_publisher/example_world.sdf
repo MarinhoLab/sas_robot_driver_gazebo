@@ -15,6 +15,7 @@
       <topic>/world/my_world/absolute_pose/info</topic>
       <update_rate>50</update_rate>
       <publish_links>true</publish_links>
+      <publish_joints>true</publish_joints>
     </plugin>
 
     <model name="example_box">
@@ -36,6 +37,97 @@
         <visual name="visual">
           <geometry>
             <box><size>1 1 1</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="double_pendulum">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="base_link">
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <iyy>0.01</iyy>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="base_collision">
+          <geometry>
+            <cylinder><radius>0.1</radius><length>0.2</length></cylinder>
+          </geometry>
+        </collision>
+        <visual name="base_visual">
+          <geometry>
+            <cylinder><radius>0.1</radius><length>0.2</length></cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <joint name="joint1" type="revolute">
+        <pose>0 0 0.1 0 0 0</pose>
+        <parent>base_link</parent>
+        <child>link1</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-3.14</lower>
+            <upper>3.14</upper>
+          </limit>
+        </axis>
+      </joint>
+      <link name="link1">
+        <pose>0 0 0.1 0 0 0</pose>
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.0833</ixx>
+            <iyy>0.000833</iyy>
+            <izz>0.0833</izz>
+          </inertia>
+        </inertial>
+        <collision name="link1_collision">
+          <geometry>
+            <box><size>0.1 0.1 0.5</size></box>
+          </geometry>
+        </collision>
+        <visual name="link1_visual">
+          <geometry>
+            <box><size>0.1 0.1 0.5</size></box>
+          </geometry>
+        </visual>
+      </link>
+      <joint name="joint2" type="revolute">
+        <pose>0 0 0.35 0 0 0</pose>
+        <parent>link1</parent>
+        <child>link2</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-3.14</lower>
+            <upper>3.14</upper>
+          </limit>
+        </axis>
+      </joint>
+      <link name="link2">
+        <pose>0 0 0.35 0 0 0</pose>
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.000833</ixx>
+            <iyy>0.0833</iyy>
+            <izz>0.0833</izz>
+          </inertia>
+        </inertial>
+        <collision name="link2_collision">
+          <geometry>
+            <box><size>0.1 0.1 0.4</size></box>
+          </geometry>
+        </collision>
+        <visual name="link2_visual">
+          <geometry>
+            <box><size>0.1 0.1 0.4</size></box>
           </geometry>
         </visual>
       </link>
