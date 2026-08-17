@@ -51,7 +51,7 @@
             <include>
                 <name>r820_position_controller</name>
                 <static>false</static>
-                <uri>model://r820_position_controller.sdf</uri>
+                <uri>r820_position_controller.sdf</uri>
             </include>
 
 
@@ -66,12 +66,12 @@
 
         <include>
             <name>frame_x</name>
-            <uri>model://frame.sdf</uri>
+            <uri>model://reference_frame.sdf</uri>
         </include>
 
         <include>
             <name>frame_xd</name>
-            <uri>model://frame.sdf</uri>
+            <uri>model://reference_frame.sdf</uri>
         </include>
 
     </world>
