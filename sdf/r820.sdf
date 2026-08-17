@@ -61,7 +61,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_0_666666ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_0_666666ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -150,7 +150,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_1_666666ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_1_666666ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -274,7 +274,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_2_orange_ff6c0aff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_2_orange_ff6c0aff.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -287,7 +287,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_2_grey_666666ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_2_grey_666666ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -411,7 +411,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_3_666666ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_3_666666ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -420,7 +420,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_band_999999ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_band_999999ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -429,7 +429,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_kuka_000000ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_kuka_000000ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -526,7 +526,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_4_orange_ff6c0aff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_4_orange_ff6c0aff.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -539,7 +539,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_4_grey_666666ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_4_grey_666666ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -663,7 +663,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_5_666666ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_5_666666ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -672,7 +672,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_band_999999ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_band_999999ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -681,7 +681,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_kuka_000000ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_kuka_000000ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -751,7 +751,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_6_orange_ff6c0aff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_6_orange_ff6c0aff.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -764,7 +764,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_6_grey_666666ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_6_grey_666666ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -834,7 +834,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://../vendor/mujoco_exported/iiwa14/mesh/converted_link_7_666666ff.obj</uri>
+            <uri>model://mujoco_exported/iiwa14/mesh/converted_link_7_666666ff.obj</uri>
           </mesh>
         </geometry>
       </visual>
