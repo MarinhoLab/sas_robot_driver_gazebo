@@ -204,9 +204,10 @@ unset(RCLCPP_LOCAL_BINARY_NAME)
 # CPP Binary Block [END] #
 ##########################
 
-# Environment hook for GZ_SIM_SYSTEM_PLUGIN_PATH
+# Environment hooks
 ament_environment_hooks(
     "${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sas_robot_driver_gazebo.dsv.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/gz_sim_resource_path.sh.in"
 )
 
 ament_package()

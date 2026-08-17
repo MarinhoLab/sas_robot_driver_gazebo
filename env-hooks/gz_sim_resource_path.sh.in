@@ -1,0 +1,1 @@
+ament_prepend_unique_value GZ_SIM_RESOURCE_PATH "$HOME/.sas/sas_robot_driver_gazebo/vendor"
