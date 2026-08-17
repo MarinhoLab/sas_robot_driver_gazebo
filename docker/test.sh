@@ -20,10 +20,21 @@ SCRIPT="$(ros2 pkg prefix sas_robot_driver_gazebo)/lib/sas_robot_driver_gazebo/s
 test -x "$SCRIPT" && echo "PASS: setup_vendor.sh is installed and executable at $SCRIPT" || (echo "FAIL: script not found or not executable" && exit 1)
 bash "$SCRIPT" --help 2>&1 || true
 
-# Verify GZ_SIM_RESOURCE_PATH includes vendor dir
+# Verify GZ_SIM_RESOURCE_PATH includes local sdf, local vendor, and home vendor
+echo "$GZ_SIM_RESOURCE_PATH" | grep -q "sas_robot_driver_gazebo/sdf" && \
+  echo "PASS: GZ_SIM_RESOURCE_PATH includes local sdf" || \
+  (echo "FAIL: GZ_SIM_RESOURCE_PATH missing local sdf" && exit 1)
 echo "$GZ_SIM_RESOURCE_PATH" | grep -q "sas_robot_driver_gazebo/vendor" && \
-  echo "PASS: GZ_SIM_RESOURCE_PATH includes vendor directory" || \
-  (echo "FAIL: GZ_SIM_RESOURCE_PATH missing vendor directory" && exit 1)
+  echo "PASS: GZ_SIM_RESOURCE_PATH includes local vendor" || \
+  (echo "FAIL: GZ_SIM_RESOURCE_PATH missing local vendor" && exit 1)
+echo "$GZ_SIM_RESOURCE_PATH" | grep -q ".sas/sas_robot_driver_gazebo/vendor" && \
+  echo "PASS: GZ_SIM_RESOURCE_PATH includes home vendor dir" || \
+  (echo "FAIL: GZ_SIM_RESOURCE_PATH missing home vendor dir" && exit 1)
+
+# Verify SDF files are accessible from resource path
+gz sdf -p "$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/ur3e.sdf" > /dev/null 2>&1 && \
+  echo "PASS: ur3e.sdf parsed successfully" || \
+  (echo "FAIL: ur3e.sdf parse failed" && exit 1)
 
 ros2 run sas_robot_driver_gazebo gazebo_service_frequency_checker
 timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo server_launch.py &
