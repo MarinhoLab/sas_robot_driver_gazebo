@@ -15,6 +15,16 @@ echo "GZ_SIM_SYSTEM_PLUGIN_PATH = $GZ_SIM_SYSTEM_PLUGIN_PATH"
 cd $(ros2 pkg prefix sas_robot_driver_gazebo --share)
 tree .
 
+# Verify setup_vendor.sh is installed and callable
+SCRIPT="$(ros2 pkg prefix sas_robot_driver_gazebo)/lib/sas_robot_driver_gazebo/setup_vendor.sh"
+test -x "$SCRIPT" && echo "PASS: setup_vendor.sh is installed and executable at $SCRIPT" || (echo "FAIL: script not found or not executable" && exit 1)
+bash "$SCRIPT" --help 2>&1 || true
+
+# Verify GZ_SIM_RESOURCE_PATH includes vendor dir
+echo "$GZ_SIM_RESOURCE_PATH" | grep -q "sas_robot_driver_gazebo/vendor" && \
+  echo "PASS: GZ_SIM_RESOURCE_PATH includes vendor directory" || \
+  (echo "FAIL: GZ_SIM_RESOURCE_PATH missing vendor directory" && exit 1)
+
 ros2 run sas_robot_driver_gazebo gazebo_service_frequency_checker
 timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo server_launch.py &
 timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo robot_driver_server_launch.py &
