@@ -15,7 +15,7 @@
             <include>
                 <name>ur30_1_position_controller</name>
                 <static>false</static>
-                <uri>model://ur30_position_controller.sdf</uri>
+                <uri>ur30_position_controller.sdf</uri>
             </include>
 
             <joint name='base_joint' type='fixed'>

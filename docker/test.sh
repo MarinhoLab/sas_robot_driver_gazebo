@@ -31,10 +31,13 @@ echo "$GZ_SIM_RESOURCE_PATH" | grep -q ".sas/sas_robot_driver_gazebo/vendor" && 
   echo "PASS: GZ_SIM_RESOURCE_PATH includes home vendor dir" || \
   (echo "FAIL: GZ_SIM_RESOURCE_PATH missing home vendor dir" && exit 1)
 
-# Verify SDF files are accessible from resource path
-gz sdf -p "$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/ur3e.sdf" > /dev/null 2>&1 && \
-  echo "PASS: ur3e.sdf parsed successfully" || \
-  (echo "FAIL: ur3e.sdf parse failed" && exit 1)
+# Verify SDF files parse correctly (r820 uses local mujoco meshes, ur3e needs cloned vendor repos)
+gz sdf -p "$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/r820.sdf" > /dev/null 2>&1 && \
+  echo "PASS: r820.sdf parsed successfully" || \
+  (echo "FAIL: r820.sdf parse failed" && exit 1)
+gz sdf -p "$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/reference_frame.sdf" > /dev/null 2>&1 && \
+  echo "PASS: reference_frame.sdf parsed successfully" || \
+  (echo "FAIL: reference_frame.sdf parse failed" && exit 1)
 
 ros2 run sas_robot_driver_gazebo gazebo_service_frequency_checker
 timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo server_launch.py &

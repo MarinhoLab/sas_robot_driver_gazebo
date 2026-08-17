@@ -5,7 +5,7 @@
     <include>
         <name>ur3e</name>
         <static>false</static>
-        <uri>model://ur3e.sdf</uri>
+        <uri>ur3e.sdf</uri>
 
         <plugin
         filename="gz-sim-joint-position-controller-system"
