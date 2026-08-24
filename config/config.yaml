@@ -1,0 +1,30 @@
+# Parameters for the sas_robot_driver_gazebo nodes.
+#
+# Each top-level block is keyed by the node name and is loaded by the
+# corresponding launch file (robot_driver_server_launch.py,
+# object_server_launch.py, simulator_server_launch.py) via its `config_file`
+# argument.
+
+# sas_robot_driver_ros_gazebo.py (robot driver ROS<->Gazebo bridge)
+ur3e_1:
+  ros__parameters:
+    joint_names: ["shoulder_pan_joint", "shoulder_lift_joint", "elbow_joint", "wrist_1_joint", "wrist_2_joint", "wrist_3_joint"]
+    joint_positions_topic_prefix: "/model/ur3e/joint/"
+    joint_states_topic: "/world/ur3e_world/model/ur3e/model/ur3e_position_controller/model/ur3e/joint_state"
+    robot_name: "ur3e_1"
+    thread_sampling_time_sec: 0.002  # Robot thread is at 500 Hz
+
+# sas_object_server_gazebo_node (entity pose synchronization)
+sas_object_server_gazebo_node:
+  ros__parameters:
+    set_pose_service_name: "/world/ur3e_world/set_pose"
+    get_pose_topic_name: "/world/ur3e_world/pose/info"
+    entity_names: ["frame_x", "frame_xd"]
+    thread_sampling_time_sec: 0.01
+
+# sas_simulator_server_gazebo_node (world control)
+sas_simulator_server_gazebo_node:
+  ros__parameters:
+    service_name: "/world/ur3e_world/control"
+    thread_sampling_time_sec: 0.01
+    autostart: false

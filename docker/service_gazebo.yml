@@ -24,4 +24,6 @@ services:
       && gz topic -l
       && gz service -l
       && (ros2 launch sas_robot_driver_gazebo robot_driver_server_launch.py &)
-      && ros2 launch sas_robot_driver_gazebo server_launch.py autostart:=true"
+      && (ros2 launch sas_robot_driver_gazebo object_server_launch.py &)
+      && sed 's/autostart: false/autostart: true/' $(ros2 pkg prefix sas_robot_driver_gazebo --share)/config/config.yaml > /tmp/config_autostart.yaml
+      && ros2 launch sas_robot_driver_gazebo simulator_server_launch.py config_file:=/tmp/config_autostart.yaml"
