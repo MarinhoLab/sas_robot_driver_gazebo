@@ -1,8 +1,9 @@
 """
-@file robot_driver_server_launch.py
-@brief Robot driver launch file.
+@file object_server_launch.py
+@brief Object server launch file.
 
-Launches the Gazebo robot driver ROS bridge node.
+Launches the Gazebo object server node, which synchronizes the poses of the
+specified world entities with ROS topics.
 """
 
 import os.path
@@ -16,12 +17,12 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     """
-    @brief Create the robot driver launch description.
+    @brief Create the object server launch description.
 
-    Starts the ROS-to-Gazebo robot driver bridge with the parameters from a
-    YAML configuration file. Pass a different file with ``config_file:=``.
+    Starts the Gazebo object server node with the parameters from a YAML
+    configuration file. Pass a different file with ``config_file:=``.
 
-    @return launch.LaunchDescription Launch description for the robot driver node.
+    @return launch.LaunchDescription Launch description for the object server node.
     """
     name = LaunchConfiguration('name')
     config_file = LaunchConfiguration('config_file')
@@ -29,7 +30,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'name',
-            default_value='ur3e_1'
+            default_value='sas_object_server_gazebo_node'
         ),
         DeclareLaunchArgument(
             'config_file',
@@ -37,7 +38,7 @@ def generate_launch_description():
         ),
         Node(
             package='sas_robot_driver_gazebo',
-            executable='sas_robot_driver_ros_gazebo.py',
+            executable='sas_object_server_gazebo_node',
             name=name,
             parameters=[config_file]
         )
