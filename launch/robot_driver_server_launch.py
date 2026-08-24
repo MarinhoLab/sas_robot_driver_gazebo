@@ -5,51 +5,40 @@
 Launches the Gazebo robot driver ROS bridge node.
 """
 
+import os.path
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
     """
     @brief Create the robot driver launch description.
 
-    Declares launch arguments for Gazebo joint command and state topics and
-    starts the ROS-to-Gazebo robot driver bridge.
+    Starts the ROS-to-Gazebo robot driver bridge with the parameters from a
+    YAML configuration file. Pass a different file with ``config_file:=``.
 
     @return launch.LaunchDescription Launch description for the robot driver node.
     """
-    joint_names = LaunchConfiguration('joint_names')
-    joint_positions_topic_prefix = LaunchConfiguration('joint_positions_topic_prefix')
-    joint_states_topic = LaunchConfiguration('joint_states_topic')
-    robot_name = LaunchConfiguration('robot_name')
+    name = LaunchConfiguration('name')
+    config_file = LaunchConfiguration('config_file')
 
     return LaunchDescription([
         DeclareLaunchArgument(
-            'joint_names',
-            default_value='''["shoulder_pan_joint","shoulder_lift_joint","elbow_joint","wrist_1_joint","wrist_2_joint","wrist_3_joint"]'''
+            'name',
+            default_value='ur3e_1'
         ),
         DeclareLaunchArgument(
-            'joint_positions_topic_prefix',
-            default_value="/model/ur3e/joint/"
-        ),
-        DeclareLaunchArgument(
-            'joint_states_topic',
-            default_value="/world/ur3e_world/model/ur3e/model/ur3e_position_controller/model/ur3e/joint_state"
-        ),
-        DeclareLaunchArgument(
-            'robot_name',
-            default_value="ur3e_1"
+            'config_file',
+            default_value=os.path.join(get_package_share_directory('sas_robot_driver_gazebo'), 'config', 'config.yaml')
         ),
         Node(
             package='sas_robot_driver_gazebo',
             executable='sas_robot_driver_ros_gazebo.py',
-            parameters=[{
-                "joint_names": joint_names,
-                "joint_positions_topic_prefix": joint_positions_topic_prefix,
-                "joint_states_topic": joint_states_topic,
-                "robot_name": robot_name
-            }]
+            name=name,
+            parameters=[config_file]
         )
     ])

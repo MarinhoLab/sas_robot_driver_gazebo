@@ -40,7 +40,8 @@ gz sdf -p "$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/reference_fram
   (echo "FAIL: reference_frame.sdf parse failed" && exit 1)
 
 ros2 run sas_robot_driver_gazebo gazebo_service_frequency_checker
-timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo server_launch.py &
+timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo object_server_launch.py &
+timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo simulator_server_launch.py &
 timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo robot_driver_server_launch.py &
 cd sdf
 timeout --signal SIGINT 20 gz sim -s ./r820_world.sdf
