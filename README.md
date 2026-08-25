@@ -118,12 +118,15 @@ Each node loads its parameters from a YAML configuration file. The default is
 - **Mandatory** params are read with `sas::get_ros_parameter(...)` — if missing, the node throws and fails to start.
 - **Optional** params are read with `sas::get_ros_optional_parameter(..., <default>)` — they carry in-code defaults.
 
+**Launch arguments** (`simulator_server_launch.py`): `name`, `config_file`, and `autostart` (bool, default `false`). The `autostart` launch argument overrides the value set in the configuration file, so the simulation can be started at launch time without editing the YAML (e.g. `ros2 launch sas_robot_driver_gazebo simulator_server_launch.py autostart:=true`).
+
 #### Sample launches
 
 ```console
 ros2 launch sas_robot_driver_gazebo robot_driver_server_launch.py
 ros2 launch sas_robot_driver_gazebo object_server_launch.py
 ros2 launch sas_robot_driver_gazebo simulator_server_launch.py
+ros2 launch sas_robot_driver_gazebo simulator_server_launch.py autostart:=true
 ```
 
 ## Considerations
