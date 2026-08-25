@@ -27,4 +27,4 @@ sas_simulator_server_gazebo_node:
   ros__parameters:
     service_name: "/world/ur3e_world/control"
     thread_sampling_time_sec: 0.01
-    autostart: false
+    autostart: true
