@@ -112,13 +112,13 @@ Each node loads its parameters from a YAML configuration file. The default is
 |---|---|---|---|---|
 | `service_name` | string | **Mandatory** | none — must be provided | Gazebo world control service name (e.g. `/world/<world>/control`) |
 | `thread_sampling_time_sec` | double | Optional | `0.01` | Sampling period of the control loop |
-| `autostart` | bool | Optional | `false` | Start the simulation on node startup |
+| `autostart` | bool | Optional | `true` | Start the simulation on node startup |
 
 **How mandatory/optional is determined in code:**
 - **Mandatory** params are read with `sas::get_ros_parameter(...)` — if missing, the node throws and fails to start.
 - **Optional** params are read with `sas::get_ros_optional_parameter(..., <default>)` — they carry in-code defaults.
 
-**Launch arguments** (`simulator_server_launch.py`): `name`, `config_file`, and `autostart` (bool, default `false`). The `autostart` launch argument overrides the value set in the configuration file, so the simulation can be started at launch time without editing the YAML (e.g. `ros2 launch sas_robot_driver_gazebo simulator_server_launch.py autostart:=true`).
+**Launch arguments** (`simulator_server_launch.py`): `name` and `config_file`. The simulation is autostarted by default (`autostart: true` in the configuration file and in the node's in-code default); to disable it, pass a configuration file that sets `autostart: false` (e.g. `ros2 launch sas_robot_driver_gazebo simulator_server_launch.py config_file:=/path/to/no_autostart.yaml`).
 
 #### Sample launches
 
@@ -126,7 +126,6 @@ Each node loads its parameters from a YAML configuration file. The default is
 ros2 launch sas_robot_driver_gazebo robot_driver_server_launch.py
 ros2 launch sas_robot_driver_gazebo object_server_launch.py
 ros2 launch sas_robot_driver_gazebo simulator_server_launch.py
-ros2 launch sas_robot_driver_gazebo simulator_server_launch.py autostart:=true
 ```
 
 ## Considerations

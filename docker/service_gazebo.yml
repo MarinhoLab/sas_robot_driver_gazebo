@@ -25,4 +25,4 @@ services:
       && gz service -l
       && (ros2 launch sas_robot_driver_gazebo robot_driver_server_launch.py &)
       && (ros2 launch sas_robot_driver_gazebo object_server_launch.py &)
-      && ros2 launch sas_robot_driver_gazebo simulator_server_launch.py autostart:=true"
+      && ros2 launch sas_robot_driver_gazebo simulator_server_launch.py"

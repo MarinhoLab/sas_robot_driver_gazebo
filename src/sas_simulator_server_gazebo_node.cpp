@@ -112,7 +112,7 @@ int main(int argc, char **argv)
         double sampling_time;
         sas::get_ros_optional_parameter(node, "thread_sampling_time_sec",sampling_time,0.01);
         bool autostart;
-        sas::get_ros_optional_parameter(node,"autostart",autostart,false);
+        sas::get_ros_optional_parameter(node,"autostart",autostart,true);
 
         sas::Clock clock{sampling_time};
 
