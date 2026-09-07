@@ -1,6 +1,8 @@
 services:
   gazebo:
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     stop_signal: SIGINT
     environment:
       - DISPLAY
@@ -9,10 +11,9 @@ services:
       - CONTAINER_SDF_PATH=/root/gazebo/sdf
     privileged: true # Needed for some gpu configurations.
     volumes:
-      - ../:/root/gazebo/ # Share base repository folder with container
+      - ../:/root/gazebo/ # Share base repository folder with container (Gazebo world/SDF resources)
       - /tmp/.X11-unix:/tmp/.X11-unix # x server related
       - ~/.Xauthority:/root/.Xauthority # x server related
-      - ../../sas_robot_driver_gazebo:/root/sas_robot_driver_gazebo_devel/src/sas_robot_driver_gazebo
     command: /bin/bash -c "
       export GZ_SIM_RESOURCE_PATH=$$GZ_SIM_RESOURCE_PATH:/root/gazebo
       && cd "$$CONTAINER_SDF_PATH"
