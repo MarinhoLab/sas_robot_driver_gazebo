@@ -6,12 +6,12 @@ services:
       service: gazebo
 
   object_client_example_1:
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     environment:
        - ROS_DOMAIN_ID
        - TIMEOUT=20
-    volumes:
-      - ../../sas_robot_driver_gazebo:/root/sas_robot_driver_gazebo_devel/src/sas_robot_driver_gazebo
     command: /bin/bash -c "
       cd /root/sas_robot_driver_gazebo_devel/
       && colcon build
