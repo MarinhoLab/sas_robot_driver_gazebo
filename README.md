@@ -128,6 +128,69 @@ ros2 launch sas_robot_driver_gazebo object_server_launch.py
 ros2 launch sas_robot_driver_gazebo simulator_server_launch.py
 ```
 
+## SDF Serial-Manipulator Loader
+
+The package builds an `M3_SerialManipulatorSimulatorFriendly` kinematic model
+(vendored verbatim from
+[MarinhoLab/working-needlemanipulation](https://github.com/MarinhoLab/working-needlemanipulation))
+from a Gazebo-SDF model. The model is exposed two ways:
+
+- **Client library** — `sas_robot_driver_gazebo::SdfSerialManipulatorLoader`
+  (header `sas_robot_driver_gazebo/SdfSerialManipulatorLoader.h`, linked via the
+  `serial_manipulator_sdf` target).
+- **CLI** — the `sdf2manipulator` executable prints the loaded kinematics as
+  YAML, mirroring the schema consumed by
+  `marinholab.working.needlemanipulation.example_load_from_file.get_information_from_file`.
+
+### Mapping
+
+A serial-robot SDF model maps one-to-one onto the per-joint vectors of the M3
+model:
+
+| SDF entity | M3 model field |
+|---|---|
+| base (canonical) link `<pose>` | `reference_frame_` |
+| joint `i` `<pose>` relative to its parent link | `offset_before_[i]` |
+| joint `i` `<type>` + `<axis><xyz>` | `actuation_types_[i]` (`RZ` revolute/continuous, `TZ` prismatic) |
+| child link `i` `<pose>` relative to joint `i` | `offset_after_[i]` |
+| joint `i` `<axis><limit>` | lower / upper `q` limit |
+
+The SDF-to-dual-quaternion conversion is a homomorphism with respect to
+`dqrobotics`' `DQ::operator*` (verified against `gz::math::Pose3d` composition
+and an independent 4×4 matrix chain).
+
+### Requirements
+
+- The model must be a strictly serial chain (a base link followed by joint/link
+  pairs); non-serial topologies raise `std::runtime_error`.
+- Every joint must act about the **+z axis of its own (joint-local) frame**; a
+  non-+z or expressed-in-another-frame axis raises `std::runtime_error`.
+- Only revolute, continuous, and prismatic joints are supported.
+
+### CLI
+
+```console
+# Print the kinematics of a serial-manipulator SDF model as YAML.
+sdf2manipulator sdf/r820.sdf
+
+# Also print the per-joint limits.
+sdf2manipulator sdf/r820.sdf --joint-limits
+```
+
+`r820.sdf` in this repository is a ready-made test input: 7 revolute joints,
+all acting about +z.
+
+### Test
+
+`test_sdf_serial_manipulator_loader` is a standalone test that loads an SDF
+model and checks the chain structure (joint count, actuations, DOF) and that
+`model.fkm(q)` matches an independent 4×4 matrix chain for random
+configurations:
+
+```console
+build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/r820.sdf
+```
+
 ## Considerations
 
 - `gz::sim::systems::PosePublisher` has been considered to read poses of entities. However, it's more convenient for `tf2` given how the frames are described. 
