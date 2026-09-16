@@ -2,11 +2,16 @@
  * @file test_sdf_serial_manipulator_loader.cc
  * @brief Standalone test for SdfSerialManipulatorLoader.
  *
- * Loads sdf/r820.sdf and checks:
- *   1. The kinematic chain has the expected 7 revolute joints, all RZ.
+ * Loads a serial-manipulator SDF model (e.g. sdf/r820.sdf or sdf/ur3e.sdf) and
+ * checks:
+ *   1. The kinematic chain has the expected number of revolute joints (when an
+ *       expected count is given), all acting about +z (RZ), with matching DOF
+ *       and limit counts.
  *   2. model.fkm(q) matches an independent 4x4 matrix chain built from the
  *       same SDF poses (so the test is not circular: the reference does not
  *       use the loader's DQ conversion).
+ *
+ * Usage: test_sdf_serial_manipulator_loader <model.sdf> [expected_joint_count]
  */
 
 #include <cmath>
@@ -151,11 +156,23 @@ int main(int argc, char **argv)
 {
   if (argc < 2)
   {
-    std::cerr << "Usage: test_sdf_serial_manipulator_loader <model.sdf>\n";
+    std::cerr << "Usage: test_sdf_serial_manipulator_loader <model.sdf> "
+                "[expected_joint_count]\n";
     return 2;
   }
 
   const std::string path = argv[1];
+  // Optional: expected number of joints in the chain.
+  long expected_joints = 0;  // 0 => do not check the count.
+  if (argc > 2)
+  {
+    expected_joints = std::stoul(argv[2]);
+    if (expected_joints <= 0)
+    {
+      std::cerr << "Invalid expected joint count: " << argv[2] << "\n";
+      return 2;
+    }
+  }
 
   std::cout << "Loading " << path << "\n";
   const sas_robot_driver_gazebo::SdfManipulatorResult result =
@@ -167,7 +184,12 @@ int main(int argc, char **argv)
   std::cout << "Loaded " << n << " joints.\n";
 
   // 1. Structure.
-  Check(n == 7, "r820 has 7 joints");
+  if (expected_joints > 0)
+  {
+    Check(n == static_cast<size_t>(expected_joints),
+      "model has the expected " + std::to_string(expected_joints) +
+      " joints");
+  }
   bool allRz = true;
   for (const auto &name : result.actuation_type_names)
   {
@@ -177,9 +199,11 @@ int main(int argc, char **argv)
     }
   }
   Check(allRz, "all joints act about +z (RZ)");
-  Check(model.get_dim_configuration_space() == 7, "configuration space is 7-DOF");
-  Check(result.lower_limits.size() == 7 && result.upper_limits.size() == 7,
-    "7 lower and upper limits");
+  Check(model.get_dim_configuration_space() == static_cast<int>(n),
+    "configuration space matches joint count");
+  Check(result.lower_limits.size() == static_cast<long>(n) &&
+        result.upper_limits.size() == static_cast<long>(n),
+    "lower and upper limits match joint count");
 
   // 3. FKM cross-check against an independent 4x4 matrix chain.
   sdf::Root root;
@@ -192,8 +216,8 @@ int main(int argc, char **argv)
   double maxErr = 0.0;
   for (int trial = 0; trial < 10; ++trial)
   {
-    Eigen::VectorXd q(7);
-    for (int i = 0; i < 7; ++i)
+    Eigen::VectorXd q(static_cast<Eigen::Index>(n));
+    for (size_t i = 0; i < n; ++i)
     {
       q(i) = dist(rng);
     }
@@ -210,8 +234,8 @@ int main(int argc, char **argv)
 
   // Rotation cross-check on a single configuration.
   {
-    Eigen::VectorXd q(7);
-    for (int i = 0; i < 7; ++i)
+    Eigen::VectorXd q(static_cast<Eigen::Index>(n));
+    for (size_t i = 0; i < n; ++i)
     {
       q(i) = dist(rng);
     }
