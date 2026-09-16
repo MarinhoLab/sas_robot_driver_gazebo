@@ -15,6 +15,7 @@
  */
 
 #include <cmath>
+#include <filesystem>
 #include <iostream>
 #include <random>
 #include <string>
@@ -26,7 +27,9 @@
 #include <sdf/JointAxis.hh>
 #include <sdf/Link.hh>
 #include <sdf/Model.hh>
+#include <sdf/ParserConfig.hh>
 #include <sdf/Root.hh>
+#include <sdf/World.hh>
 
 #include <sas_robot_driver_gazebo/SdfSerialManipulatorLoader.h>
 
@@ -74,6 +77,70 @@ std::vector<ChainLink> CollectChain(const sdf::Model *model)
     current = joint->ChildName();
   }
   return chain;
+}
+
+// Resolve a "::"-separated scope to the kinematic model it names within a
+// loaded root. Works for both model files (scope == model name) and world
+// files (nested models reached through <include> chains).
+namespace
+{
+const sdf::Model *FindModelIn(const sdf::Model *top, const std::string &top_scope,
+  const std::string &scope)
+{
+  if (top == nullptr)
+  {
+    return nullptr;
+  }
+  if (top_scope == scope)
+  {
+    return top;
+  }
+  for (uint64_t i = 0; i < top->ModelCount(); ++i)
+  {
+    const sdf::Model *child = top->ModelByIndex(i);
+    if (child == nullptr)
+    {
+      continue;
+    }
+    const sdf::Model *found = FindModelIn(
+      child, top_scope + "::" + child->Name(), scope);
+    if (found != nullptr)
+    {
+      return found;
+    }
+  }
+  return nullptr;
+}
+}  // namespace
+
+const sdf::Model *FindModelByScope(const sdf::Root &root, const std::string &scope)
+{
+  for (uint64_t i = 0; i < root.WorldCount(); ++i)
+  {
+    const sdf::World *world = root.WorldByIndex(i);
+    if (world == nullptr)
+    {
+      continue;
+    }
+    for (uint64_t k = 0; k < world->ModelCount(); ++k)
+    {
+      const sdf::Model *top = world->ModelByIndex(k);
+      if (top == nullptr)
+      {
+        continue;
+      }
+      const sdf::Model *found = FindModelIn(top, top->Name(), scope);
+      if (found != nullptr)
+      {
+        return found;
+      }
+    }
+  }
+  if (root.WorldCount() == 0 && root.Model() != nullptr)
+  {
+    return FindModelIn(root.Model(), root.Model()->Name(), scope);
+  }
+  return nullptr;
 }
 
 Eigen::Matrix3d RotFromQuat(const gz::math::Quaterniond &q)
@@ -176,12 +243,13 @@ int main(int argc, char **argv)
 
   std::cout << "Loading " << path << "\n";
   const sas_robot_driver_gazebo::SdfManipulatorResult result =
-    sas_robot_driver_gazebo::SdfSerialManipulatorLoader().LoadFromSdfFile(path);
+    sas_robot_driver_gazebo::SdfSerialManipulatorLoader().LoadFromFile(path);
 
   const auto &model = result.model;
   const size_t n = result.actuation_type_names.size();
 
-  std::cout << "Loaded " << n << " joints.\n";
+  std::cout << "Loaded " << n << " joints from scope '" << result.source_scope
+            << "'.\n";
 
   // 1. Structure.
   if (expected_joints > 0)
@@ -205,10 +273,35 @@ int main(int argc, char **argv)
         result.upper_limits.size() == static_cast<long>(n),
     "lower and upper limits match joint count");
 
-  // 3. FKM cross-check against an independent 4x4 matrix chain.
+  // 3. FKM cross-check against an independent 4x4 matrix chain. The reference
+  // model is resolved via the reported source scope, which works for both
+  // model files (scope == model name) and world files (nested scope).
+  const std::filesystem::path fs_path(path);
+  const std::string base_dir =
+    fs_path.is_relative() ? std::string(".")
+                          : fs_path.parent_path().string();
+  sdf::ParserConfig config;
+  config.SetFindCallback([base_dir](const std::string &uri) -> std::string {
+    std::string name = uri;
+    const std::size_t pos = name.find("://");
+    if (pos != std::string::npos)
+    {
+      name = name.substr(pos + 3);
+    }
+    const std::filesystem::path candidate =
+      std::filesystem::path(base_dir) / name;
+    return std::filesystem::exists(candidate) ? candidate.string()
+                                              : std::string();
+  });
   sdf::Root root;
-  (void)root.Load(path);
-  const sdf::Model *sdfModel = root.Model();
+  (void)root.Load(path, config);
+  const sdf::Model *sdfModel = FindModelByScope(root, result.source_scope);
+  if (sdfModel == nullptr)
+  {
+    std::cerr << "Failed to re-resolve reference model scope '"
+              << result.source_scope << "' in " << path << "\n";
+    return 1;
+  }
   const std::vector<ChainLink> chain = CollectChain(sdfModel);
 
   std::mt19937 rng(12345);
