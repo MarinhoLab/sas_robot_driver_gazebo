@@ -177,18 +177,22 @@ sdf2manipulator sdf/r820.sdf
 sdf2manipulator sdf/r820.sdf --joint-limits
 ```
 
-`r820.sdf` in this repository is a ready-made test input: 7 revolute joints,
-all acting about +z.
+`r820.sdf` (7 revolute joints) and `ur3e.sdf` (6 revolute joints) in this
+repository are ready-made test inputs, both with every joint acting about +z.
 
 ### Test
 
 `test_sdf_serial_manipulator_loader` is a standalone test that loads an SDF
-model and checks the chain structure (joint count, actuations, DOF) and that
+model and checks the chain structure (actuations, DOF, limit counts) and that
 `model.fkm(q)` matches an independent 4×4 matrix chain for random
-configurations:
+configurations. An optional second argument asserts the expected joint count:
 
 ```console
-build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/r820.sdf
+# r820: 7 joints, all RZ.
+build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/r820.sdf 7
+
+# ur3e: 6 joints, all RZ.
+build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/ur3e.sdf 6
 ```
 
 ## Considerations
