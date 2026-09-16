@@ -13,6 +13,10 @@
   <depend>sas_core</depend>
   <depend>sas_common</depend>
   <depend>sas_robot_driver</depend>
+  <!-- Provide the sdformat14 / gz-math7 CMake configs used by the
+       serial-manipulator-sdf loader. -->
+  <depend>sdformat_vendor</depend>
+  <depend>gz_math_vendor</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

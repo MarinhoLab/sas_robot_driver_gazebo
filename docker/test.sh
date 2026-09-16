@@ -39,6 +39,21 @@ gz sdf -p "$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/reference_fram
   echo "PASS: reference_frame.sdf parsed successfully" || \
   (echo "FAIL: reference_frame.sdf parse failed" && exit 1)
 
+# Verify the serial-manipulator-SDF loader builds a correct kinematic model
+# from r820.sdf (7 x RZ joints; fkm cross-checked against an independent 4x4 chain).
+TEST_BIN="/root/sas_robot_driver_gazebo_devel/build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader"
+R820_SDF="$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/r820.sdf"
+"$TEST_BIN" "$R820_SDF" > /tmp/sdf_loader_test.log 2>&1 && \
+  (echo "PASS: SDF serial-manipulator loader test"; tail -1 /tmp/sdf_loader_test.log) || \
+  (echo "FAIL: SDF serial-manipulator loader test"; cat /tmp/sdf_loader_test.log; exit 1)
+
+# Verify the sdf2manipulator CLI emits the expected YAML schema.
+CLI_BIN="$(ros2 pkg prefix sas_robot_driver_gazebo)/lib/sas_robot_driver_gazebo/sdf2manipulator"
+"$CLI_BIN" "$R820_SDF" > /tmp/sdf2manipulator.out 2>&1 && \
+  grep -q "actuation_types:" /tmp/sdf2manipulator.out && \
+  echo "PASS: sdf2manipulator CLI output schema" || \
+  (echo "FAIL: sdf2manipulator CLI"; cat /tmp/sdf2manipulator.out; exit 1)
+
 ros2 run sas_robot_driver_gazebo gazebo_service_frequency_checker
 timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo object_server_launch.py &
 timeout --signal SIGINT 20 ros2 launch sas_robot_driver_gazebo simulator_server_launch.py &
