@@ -167,6 +167,33 @@ and an independent 4×4 matrix chain).
   non-+z or expressed-in-another-frame axis raises `std::runtime_error`.
 - Only revolute, continuous, and prismatic joints are supported.
 
+### Loading from a world / scene file
+
+`SdfSerialManipulatorLoader::LoadFromFile` (and the CLI) also accept a
+**`<world>` file**. The loader walks the world's model tree — including models
+nested inside other models through `<include>` chains — and loads the *kinematic*
+model, i.e. the model that directly owns both links and joints. Wrapper models
+(an `<include>` plus a fixed base joint, no links) and static models (links but
+no joints, e.g. ground planes or reference frames) are skipped.
+
+Example: in `sdf/ur3e_world.sdf` the robot is nested two levels deep:
+
+```
+world ur3e_world
+└── model ur3e                       (wrapper: <include> + fixed base_joint, no links)
+    └── model ur3e_position_controller (wrapper: <include>, no links)
+        └── model ur3e               (the robot: 7 links, 6 joints)
+```
+
+`LoadFromFile(".../ur3e_world.sdf")` therefore yields `source_scope =
+"ur3e::ur3e_position_controller::ur3e"` and the same kinematics as loading
+`sdf/ur3e.sdf` directly. If several kinematic models exist in one file, the most
+deeply nested is chosen automatically; pass `model_scope` (a `::`-separated
+chain of model names) to select one explicitly.
+
+Relative `<include>` URIs are resolved against the directory of the file being
+loaded, so a scene file can be loaded from any working directory.
+
 ### CLI
 
 ```console
@@ -175,28 +202,38 @@ sdf2manipulator sdf/r820.sdf
 
 # Also print the per-joint limits.
 sdf2manipulator sdf/r820.sdf --joint-limits
+
+# Load the kinematic model from a world file (auto-detected).
+sdf2manipulator sdf/ur3e_world.sdf
+
+# Select a specific (possibly nested) model by its "::"-separated scope.
+sdf2manipulator sdf/ur3e_world.sdf --model-scope "ur3e::ur3e_position_controller::ur3e"
 ```
 
 `r820.sdf` (7 revolute joints) and `ur30.sdf` / `ur3e.sdf` (6 revolute joints
-each) in this repository are ready-made test inputs, all with every joint
-acting about +z.
+each) are ready-made model-file test inputs, and `r820_world.sdf` /
+`ur3e_world.sdf` are ready-made world-file inputs that nest the same robots
+behind `<include>` chains; all have every joint acting about +z.
 
 ### Test
 
 `test_sdf_serial_manipulator_loader` is a standalone test that loads an SDF
-model and checks the chain structure (actuations, DOF, limit counts) and that
-`model.fkm(q)` matches an independent 4×4 matrix chain for random
-configurations. An optional second argument asserts the expected joint count:
+model or world file and checks the chain structure (actuations, DOF, limit
+counts) and that `model.fkm(q)` matches an independent 4×4 matrix chain for
+random configurations. For world files it resolves the nested kinematic model via
+the reported `source_scope`, so the reference chain is built from the same
+nested model the loader used. An optional second argument asserts the expected
+joint count:
 
 ```console
-# r820: 7 joints, all RZ.
+# Model files.
 build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/r820.sdf 7
-
-# ur30: 6 joints, all RZ.
 build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/ur30.sdf 6
-
-# ur3e: 6 joints, all RZ.
 build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/ur3e.sdf 6
+
+# World files (robot nested behind <include> chains).
+build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/r820_world.sdf 7
+build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/ur3e_world.sdf 6
 ```
 
 ## Considerations
