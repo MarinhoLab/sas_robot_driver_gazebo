@@ -31,7 +31,7 @@ echo "$GZ_SIM_RESOURCE_PATH" | grep -q ".sas/sas_robot_driver_gazebo/vendor" && 
   echo "PASS: GZ_SIM_RESOURCE_PATH includes home vendor dir" || \
   (echo "FAIL: GZ_SIM_RESOURCE_PATH missing home vendor dir" && exit 1)
 
-# Verify SDF files parse correctly (r820 uses local mujoco meshes, ur3e needs cloned vendor repos)
+# Verify SDF files parse correctly (r820 uses local mujoco meshes, ur30/ur3e need cloned vendor repos)
 gz sdf -p "$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/r820.sdf" > /dev/null 2>&1 && \
   echo "PASS: r820.sdf parsed successfully" || \
   (echo "FAIL: r820.sdf parse failed" && exit 1)
@@ -46,7 +46,7 @@ gz sdf -p "$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/reference_fram
 TEST_BIN="/root/sas_robot_driver_gazebo_devel/build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader"
 CLI_BIN="$(ros2 pkg prefix sas_robot_driver_gazebo)/lib/sas_robot_driver_gazebo/sdf2manipulator"
 SDF_SHARE="$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf"
-SDF_MODELS=("r820.sdf:7" "ur3e.sdf:6")
+SDF_MODELS=("r820.sdf:7" "ur30.sdf:6" "ur3e.sdf:6")
 
 for entry in "${SDF_MODELS[@]}"; do
   model="${entry%%:*}"

@@ -177,8 +177,9 @@ sdf2manipulator sdf/r820.sdf
 sdf2manipulator sdf/r820.sdf --joint-limits
 ```
 
-`r820.sdf` (7 revolute joints) and `ur3e.sdf` (6 revolute joints) in this
-repository are ready-made test inputs, both with every joint acting about +z.
+`r820.sdf` (7 revolute joints) and `ur30.sdf` / `ur3e.sdf` (6 revolute joints
+each) in this repository are ready-made test inputs, all with every joint
+acting about +z.
 
 ### Test
 
@@ -190,6 +191,9 @@ configurations. An optional second argument asserts the expected joint count:
 ```console
 # r820: 7 joints, all RZ.
 build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/r820.sdf 7
+
+# ur30: 6 joints, all RZ.
+build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/ur30.sdf 6
 
 # ur3e: 6 joints, all RZ.
 build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/ur3e.sdf 6
