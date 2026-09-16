@@ -6,6 +6,7 @@
 #include <sas_robot_driver_gazebo/SdfSerialManipulatorLoader.h>
 
 #include <cmath>
+#include <filesystem>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -18,7 +19,9 @@
 #include <sdf/JointAxis.hh>
 #include <sdf/Link.hh>
 #include <sdf/Model.hh>
+#include <sdf/ParserConfig.hh>
 #include <sdf/Root.hh>
+#include <sdf/World.hh>
 
 namespace sas_robot_driver_gazebo
 {
@@ -26,6 +29,116 @@ namespace sas_robot_driver_gazebo
 namespace
 {
 constexpr double kAxisTolerance = 1e-6;
+
+/**
+ * @brief Strip a leading URI scheme (e.g. "model://", "file://") from a string.
+ *
+ * @param uri The input (may or may not carry a scheme).
+ * @return The path portion after the scheme, or the input unchanged if it has
+ *         no "://" separator.
+ */
+std::string StripScheme(const std::string &uri)
+{
+  const std::size_t pos = uri.find("://");
+  return pos == std::string::npos ? uri : uri.substr(pos + 3);
+}
+
+/**
+ * @brief Build a ParserConfig that resolves <include> URIs against @p base_dir.
+ *
+ * @details libsdformat's default file lookup resolves relative include paths
+ * against the *current working directory*, which makes loading a scene file
+ * location-dependent. This callback instead resolves every include against the
+ * directory containing the loaded file, so a scene/model file can be loaded
+ * from anywhere. Schemes are stripped first so "model://foo.sdf" and the
+ * relative "foo.sdf" are treated the same. If the file is not found in the
+ * base directory the callback returns empty, letting libsdformat fall back to
+ * its normal resolution (URI path map, GZ_SIM_RESOURCE_PATH, ...).
+ */
+sdf::ParserConfig MakeParserConfig(const std::string &base_dir)
+{
+  sdf::ParserConfig config;
+  config.SetFindCallback([base_dir](const std::string &uri) -> std::string {
+    const std::string name = StripScheme(uri);
+    if (name.empty())
+    {
+      return std::string();
+    }
+    const std::filesystem::path candidate = std::filesystem::path(base_dir) / name;
+    return std::filesystem::exists(candidate) ? candidate.string() : std::string();
+  });
+  return config;
+}
+
+/**
+ * @brief A kinematic model candidate found in a loaded SDF tree.
+ */
+struct ModelCandidate
+{
+  std::string scope;  // "::"-separated path of model names to this model
+  const sdf::Model *model;
+};
+
+/**
+ * @brief Recursively collect candidate kinematic models.
+ *
+ * A model is a candidate iff it directly owns both links and joints (the
+ * signature of a kinematic body). Wrapper models (an <include> plus a fixed
+ * base joint, no links) and static models (links but no joints) are skipped,
+ * as are their ancestors.
+ */
+void CollectModelCandidates(
+  const sdf::Model *model, const std::string &scope,
+  std::vector<ModelCandidate> &candidates)
+{
+  if (model == nullptr)
+  {
+    return;
+  }
+  if (model->LinkCount() > 0 && model->JointCount() > 0)
+  {
+    candidates.push_back(ModelCandidate{scope, model});
+  }
+  const uint64_t count = model->ModelCount();
+  for (uint64_t i = 0; i < count; ++i)
+  {
+    const sdf::Model *child = model->ModelByIndex(i);
+    const std::string child_scope = scope + "::" + child->Name();
+    CollectModelCandidates(child, child_scope, candidates);
+  }
+}
+
+/**
+ * @brief Collect candidate kinematic models from a loaded sdf::Root.
+ *
+ * Handles both file kinds: a world (its top-level models are walked) and a
+ * bare model file (root.Model()).
+ */
+std::vector<ModelCandidate> CollectAllCandidates(const sdf::Root &root)
+{
+  std::vector<ModelCandidate> candidates;
+  for (uint64_t i = 0; i < root.WorldCount(); ++i)
+  {
+    const sdf::World *world = root.WorldByIndex(i);
+    if (world == nullptr)
+    {
+      continue;
+    }
+    for (uint64_t k = 0; k < world->ModelCount(); ++k)
+    {
+      const sdf::Model *top = world->ModelByIndex(k);
+      if (top != nullptr)
+      {
+        CollectModelCandidates(top, top->Name(), candidates);
+      }
+    }
+  }
+  if (root.WorldCount() == 0 && root.Model() != nullptr)
+  {
+    CollectModelCandidates(root.Model(), root.Model()->Name(), candidates);
+  }
+  return candidates;
+}
 
 /**
  * @brief Convert an SDF pose to a unit dual quaternion.
@@ -72,11 +185,86 @@ bool IsUnitZ(const gz::math::Vector3d &axis)
 
 }  // namespace
 
+SdfManipulatorResult SdfSerialManipulatorLoader::LoadFromFile(
+  const std::string &path, const std::string &model_scope) const
+{
+  const std::filesystem::path fs_path(path);
+  const std::string base_dir =
+    fs_path.is_relative() ? std::string(".")
+                          : fs_path.parent_path().string();
+
+  const sdf::ParserConfig config = MakeParserConfig(base_dir);
+  sdf::Root root;
+  const sdf::Errors errors = root.Load(path, config);
+
+  const std::vector<ModelCandidate> candidates = CollectAllCandidates(root);
+
+  if (candidates.empty())
+  {
+    std::string reason =
+      "No kinematic model (a model with both links and joints) could be "
+      "loaded from SDF file '" + path + "'.";
+    for (const auto &err : errors)
+    {
+      reason += " [" + err.Message() + "]";
+    }
+    throw std::runtime_error(reason);
+  }
+
+  // Select the candidate.
+  const ModelCandidate *selected = nullptr;
+  if (model_scope.empty())
+  {
+    // Automatic: unique candidate, or the most deeply nested one (longest
+    // scope, i.e. most "::" separators) when several exist.
+    for (const auto &c : candidates)
+    {
+      if (selected == nullptr || c.scope.length() > selected->scope.length())
+      {
+        selected = &c;
+      }
+    }
+  }
+  else
+  {
+    for (const auto &c : candidates)
+    {
+      if (c.scope == model_scope)
+      {
+        selected = &c;
+        break;
+      }
+    }
+    if (selected == nullptr)
+    {
+      std::string reason =
+        "Requested model scope '" + model_scope + "' not found in SDF file '" +
+        path + "'. Available scopes:";
+      for (const auto &c : candidates)
+      {
+        reason += " [" + c.scope + "]";
+      }
+      throw std::runtime_error(reason);
+    }
+  }
+
+  SdfManipulatorResult result = this->LoadFromModel(selected->model);
+  result.source_path = path;
+  result.source_scope = selected->scope;
+  return result;
+}
+
 SdfManipulatorResult SdfSerialManipulatorLoader::LoadFromSdfFile(
   const std::string &path) const
 {
+  const std::filesystem::path fs_path(path);
+  const std::string base_dir =
+    fs_path.is_relative() ? std::string(".")
+                          : fs_path.parent_path().string();
+
+  const sdf::ParserConfig config = MakeParserConfig(base_dir);
   sdf::Root root;
-  const sdf::Errors errors = root.Load(path);
+  const sdf::Errors errors = root.Load(path, config);
 
   const sdf::Model *model = root.Model();
   if (model == nullptr)
@@ -91,7 +279,10 @@ SdfManipulatorResult SdfSerialManipulatorLoader::LoadFromSdfFile(
     throw std::runtime_error(reason);
   }
 
-  return this->LoadFromModel(model);
+  SdfManipulatorResult result = this->LoadFromModel(model);
+  result.source_path = path;
+  result.source_scope = model->Name();
+  return result;
 }
 
 SdfManipulatorResult SdfSerialManipulatorLoader::LoadFromModel(

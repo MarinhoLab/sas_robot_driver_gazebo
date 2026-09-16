@@ -51,19 +51,45 @@ void PrintVectorList(const char *key, const Eigen::VectorXd &v)
 
 int main(int argc, char **argv)
 {
-  if (argc < 2)
+  std::string path;
+  std::string model_scope;
+  bool printLimits = false;
+  for (int i = 1; i < argc; ++i)
   {
-    std::cerr << "Usage: sdf2manipulator <model.sdf> [--joint-limits]\n";
+    const std::string arg = argv[i];
+    if (arg == "--model-scope" && i + 1 < argc)
+    {
+      model_scope = argv[++i];
+    }
+    else if (arg == "--joint-limits")
+    {
+      printLimits = true;
+    }
+    else if (path.empty())
+    {
+      path = arg;
+    }
+    else
+    {
+      std::cerr << "Unknown argument: " << arg << "\n";
+      std::cerr
+        << "Usage: sdf2manipulator <model.sdf|world.sdf> "
+           "[--model-scope <a::b::c>] [--joint-limits]\n";
+      return 1;
+    }
+  }
+  if (path.empty())
+  {
+    std::cerr
+      << "Usage: sdf2manipulator <model.sdf|world.sdf> "
+         "[--model-scope <a::b::c>] [--joint-limits]\n";
     return 1;
   }
-
-  const std::string path = argv[1];
-  const bool printLimits = (argc > 2 && std::string(argv[2]) == "--joint-limits");
 
   try
   {
     sas_robot_driver_gazebo::SdfSerialManipulatorLoader loader;
-    const auto result = loader.LoadFromSdfFile(path);
+    const auto result = loader.LoadFromFile(path, model_scope);
 
     const auto &model = result.model;
 
@@ -108,7 +134,8 @@ int main(int argc, char **argv)
               << t0(2) << "]\n";
 
     std::cout << "# loaded " << result.actuation_type_names.size()
-              << " joints from " << path << "\n";
+              << " joints from " << result.source_scope
+              << " (in " << path << ")\n";
   }
   catch (const std::exception &e)
   {

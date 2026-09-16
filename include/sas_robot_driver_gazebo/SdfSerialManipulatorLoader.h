@@ -26,6 +26,7 @@
 
 #include <gz/math/Pose3.hh>
 #include <sdf/Model.hh>
+#include <sdf/World.hh>
 
 #include <dqrobotics/DQ.h>
 
@@ -66,6 +67,19 @@ struct SdfManipulatorResult
 
     /** @brief Upper joint limits, in chain order. */
     Eigen::VectorXd upper_limits;
+
+    /** @brief Path of the SDF file the model was loaded from. */
+    std::string source_path;
+
+    /**
+     * @brief Name of the kinematic model used to build the result.
+     *
+     * For a model file this is the model's name; for a world file it is the
+     * "::"-separated chain of nested model names from the world's top-level
+     * model down to the kinematic model (e.g.
+     * "ur3e::ur3e_position_controller::ur3e").
+     */
+    std::string source_scope;
 };
 
 /**
@@ -82,7 +96,43 @@ class SdfSerialManipulatorLoader
 {
 public:
     /**
-     * @brief Parse an SDF file and build the kinematic model.
+     * @brief Load a serial manipulator from an SDF model or world file.
+     *
+     * @details This is the recommended entry point. It transparently handles
+     * both Gazebo-SDF files:
+     *  - A <model> file: the model is used directly (equivalent to
+     *    LoadFromSdfFile).
+     *  - A <world> file (scene): the kinematic model is located within the
+     *    world, including models nested inside other models through
+     *    <include> chains (e.g. a robot model wrapped in a position-controller
+     *    model inside a world). The kinematic model is the one (anywhere in
+     *    the world's model tree) that has both links and joints; models with
+     *    only links (static frames, ground planes) or only fixed joints
+     *    (wrapper models) are skipped.
+     *
+     * Relative <include> URIs are resolved against the directory of @p path,
+     * so the file's location is sufficient (no current-directory dependency).
+     *
+     * @param path Path to a Gazebo-SDF model or world file.
+     * @param model_scope Optional "::"-separated chain of model names (from a
+     *         top-level model in the world down to the target) that selects
+     *         which model to load. Empty: automatic detection (the single
+     *         model in the tree that has both links and joints). If several
+     *         candidate models exist, the most deeply nested one is used and
+     *         result.source_scope reports the selection; pass model_scope to
+     *         disambiguate explicitly.
+     * @return The loaded model plus joint/link names and the source scope
+     *         that produced it.
+     * @throws std::runtime_error if the file cannot be parsed, no kinematic
+     *         model is found, model_scope does not match, the selected model
+     *         is not a serial manipulator, or a joint does not act about +z.
+     */
+    SdfManipulatorResult LoadFromFile(
+      const std::string &path,
+      const std::string &model_scope = std::string()) const;
+
+    /**
+     * @brief Parse an SDF model file and build the kinematic model.
      * @param path Path to a Gazebo-SDF file whose <model> is a serial manipulator.
      * @return The loaded model and its joint/link names.
      * @throws std::runtime_error if the file cannot be parsed, is not a serial

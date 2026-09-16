@@ -40,15 +40,17 @@ gz sdf -p "$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf/reference_fram
   (echo "FAIL: reference_frame.sdf parse failed" && exit 1)
 
 # Verify the serial-manipulator-SDF loader builds a correct kinematic model from
-# each bundled robot SDF. Every joint acts about +z (RZ); fkm(q) is cross-checked
-# against an independent 4x4 matrix chain. Models are paired with their expected
-# joint count ("model_sdf:expected_joints").
+# each bundled SDF input. Every joint acts about +z (RZ); fkm(q) is cross-checked
+# against an independent 4x4 matrix chain. Both bare robot model files and
+# world/scene files are covered (worlds nest the robot behind <include> chains,
+# e.g. ur3e_world.sdf -> ur3e::ur3e_position_controller::ur3e). Inputs are
+# paired with their expected joint count ("input_sdf:expected_joints").
 TEST_BIN="/root/sas_robot_driver_gazebo_devel/build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader"
 CLI_BIN="$(ros2 pkg prefix sas_robot_driver_gazebo)/lib/sas_robot_driver_gazebo/sdf2manipulator"
 SDF_SHARE="$(ros2 pkg prefix sas_robot_driver_gazebo --share)/sdf"
-SDF_MODELS=("r820.sdf:7" "ur30.sdf:6" "ur3e.sdf:6")
+SDF_INPUTS=("r820.sdf:7" "ur30.sdf:6" "ur3e.sdf:6" "r820_world.sdf:7" "ur3e_world.sdf:6")
 
-for entry in "${SDF_MODELS[@]}"; do
+for entry in "${SDF_INPUTS[@]}"; do
   model="${entry%%:*}"
   expected_joints="${entry##*:}"
   sdf_path="$SDF_SHARE/$model"
