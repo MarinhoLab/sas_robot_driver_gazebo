@@ -46,9 +46,11 @@ The container script is an implementation detail of the host script.
 
 ## Vendor quirks
 
-- **UR** (`convert_ur.sh`): renders the xacro directly
-  (`xacro ur.urdf.xacro name:="<robot>_1" ur_type="<robot>"`); no package
-  build needed. Robot argument is any UR type shipped in
+- **UR** (`convert_ur.sh`): builds the vendored `ur_description` package with
+  `colcon build` first (its `install/setup.bash` is sourced afterwards), then
+  renders the xacro directly
+  (`xacro ur.urdf.xacro name:="<robot>_1" ur_type="<robot>"`). Robot argument
+  is any UR type shipped in
   `Universal_Robots_ROS2_Description` (e.g. `ur3e`, `ur30`, `ur5`).
 - **Unitree** (`convert_unitree.sh`): requires a
   `colcon build --packages-select <robot>_description` of the vendor package
