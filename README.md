@@ -18,43 +18,18 @@ The two folders below have special meanings, the others follow usual naming.
 | `sdf`     | Base Gazebo scene files.                                                                                   |
 | `vendor`  | Vendor models. Check the licenses if you decide to use them in your work. They are not shared in this repo |
 
-## Technical Overview
+## Vendor Setup
 
-Each relevant joint to be controlled should have a plugin specification similar to the following, using `gz::sim::systems::JointPositionController`.
+Vendor robot models are not shared in this repository. `scripts/setup_vendor.sh`
+clones them into `~/.sas/sas_robot_driver_gazebo/vendor`, skipping any that are
+already present:
 
-## Joint Position Control
+```console
+# Clone a single vendor's models
+./scripts/setup_vendor.sh ur
 
-```xml
-<plugin
-filename="gz-sim-joint-position-controller-system"
-name="gz::sim::systems::JointPositionController">
-    <joint_name>shoulder_pan_joint</joint_name>
-    <use_velocity_commands>True</use_velocity_commands>
-    <cmd_max>0.25</cmd_max>
-</plugin>
-```
-
-## Joint State Reading
-
-Joints are read from a default `gz::sim::systems::JointStatePublisher`.
-
-```xml
-<plugin
-    filename="gz-sim-joint-state-publisher-system"
-    name="gz::sim::systems::JointStatePublisher">
-</plugin>
-```
-
-## Joint State Reading
-
-```xml
-<plugin filename="gz-sim-scene-broadcaster-system"  name="gz::sim::systems::SceneBroadcaster"/>
-```
-
-## Joint State Reading
-
-```xml
-<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+# Clone all supported vendors (ur, unitree, bota, agilex)
+./scripts/setup_vendor.sh all
 ```
 
 ## ROS 2 Nodes & Parameters
@@ -130,72 +105,6 @@ ros2 launch sas_robot_driver_gazebo simulator_server_launch.py
 
 ## SDF Serial-Manipulator Loader
 
-The package builds an `M3_SerialManipulatorSimulatorFriendly` kinematic model
-(vendored verbatim from
-[MarinhoLab/working-needlemanipulation](https://github.com/MarinhoLab/working-needlemanipulation))
-from a Gazebo-SDF model. The model is exposed two ways:
-
-- **Client library** — `sas_robot_driver_gazebo::SdfSerialManipulatorLoader`
-  (header `sas_robot_driver_gazebo/SdfSerialManipulatorLoader.h`, linked via the
-  `serial_manipulator_sdf` target).
-- **CLI** — the `sdf2manipulator` executable prints the loaded kinematics as
-  YAML, mirroring the schema consumed by
-  `marinholab.working.needlemanipulation.example_load_from_file.get_information_from_file`.
-
-### Mapping
-
-A serial-robot SDF model maps one-to-one onto the per-joint vectors of the M3
-model:
-
-| SDF entity | M3 model field |
-|---|---|
-| base (canonical) link `<pose>` | `reference_frame_` |
-| joint `i` `<pose>` relative to its parent link | `offset_before_[i]` |
-| joint `i` `<type>` + `<axis><xyz>` | `actuation_types_[i]` (`RZ` revolute/continuous, `TZ` prismatic) |
-| child link `i` `<pose>` relative to joint `i` | `offset_after_[i]` |
-| joint `i` `<axis><limit>` | lower / upper `q` limit |
-
-The SDF-to-dual-quaternion conversion is a homomorphism with respect to
-`dqrobotics`' `DQ::operator*` (verified against `gz::math::Pose3d` composition
-and an independent 4×4 matrix chain).
-
-### Requirements
-
-- The model must be a strictly serial chain (a base link followed by joint/link
-  pairs); non-serial topologies raise `std::runtime_error`.
-- Every joint must act about the **+z axis of its own (joint-local) frame**; a
-  non-+z or expressed-in-another-frame axis raises `std::runtime_error`.
-- Only revolute, continuous, and prismatic joints are supported.
-
-### Loading from a world / scene file
-
-`SdfSerialManipulatorLoader::LoadFromFile` (and the CLI) also accept a
-**`<world>` file**. The loader walks the world's model tree — including models
-nested inside other models through `<include>` chains — and loads the *kinematic*
-model, i.e. the model that directly owns both links and joints. Wrapper models
-(an `<include>` plus a fixed base joint, no links) and static models (links but
-no joints, e.g. ground planes or reference frames) are skipped.
-
-Example: in `sdf/ur3e_world.sdf` the robot is nested two levels deep:
-
-```
-world ur3e_world
-└── model ur3e                       (wrapper: <include> + fixed base_joint, no links)
-    └── model ur3e_position_controller (wrapper: <include>, no links)
-        └── model ur3e               (the robot: 7 links, 6 joints)
-```
-
-`LoadFromFile(".../ur3e_world.sdf")` therefore yields `source_scope =
-"ur3e::ur3e_position_controller::ur3e"` and the same kinematics as loading
-`sdf/ur3e.sdf` directly. If several kinematic models exist in one file, the most
-deeply nested is chosen automatically; pass `model_scope` (a `::`-separated
-chain of model names) to select one explicitly.
-
-Relative `<include>` URIs are resolved against the directory of the file being
-loaded, so a scene file can be loaded from any working directory.
-
-### CLI
-
 ```console
 # Print the kinematics of a serial-manipulator SDF model as YAML.
 sdf2manipulator sdf/r820.sdf
@@ -214,27 +123,6 @@ sdf2manipulator sdf/ur3e_world.sdf --model-scope "ur3e::ur3e_position_controller
 each) are ready-made model-file test inputs, and `r820_world.sdf` /
 `ur3e_world.sdf` are ready-made world-file inputs that nest the same robots
 behind `<include>` chains; all have every joint acting about +z.
-
-### Test
-
-`test_sdf_serial_manipulator_loader` is a standalone test that loads an SDF
-model or world file and checks the chain structure (actuations, DOF, limit
-counts) and that `model.fkm(q)` matches an independent 4×4 matrix chain for
-random configurations. For world files it resolves the nested kinematic model via
-the reported `source_scope`, so the reference chain is built from the same
-nested model the loader used. An optional second argument asserts the expected
-joint count:
-
-```console
-# Model files.
-build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/r820.sdf 7
-build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/ur30.sdf 6
-build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/ur3e.sdf 6
-
-# World files (robot nested behind <include> chains).
-build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/r820_world.sdf 7
-build/sas_robot_driver_gazebo/test_sdf_serial_manipulator_loader sdf/ur3e_world.sdf 6
-```
 
 ## Considerations
 
