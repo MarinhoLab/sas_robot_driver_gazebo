@@ -11,12 +11,13 @@ liability for misuse.
 
 ## Folder structure
 
-The two folders below have special meanings, the others follow usual naming.
+The folders below have special meanings, the others follow usual naming.
 
 | Folder    | Meaning                                                                                                    |
 |-----------|------------------------------------------------------------------------------------------------------------|
 | `sdf`     | Base Gazebo scene files.                                                                                   |
 | `vendor`  | Vendor models. Check the licenses if you decide to use them in your work. They are not shared in this repo |
+| `convert` | Vendor-model to Gazebo-SDF conversion scripts. See `convert/README.md` for usage.                          |
 
 ## Vendor Setup
 
