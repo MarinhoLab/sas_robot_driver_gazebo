@@ -52,9 +52,12 @@ The container script is an implementation detail of the host script.
   (`xacro ur.urdf.xacro name:="<robot>_1" ur_type="<robot>"`). Robot argument
   is any UR type shipped in
   `Universal_Robots_ROS2_Description` (e.g. `ur3e`, `ur30`, `ur5`).
-- **Unitree** (`convert_unitree.sh`): requires a
-  `colcon build --packages-select <robot>_description` of the vendor package
-  first, then renders `robots/<robot>_description/xacro/robot.xacro`.
+- **Unitree** (`convert_unitree.sh`): the `<robot>_description` packages are
+  ROS 1 (catkin) and cannot be `colcon build`ed on ROS 2. The xacro only
+  resolves sibling xacro files via `$(find <robot>_description)`, so the
+  script registers the package in a minimal ament stub
+  (`/tmp/srdg_ament_stub`, exported as `AMENT_PREFIX_PATH`) and renders
+  `robots/<robot>_description/xacro/robot.xacro` directly.
 - **AgileX** (`convert_agilex.sh`): the vendor URDF path contains a typo in
   the package folder name (`..._desription` — "description" misspelled in
   the upstream `ugv_gazebo_sim` repo). Keep the typo when editing the path;
