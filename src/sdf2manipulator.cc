@@ -1,6 +1,6 @@
 /**
  * @file sdf2manipulator.cc
- * @brief Command-line tool: load an M3_SerialManipulatorSimulatorFriendly from
+ * @brief Command-line tool: load a SerialManipulatorSimulatorFriendly from
  *        a Gazebo-SDF model and print it as YAML.
  *
  * The output mirrors the schema consumed by
