@@ -15,6 +15,10 @@ find_package(sas_robot_driver REQUIRED)
 # sdformat / gz-math for the SDF serial-manipulator loader.
 find_package(sdformat14 REQUIRED)
 find_package(gz-math7 REQUIRED)
+# ROS-free SmartArmStack core (MarinhoLab/sas_cpp); provides the
+# marinholab::sas::core::modeling::SerialManipulatorSimulatorFriendly kinematic
+# model used by the SDF serial-manipulator loader.
+find_package(marinholab_sas_core REQUIRED)
 
 # Find the Gazebo Transport library
 find_package(gz-transport13 REQUIRED)
@@ -31,21 +35,22 @@ install(TARGETS ScopedSetPose
 # CPP Library Block [BEGIN]#
 # vvvvvvvvvvvvvvvvvvvvvvvv #
 # SDF serial-manipulator loader: builds an
-# M3_SerialManipulatorSimulatorFriendly from a Gazebo-SDF model.
+# SerialManipulatorSimulatorFriendly (marinholab::sas::core::modeling,
+# provided by the marinholab_sas_core package) from a Gazebo-SDF model.
 set(RCLCPP_LOCAL_LIBRARY_NAME serial_manipulator_sdf)
 
 add_library(${RCLCPP_LOCAL_LIBRARY_NAME}
-    src/M3_SerialManipulatorSimulatorFriendly.cpp
     src/SdfSerialManipulatorLoader.cc
 )
 
-# The public headers expose dqrobotics and sdf types, so link PUBLIC.
-# dqrobotics ships no CMake config in the target image, so link the plain
-# shared library (headers are under the system include path).
+# The public headers expose dqrobotics, sdf and the sas-core modeling types,
+# so link PUBLIC. marinholab::sas::core pulls in the kinematic-model library
+# and its dqrobotics dependency; Eigen is still linked directly because the
+# loader headers use Eigen types.
 target_link_libraries(${RCLCPP_LOCAL_LIBRARY_NAME}
     PUBLIC
     Eigen3::Eigen
-    dqrobotics
+    marinholab::sas::core
     sdformat14::sdformat14
     gz-math7::gz-math7
 )

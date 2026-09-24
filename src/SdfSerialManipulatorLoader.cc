@@ -145,8 +145,9 @@ std::vector<ModelCandidate> CollectAllCandidates(const sdf::Root &root)
  *
  * @details This is a homomorphism with respect to dqrobotics' DQ::operator*:
  * poseToDq(A) * poseToDq(B) == poseToDq(A * B) for gz::math::Pose3d products,
- * which is the property the M3 model relies on when it multiplies the
- * per-joint offset/actuation dual quaternions. The translation is expressed
+ * which is the property the SerialManipulatorSimulatorFriendly model relies on
+ * when it multiplies the per-joint offset/actuation dual quaternions. The
+ * translation is expressed
  * in the pose's own (rotated) frame before forming the dual part.
  */
 DQ_robotics::DQ PoseToDq(const gz::math::Pose3d &pose)
@@ -173,8 +174,8 @@ DQ_robotics::DQ PoseToDq(const gz::math::Pose3d &pose)
   return DQ_robotics::DQ(qw, qx, qy, qz, dw, dx, dy, dz);
 }
 
-using M3 = DQ_robotics::M3_SerialManipulatorSimulatorFriendly;
-using Actuation = M3::ActuationType;
+using Model = marinholab::sas::core::modeling::SerialManipulatorSimulatorFriendly;
+using Actuation = Model::ActuationType;
 
 bool IsUnitZ(const gz::math::Vector3d &axis)
 {
@@ -429,7 +430,7 @@ SdfManipulatorResult SdfSerialManipulatorLoader::LoadFromModel(
       base->Name() + "'; the model is not a serial manipulator.");
   }
 
-  M3 manipulator(offset_before, offset_after, actuation_types);
+  Model manipulator(offset_before, offset_after, actuation_types);
 
   // Reference frame: pose of the base link in the world.
   manipulator.set_reference_frame(PoseToDq(base->RawPose()));
