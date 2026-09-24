@@ -1,13 +1,17 @@
 #pragma once
 /**
  * @file SdfSerialManipulatorLoader.h
- * @brief Loads an M3_SerialManipulatorSimulatorFriendly kinematic model from a
+ * @brief Loads a SerialManipulatorSimulatorFriendly kinematic model from a
  *        Gazebo-SDF-compatible model description.
+ *
+ * The model class ships in the `marinholab-sas-core` package
+ * (MarinhoLab/sas_cpp), where it lives as
+ * marinholab::sas::core::modeling::SerialManipulatorSimulatorFriendly.
  *
  * A serial-manipulator SDF model (one base link followed by a chain of
  * joint/link pairs, each joint acting about the +z axis of its joint frame)
- * maps one-to-one onto the three per-joint vectors that define an
- * M3_SerialManipulatorSimulatorFriendly:
+ * maps one-to-one onto the three per-joint vectors that define a
+ * SerialManipulatorSimulatorFriendly:
  *
  *   joint <pose>        (rel. to parent link) -> offset_before_[i]
  *   joint <type>+<axis> (about +z)           -> actuation_types_[i]
@@ -30,7 +34,7 @@
 
 #include <dqrobotics/DQ.h>
 
-#include "M3_SerialManipulatorSimulatorFriendly.h"
+#include <marinholab/sas/core/modeling/serial_manipulator_simulator_friendly.hpp>
 
 namespace sas_robot_driver_gazebo
 {
@@ -45,7 +49,7 @@ namespace sas_robot_driver_gazebo
 struct SdfManipulatorResult
 {
     /** @brief The constructed model. */
-    DQ_robotics::M3_SerialManipulatorSimulatorFriendly model;
+    marinholab::sas::core::modeling::SerialManipulatorSimulatorFriendly model;
 
     /** @brief Name of each SDF joint, in chain order (parent -> child). */
     std::vector<std::string> joint_names;
@@ -83,7 +87,7 @@ struct SdfManipulatorResult
 };
 
 /**
- * @brief Builds an M3_SerialManipulatorSimulatorFriendly from an SDF model.
+ * @brief Builds a SerialManipulatorSimulatorFriendly from an SDF model.
  *
  * @details The loader expects a strictly serial kinematic chain: a base (the
  * model's canonical) link, then a sequence of joints each connecting the
