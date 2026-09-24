@@ -17,5 +17,10 @@ RUN sudo apt-get install -y ros-jazzy-sas-*
 # model used by the SDF serial-manipulator loader.
 RUN sudo apt-get install -y libmarinholab-sas-core
 RUN sudo apt-get install -y libgz-transport13-dev
+# The apt `sas_core` package is a thin compatibility shim that re-exports the
+# Python bindings from the `marinholab-sas-core` PyPI package (MarinhoLab/sas_py).
+# Install it so Python nodes that `from sas_core import ...` can import it.
+# (PEP 668: the image's Python is system-managed, hence --break-system-packages.)
+RUN pip install --break-system-packages marinholab-sas-core
 RUN mkdir -p /root/sas_robot_driver_gazebo_devel/src/
 COPY . /root/sas_robot_driver_gazebo_devel/src/sas_robot_driver_gazebo
