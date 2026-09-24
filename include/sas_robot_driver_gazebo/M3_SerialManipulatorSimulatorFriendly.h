@@ -78,7 +78,7 @@ public:
      * @param to_ith_link   Index of the terminal link.
      * @return An 8 x (to_ith_link+1) dual-quaternion pose Jacobian.
      */
-    MatrixXd raw_pose_jacobian(const VectorXd& q_vec, const int& to_ith_link) const override;
+    Eigen::MatrixXd raw_pose_jacobian(const Eigen::VectorXd& q_vec, const int& to_ith_link) const override;
     /**
      * @brief Time derivative of the raw pose Jacobian.
      * @param q             Joint configuration vector.
@@ -86,14 +86,14 @@ public:
      * @param to_ith_link   Index of the terminal link.
      * @return An 8 x (to_ith_link+1) Jacobian-derivative matrix.
      */
-    MatrixXd raw_pose_jacobian_derivative(const VectorXd& q, const VectorXd& q_dot, const int& to_ith_link) const override;
+    Eigen::MatrixXd raw_pose_jacobian_derivative(const Eigen::VectorXd& q, const Eigen::VectorXd& q_dot, const int& to_ith_link) const override;
     /**
      * @brief Raw forward kinematics of the chain up to a given link.
      * @param q_vec         Joint configuration vector.
      * @param to_ith_link   Index of the terminal link.
      * @return The dual-quaternion pose of the terminal link.
      */
-    DQ raw_fkm(const VectorXd &q_vec, const int &to_ith_link) const override;
+    DQ raw_fkm(const Eigen::VectorXd &q_vec, const int &to_ith_link) const override;
 };
 
 }
