@@ -1,6 +1,6 @@
 name: Build
 
-on: [workflow_dispatch]
+on: [push, workflow_dispatch]
 
 jobs:
   sas_build_and_test:
