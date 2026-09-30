@@ -18,6 +18,27 @@ All Gazebo commands run inside the project Docker image
 `ghcr.io/marinholab/gazebo:jazzy` (see `docker/Dockerfile`); Gazebo is not
 installed on the host. Use `docker exec` to run commands in a running container.
 
+## Environment / applicability
+
+These commands and their gotchas were **verified on the project Docker image**,
+which is **Ubuntu 24.04 (Noble) + ROS 2 Jazzy + Gazebo Sim v8 ("Harmonic")**,
+using the Debian `apt` package manager. The environment-specific parts:
+
+- Python bindings `gz.transport13` and `gz.msgs10` in `scripts/snapshot_camera.py`
+  are version-tied to this Gazebo/ROS release. On a different Gazebo version the
+  `N` in `gz.transportN` / `gz.msgsN` changes — update the imports.
+- The GUI window title `Gazebo Sim` (used by `scripts/snapshot_gui.sh`) is the
+  Gazebo v8 title; other Gazebo major versions may title the window differently.
+- `xdotool` / `imagemagick` / `Xvfb` are installed via `apt-get install -y …`
+  (Debian/Ubuntu). On other distros use the equivalent package manager.
+- The exact camera `<model>` block, plugin names, and topic paths assume
+  Gazebo v8. The *approach* is the same elsewhere, but re-verify each detail
+  after changing OS or Gazebo version.
+
+The two workflows themselves (bake a camera / screenshot the GUI window) are
+portable across OSs; only the concrete package names, binding versions, and
+window title may need adjusting.
+
 ## Prerequisites
 
 - A Gazebo container is running. If none exists, build/start one from
