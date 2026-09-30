@@ -1,7 +1,11 @@
 # Gazebo Headless Camera Snapshots — Details
 
 Everything here is verified against `gz sim` (Gazebo/Jazzy) running in the
-project's Docker image `ghcr.io/marinholab/gazebo:jazzy`.
+project's Docker image `ghcr.io/marinholab/gazebo:jazzy` — an
+**Ubuntu 24.04 (Noble)** base. On a different OS or Gazebo version, the
+approach is the same but re-verify the version-specific parts (Python binding
+module names, plugin filenames, topic paths); see the "Environment /
+applicability" section of `SKILL.md`.
 
 ## Camera image topic naming
 

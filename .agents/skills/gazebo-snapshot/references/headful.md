@@ -2,7 +2,16 @@
 
 "Headful" means the Gazebo GUI (the 3D viewport window titled **Gazebo Sim**)
 is actually rendered. A screenshot is a capture of that window, taken by an X
-client. Two ways to give the GUI a display in Docker:
+client.
+
+> **Environment note:** verified on the project Docker image
+> `ghcr.io/marinholab/gazebo:jazzy` — an **Ubuntu 24.04 (Noble)** base with
+> Gazebo v8. The window title `Gazebo Sim`, the `apt-get install` commands, and
+> the `Xvfb :99` setup are specific to that stack; on other OSs/distros or
+> Gazebo versions use the equivalent package manager and re-check the window
+> title. See "Environment / applicability" in `SKILL.md`.
+
+Two ways to give the GUI a display in Docker:
 
 1. **Xvfb inside the container** (no real monitor needed) — the project's own
    `docker/test.sh` already starts `Xvfb :99`.
