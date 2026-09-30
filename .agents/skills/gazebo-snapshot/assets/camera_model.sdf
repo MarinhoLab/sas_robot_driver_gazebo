@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<!--
+  Reusable Gazebo camera model for snapshot capture.
+
+  IMPORTANT: Bake this <model> block DIRECTLY into the target world SDF
+  (paste the contents of <model ...>...</model> inside the <world> tag).
+  A camera added via <include> or via the runtime /create service does NOT
+  publish an image topic in this Gazebo build even when the identical sensor
+  definition + Sensors plugin is present. Only a camera model defined
+  inline in the world file reliably publishes.
+
+  The sensor's image topic (see the skill) follows the pattern:
+    /world/<world>/model/<model>/link/<link>/sensor/<sensor>/image
+  For this model in a world named `snapshot_world`:
+    /world/snapshot_world/model/snapshot_camera/link/link/sensor/camera/image
+
+  Adjust <pose> and <image> width/height to the scene. The default pose
+  (0 0 2.5 0 0 0) places the camera 2.5 m directly above the origin, looking
+  straight down — a reliable "see the scene" overhead view. For a side view
+  (e.g. behind the origin) the roll is fiddly; get it right so the image is
+  level and confirm empirically that the target is in frame (pose semantics in
+  references/camera.md).
+-->
+<model name="snapshot_camera">
+  <static>true</static>
+  <pose>0 0 2.5 0 0 0</pose>
+  <link name="link">
+    <sensor name="camera" type="camera">
+      <always_on>true</always_on>
+      <update_interval>0.033</update_interval>
+      <camera name="main">
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+      </camera>
+      <plugin
+        filename="gz-sim-sensors-system"
+        name="gz::sim::systems::Sensors"/>
+    </sensor>
+  </link>
+</model>
