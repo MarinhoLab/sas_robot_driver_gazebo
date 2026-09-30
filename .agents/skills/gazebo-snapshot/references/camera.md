@@ -42,7 +42,7 @@ Conclusion: always bake the camera into the world file for headless capture.
 ```xml
 <model name="snapshot_camera">
   <static>true</static>
-  <pose>0 0 2.5 0 0 0</pose>
+  <pose>0 0 6 0 1.5708 0</pose>
   <link name="link">
     <sensor name="camera" type="camera">
       <always_on>true</always_on>
@@ -118,29 +118,36 @@ already targets those.
 
 ## Camera pose semantics (pitfalls)
 
-Gazebo camera model axes: **+Z forward** (out of the lens), **+X right**,
-**+Y down**, in the camera frame. The pose is the camera's position +
-roll/pitch/yaw relative to its parent frame (here, the world).
+**Key correction (verified in this build):** a camera with an **identity
+(unrotated) pose looks along the +X axis of its frame**, not straight down.
+This is the most common mistake — placing the camera overhead with no rotation
+(`0 0 6 0 0 0`) leaves it looking *horizontally*, so the target only peeks in
+at the frame edge (a thin red band) instead of being framed.
 
-Practical, verified pose examples to *see the origin area*:
+The verified, well-framed default is an overhead pose with **pitch +90°** to
+tip the look direction straight down:
 
-| Pose | Orientation | Result |
+| Pose (x y z r p y) | Setup | Verified result |
 |---|---|---|
-| `0 0 2.5 0 0 0` | Straight above origin, 2.5 m up | **Verified reliable** bird's-eye view; the target box appears centered. Best default. |
-| `0 -3 1.5 1.5708 0 0` | 3 m behind origin, 1.5 m up, roll +90° | Side view. In this build it produced a near-uniform frame when the target was small — confirm the target actually fills the frame before relying on it. |
-| `0 -3 1.5 0 0 0` | 3 m behind, no roll | Camera +Z points +Y, so it looks at the origin but the image is **rolled 90°** (sideways). Add roll `1.5708` to level it. |
+| `0 0 6 0 1.5708 0` | 6 m above origin, pitch +90° | **Best default.** Looks straight down; the box is dead-center (centroid ≈ 320,240 on a 640×480 frame) with clean ground context around it. |
+| `0 0 4 0 1.5708 0` | 4 m above, pitch +90° | Looks down but the box nearly fills the frame (~73% of pixels) — too close. |
+| `0 0 2.5 0 0 0` | 2.5 m above, **no rotation** | Identity looks horizontally; the box only peeks in as a band at the bottom. **Wrong** for an overhead shot. |
+| `-6 0 2 0 0 0` | 6 m in −X at box height, no rotation | Identity looks along +X → frames the box at the origin horizontally (a side view). |
+| `0 -6 2 0 0 1.5708` | 6 m in −Y, **yaw +90°** | Yaw rotates the look direction from +X to +Y, so it frames the box at the origin. (Yaw −90° looks the wrong way.) |
 
-Gotchas:
-- The overhead pose (`0 0 2.5 0 0 0`) is the most robust default: no roll to
-  get wrong and the scene is seen top-down.
-- A side pose can look like a uniform-gray frame even when the pipeline works
-  (small target, weak lighting, or the target just out of frame). Verify the
-  captured PNG actually contains the target (e.g. count target-colored pixels)
-  rather than assuming success from the presence of an image topic.
-- The camera "up" direction is whatever the world frame gives; there is no
-  automatic level. If the image looks rotated, fix the roll in the pose.
-- `<clip><near>0.05</near><far>100</far></clip>` (optional) controls the
-  view frustum; defaults are fine.
+How to frame it:
+- **Overhead (recommended default):** camera directly above the target on the
+  Z axis, `pitch = +90°` (`1.5708`). Raise altitude for more context (4 m is
+  close, 6 m is comfortable, 8–10 m is wide).
+- **Side view:** put the camera on the line pointing at the target at the
+  target's height. If that line is along +X, no rotation is needed (camera on
+  the −X side). If the line is along +Y, add `yaw = +90°`; along the other axes
+  add the matching yaw/roll. After any rotation, confirm the target is actually
+  centered in the PNG, not just present.
+- A uniform-gray frame means the camera is looking away from (or level with)
+  the target — fix the orientation/height, not the pipeline.
+- `<clip><near>0.05</near><far>100</far></clip>` (optional) controls the view
+  frustum; defaults are fine.
 
 ## Materials that are hard to verify with a red-pixel check
 

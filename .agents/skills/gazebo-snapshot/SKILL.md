@@ -112,12 +112,11 @@ host with the host `DISPLAY` instead.
 - **Headless:** camera must be baked inline (not included/spawned) and must
   carry the `gz-sim-sensors-system` plugin; wait for the topic; verify the PNG
   is the expected size and not a solid color.
-- **Pose semantics:** camera +Z is forward. The verified default pose
-  `0 0 2.5 0 0 0` (overhead) reliably shows the scene; a side pose
-  (e.g. behind the origin) needs the roll set so the image is level and must be
-  confirmed to actually contain the target (a uniform-gray frame means the
-  target is out of frame or unlit, not a pipeline failure). See
-  `references/camera.md`.
+- **Pose semantics:** an identity (unrotated) camera looks along the +X axis,
+  so an overhead camera needs **pitch +90°** (`0 0 6 0 1.5708 0`) to look
+  straight down; without it the target only peeks in as a band at the frame
+  edge. Raise altitude for context; verify the target is actually centered in
+  the PNG. See `references/camera.md` for the full verified pose table.
 - **Headful:** exact window title `Gazebo Sim`; use
   `xdotool getwindowgeometry --shell`; capture on the same X server as the GUI;
   use an emissive target (or a lit scene) if verifying pixels. See
