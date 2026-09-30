@@ -15,15 +15,16 @@
     /world/snapshot_world/model/snapshot_camera/link/link/sensor/camera/image
 
   Adjust <pose> and <image> width/height to the scene. The default pose
-  (0 0 2.5 0 0 0) places the camera 2.5 m directly above the origin, looking
-  straight down — a reliable "see the scene" overhead view. For a side view
-  (e.g. behind the origin) the roll is fiddly; get it right so the image is
-  level and confirm empirically that the target is in frame (pose semantics in
-  references/camera.md).
+  (0 0 6 0 1.5708 0) places the camera 6 m directly above the origin with
+  pitch +90 deg so it looks straight DOWN at the scene — a reliable, well-
+  framed overhead view. Do NOT use an identity orientation (0 0 6 0 0 0):
+  this build's camera default looks horizontally, so the target only peeks in
+  at the frame edge. Pitch +90 deg is required to look down. See
+  references/camera.md for pose semantics and the verified examples.
 -->
 <model name="snapshot_camera">
   <static>true</static>
-  <pose>0 0 2.5 0 0 0</pose>
+  <pose>0 0 6 0 1.5708 0</pose>
   <link name="link">
     <sensor name="camera" type="camera">
       <always_on>true</always_on>
