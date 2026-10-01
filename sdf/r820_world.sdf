@@ -9,6 +9,12 @@
         <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system'/>
         <plugin filename="gz-sim-scene-broadcaster-system"  name="gz::sim::systems::SceneBroadcaster"/>
         <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+        <plugin filename="AbsolutePosePublisher" name="absolute_pose_publisher::AbsolutePosePublisher">
+            <topic>/world/r820_world/absolute_pose/info</topic>
+            <update_rate>50</update_rate>
+            <publish_links>true</publish_links>
+            <publish_joints>false</publish_joints>
+        </plugin>
 
         <light type="directional" name="sun">
             <cast_shadows>true</cast_shadows>
