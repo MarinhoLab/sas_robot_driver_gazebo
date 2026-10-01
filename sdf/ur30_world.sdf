@@ -1,6 +1,13 @@
 <sdf version='1.11'>
     <world name="ur30_world">
 
+        <plugin filename="AbsolutePosePublisher" name="absolute_pose_publisher::AbsolutePosePublisher">
+            <topic>/world/ur30_world/absolute_pose/info</topic>
+            <update_rate>50</update_rate>
+            <publish_links>true</publish_links>
+            <publish_joints>false</publish_joints>
+        </plugin>
+
     <light type="directional" name="sun">
         <cast_shadows>true</cast_shadows>
         <pose>0 0 5 0 0 0</pose>
