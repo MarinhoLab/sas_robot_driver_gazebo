@@ -45,12 +45,30 @@
 #include <sas_robot_driver/sas_robot_driver_ros.hpp>
 #include <sas_robot_driver_gazebo/sas_robot_driver_gazebo.hpp>
 
-static std::atomic_bool kill_this_process(false);
-void sig_int_handler(int)
+/// Set by SIGINT; stops the driver's loops through its ShutdownSignaler.
+static std::atomic_bool kill_this_process{false};
+
+/**
+ * @brief SIGINT handler: request the node to shut down.
+ * @param signal The signal number (unused).
+ */
+void sig_int_handler(int signal)
 {
+    (void)signal;
     kill_this_process = true;
 }
 
+/**
+ * @brief Run the Gazebo robot driver bridge.
+ *
+ * Reads the node's parameters (joint_names, joint_positions_topic_prefix,
+ * joint_states_topic, robot_name, and optionally thread_sampling_time_sec,
+ * 0.002 s by default), constructs RobotDriverGazebo and a RobotDriverROS
+ * around it, and runs the driver's control loop until SIGINT.
+ * @param argc Number of command-line arguments.
+ * @param argv Command-line arguments (ROS 2 arguments included).
+ * @return 0.
+ */
 int main(int argc, char** argv)
 {
     if(signal(SIGINT, sig_int_handler) == SIG_ERR)

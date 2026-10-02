@@ -10,4 +10,5 @@ marinholab.sas.core.RobotDriver that sas_robot_driver.RobotDriverROS accepts.
 
 from ._sas_robot_driver_gazebo import RobotDriverGazebo, RobotDriverGazeboConfiguration
 
+## The names this package exports.
 __all__ = ["RobotDriverGazebo", "RobotDriverGazeboConfiguration"]

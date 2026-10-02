@@ -30,7 +30,7 @@
 
 Samples, at 50 Hz, the joint positions Gazebo publishes (gz-transport, the
 JointStatePublisher topic) and those the bridge reports
-(<robot_name>/get/joint_states), then prints the delay that best aligns them
+(`robot_name/get/joint_states`), then prints the delay that best aligns them
 and the largest gap. The Gazebo subscription is throttled and the ROS spin
 waits, so that this monitor does not fall behind itself.
 
