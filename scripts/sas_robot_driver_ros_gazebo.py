@@ -64,7 +64,9 @@ def main():
         rospy_node.declare_parameter('robot_name')
         robot_name = rospy_node.get_parameter('robot_name').get_parameter_value().string_value
 
-        rospy_node.declare_parameter('thread_sampling_time_sec', 0.002)
+        # 100 Hz: at 500 Hz the joint-state callback falls behind this loop and
+        # the reported joint positions lag Gazebo's more and more (see README).
+        rospy_node.declare_parameter('thread_sampling_time_sec', 0.01)
         sampling_time = rospy_node.get_parameter('thread_sampling_time_sec').get_parameter_value().double_value
 
         ss = ShutdownSignaler()
