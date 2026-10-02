@@ -131,13 +131,11 @@ behind `<include>` chains; all have every joint acting about +z.
 
 The bridge (`sas_robot_driver_ros_gazebo.py`) runs its `RobotDriverROS` loop
 every `thread_sampling_time_sec`, 0.01 s (100 Hz) by default. At 0.002 s
-(500 Hz), the joint positions it reports lag Gazebo's, and the lag grows
-while the robot moves: in `ur3e_world.sdf` with `joint_interface_example.py`,
-about 0.4 s behind and up to 18° apart after 45 s, against no measurable lag
-(within 1.3°, one sample) at 0.01 s. The commands reach Gazebo at once. The
-joint-state callback, in Python, falls behind the 500 Hz loop, which calls
-into the Python driver every period; publishing the joint states less often
-(JointStatePublisher `update_rate` 50) does not help.
-
-- `gz::sim::systems::PosePublisher` has been considered to read poses of entities. However, it's more convenient for `tf2` given how the frames are described. 
-- The translation tool inside Gazebo can be used to move objects and reading their pose works only after the motion is finished. The intermediate state is not reflected in the `pose` topic.
+(500 Hz), the joint positions it reports fall far behind Gazebo's: in
+`ur3e_world.sdf` with `joint_interface_example.py` (±10° sinusoids), they did
+not update at all during a 45 s run. At 0.01 s they are 93–135 ms behind
+(within 1.2–1.9°). `sas_robot_driver.RobotDriverROS.control_loop()` holds the
+Python interpreter lock while its C++ loop sleeps between periods (py-spy
+`--gil`: 67 % of the samples), so the gz-transport thread running the Python
+joint-state callback rarely runs; a longer period gives it more chances. The
+commands reach Gazebo at once.
