@@ -34,6 +34,10 @@ JointStatePublisher topic) and those the bridge reports
 and the largest gap. The Gazebo subscription is throttled and the ROS spin
 waits, so that this monitor does not fall behind itself.
 
+The delay is the smallest shift that aligns the two series within a small
+tolerance of the best alignment. With periodic motion, delays that differ by
+a whole period cannot be told apart: the smallest one is reported.
+
     ros2 run sas_robot_driver_gazebo bridge_lag_monitor.py \
         /world/ur3e_world/model/ur3e/model/ur3e_position_controller/model/ur3e/joint_state \
         /ur3e_1/get/joint_states 45 shoulder_pan_joint shoulder_lift_joint elbow_joint \
@@ -85,8 +89,11 @@ def main():
     ok = ~np.isnan(g).any(1) & ~np.isnan(r).any(1) & (t > min(10.0, seconds / 2))
     g, r = g[ok], r[ok]
     dt = float(np.median(np.diff(t)))
-    errors = [np.abs(r[lag:] - g[:len(g) - lag]).max() for lag in range(0, min(1000, len(g) // 2))]
-    lag = int(np.argmin(errors))
+    errors = np.array([np.abs(r[lag:] - g[:len(g) - lag]).max() for lag in range(0, min(1000, len(g) // 2))])
+    # The smallest shift that aligns the series about as well as the best one:
+    # with periodic motion, a shift by one period aligns them as well as none.
+    tolerance = max(0.05 * errors.min(), np.radians(0.05))
+    lag = int(np.flatnonzero(errors <= errors.min() + tolerance)[0])
     print(f"reported {1e3 * lag * dt:.0f} ms behind Gazebo; largest gap {np.degrees(np.abs(r - g).max()):.2f} deg")
 
 
