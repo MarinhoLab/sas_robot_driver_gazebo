@@ -12,7 +12,10 @@ ur3e_1:
     joint_positions_topic_prefix: "/model/ur3e/joint/"
     joint_states_topic: "/world/ur3e_world/model/ur3e/model/ur3e_position_controller/model/ur3e/joint_state"
     robot_name: "ur3e_1"
-    thread_sampling_time_sec: 0.002  # Robot thread is at 500 Hz
+    # Robot thread at 100 Hz. At 500 Hz (0.002), the Python bridge reports the
+    # joint positions late, and later and later while the robot moves: its
+    # joint-state callback falls behind its own loop.
+    thread_sampling_time_sec: 0.01
 
 # sas_object_server_gazebo_node (entity pose synchronization)
 sas_object_server_gazebo_node:
