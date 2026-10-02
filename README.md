@@ -43,7 +43,7 @@ Each node loads its parameters from a YAML configuration file. The default is
 
 | Property | Value |
 |---|---|
-| **Executable** | `sas_robot_driver_ros_gazebo.py` |
+| **Executable** | `sas_robot_driver_ros_gazebo_node` (C++, default of `robot_driver_server_launch.py`), or `sas_robot_driver_ros_gazebo.py` (`implementation:=python`) |
 | **ROS node name** | `ur3e_1` (set by the `name` launch argument of `robot_driver_server_launch.py`) |
 | **Description** | Bridges ROS and Gazebo. Subscribes to Gazebo joint states and publishes target joint positions, running the `RobotDriverROS` control loop. |
 
@@ -56,6 +56,7 @@ Each node loads its parameters from a YAML configuration file. The default is
 | `joint_states_topic` | string | **Mandatory** | none — must be provided | Gazebo topic of the joint states to read |
 | `robot_name` | string | **Mandatory** | none — must be provided | Name of the robot; used as the robot-driver topic prefix |
 | `thread_sampling_time_sec` | double | Optional | `0.002` | Sampling period of the control-loop thread |
+| `use_cpp_driver` | bool | Optional | `true` | `sas_robot_driver_ros_gazebo.py` only: use the C++ `RobotDriverGazebo` (pybind11), not the Python one (see [The C++ driver](#the-c-driver)) |
 
 ### Node: `sas_object_server_gazebo_node`
 
@@ -124,6 +125,39 @@ sdf2manipulator sdf/ur3e_world.sdf --model-scope "ur3e::ur3e_position_controller
 each) are ready-made model-file test inputs, and `r820_world.sdf` /
 `ur3e_world.sdf` are ready-made world-file inputs that nest the same robots
 behind `<include>` chains; all have every joint acting about +z.
+
+## The C++ driver
+
+`RobotDriverGazebo` is also in C++ (`include/sas_robot_driver_gazebo/sas_robot_driver_gazebo.hpp`):
+the bridge node `sas_robot_driver_ros_gazebo_node`, and, for Python scripts,
+`sas_robot_driver_gazebo._sas_robot_driver_gazebo.RobotDriverGazebo`, a
+`marinholab.sas.core.RobotDriver` that `sas_robot_driver.RobotDriverROS`
+accepts. The binding is built with the pybind11 that sas_robot_driver and
+marinholab-sas-core use (the `pybind11` submodule, branch v3.0, at
+sas_robot_driver's commit) and `py::smart_holder`, as they bind `RobotDriver`.
+
+With the Python driver, the bridge reports joint positions that lag Gazebo's,
+by seconds: `sas_robot_driver.RobotDriverROS.control_loop()` holds the Python
+interpreter lock while its C++ loop sleeps between periods (py-spy `--gil`:
+67 % of the samples, in `clock_nanosleep`), so the gz-transport thread that
+runs the Python joint-state callback rarely gets to run. The C++ driver's
+callback takes no interpreter lock.
+
+`ur3e_world.sdf`, `joint_interface_example.py` (±10° sinusoids) and
+`scripts/bridge_lag_monitor.py`, 45 s, Docker on an arm64 Mac:
+
+| Bridge | Loop | Reported vs Gazebo | Largest gap | CPU (bridge) |
+|---|---|---|---|---|
+| Python driver | 2 ms | no update for the whole run (≈ 18 s late) | 10° | 26–28 % |
+| Python driver | 10 ms | 93–135 ms late | 1.2–1.9° | 19 % |
+| C++ driver, from `sas_robot_driver_ros_gazebo.py` | 2 ms | no measurable lag | 0.17° | 32 % |
+| C++ driver, from `sas_robot_driver_ros_gazebo.py` | 1 ms | no measurable lag | 0.17° | 43 % |
+| C++ node | 2 ms | no measurable lag | 0.18° | 28 % |
+| C++ node | 1 ms | no measurable lag | 0.17° | 39 % |
+
+(0.17° is the monitor's 20 ms sampling at these speeds.) Two C++ bridges
+composed into a 13-joint R820 + UR3e (`sas_robot_driver_ros_composer_node`),
+2 ms, along a 26 s passage: 2–4 ms late, within 0.6°.
 
 ## Considerations
 

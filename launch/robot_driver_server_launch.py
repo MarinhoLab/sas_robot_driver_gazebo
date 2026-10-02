@@ -10,6 +10,7 @@ import os.path
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.conditions import LaunchConfigurationEquals
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -35,10 +36,26 @@ def generate_launch_description():
             'config_file',
             default_value=os.path.join(get_package_share_directory('sas_robot_driver_gazebo'), 'config', 'config.yaml')
         ),
+        # 'cpp' (default): the C++ bridge, sas_robot_driver_ros_gazebo_node.
+        # 'python': the Python bridge, sas_robot_driver_ros_gazebo.py (its
+        # driver is the C++ RobotDriverGazebo unless use_cpp_driver is false).
+        DeclareLaunchArgument(
+            'implementation',
+            default_value='cpp',
+            choices=['cpp', 'python']
+        ),
+        Node(
+            package='sas_robot_driver_gazebo',
+            executable='sas_robot_driver_ros_gazebo_node',
+            name=name,
+            parameters=[config_file],
+            condition=LaunchConfigurationEquals('implementation', 'cpp')
+        ),
         Node(
             package='sas_robot_driver_gazebo',
             executable='sas_robot_driver_ros_gazebo.py',
             name=name,
-            parameters=[config_file]
+            parameters=[config_file],
+            condition=LaunchConfigurationEquals('implementation', 'python')
         )
     ])

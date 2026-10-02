@@ -21,6 +21,8 @@
        serial-manipulator-sdf loader. -->
   <depend>sdformat_vendor</depend>
   <depend>gz_math_vendor</depend>
+  <depend>gz_transport_vendor</depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

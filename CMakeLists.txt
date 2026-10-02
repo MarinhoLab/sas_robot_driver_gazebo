@@ -1,6 +1,21 @@
 cmake_minimum_required(VERSION 3.8)
 project(sas_robot_driver_gazebo)
 
+#################################
+# pybind11 import block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvvvvvvvvvv #
+# As in sas_robot_driver: the pybind11 that sas_robot_driver and
+# marinholab-sas-core are built with (submodule, branch v3.0, the same commit
+# as sas_robot_driver's), first, so that the Python module below shares their
+# type registry and RobotDriverGazebo is a marinholab.sas.core.RobotDriver to
+# them. (Ubuntu 24.04's pybind11 2.11 has another registry: "referenced
+# unknown base type".)
+set(PYBIND11_FINDPYTHON ON)
+add_subdirectory(pybind11)
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^ #
+# pybind11 import block [END] #
+###############################
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -288,6 +303,92 @@ install(TARGETS ${RCLCPP_LOCAL_BINARY_NAME}
 unset(RCLCPP_LOCAL_BINARY_NAME)
 # ^^^^^^^^^^^^^^^^^^^^^^ #
 # CPP Binary Block [END] #
+##########################
+
+############################
+# CPP Library Block [BEGIN]#
+# vvvvvvvvvvvvvvvvvvvvvvvv #
+# RobotDriverGazebo in C++: the counterpart of the Python driver
+# (sas_robot_driver_gazebo/sas_robot_driver_gazebo.py), without a Python
+# interpreter lock between Gazebo's joint-state callback and the driver loop.
+# Static (position-independent) so that the node and the Python module carry it.
+set(RCLCPP_LOCAL_LIBRARY_NAME sas_robot_driver_gazebo_cpp)
+
+add_library(${RCLCPP_LOCAL_LIBRARY_NAME} STATIC
+    src/sas_robot_driver_gazebo.cpp
+)
+set_target_properties(${RCLCPP_LOCAL_LIBRARY_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+ament_target_dependencies(${RCLCPP_LOCAL_LIBRARY_NAME}
+    sas_core
+)
+
+target_link_libraries(${RCLCPP_LOCAL_LIBRARY_NAME}
+    Eigen3::Eigen
+    marinholab::sas::core
+    gz-transport13::core
+)
+
+target_include_directories(${RCLCPP_LOCAL_LIBRARY_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
+
+target_compile_features(${RCLCPP_LOCAL_LIBRARY_NAME} PUBLIC cxx_std_17)
+
+unset(RCLCPP_LOCAL_LIBRARY_NAME)
+# ^^^^^^^^^^^^^^^^^^^^^^ #
+# CPP Library Block [END] #
+##########################
+
+############################
+# CPP Binary Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvvvvv #
+# The robot driver bridge in C++: the counterpart of
+# scripts/sas_robot_driver_ros_gazebo.py, with the same parameters.
+set(RCLCPP_LOCAL_BINARY_NAME sas_robot_driver_ros_gazebo_node)
+
+add_executable(${RCLCPP_LOCAL_BINARY_NAME}
+    src/${RCLCPP_LOCAL_BINARY_NAME}.cpp
+)
+
+ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME}
+    rclcpp
+    sas_core
+    sas_common
+    sas_robot_driver
+)
+
+target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME}
+    sas_robot_driver_gazebo_cpp
+)
+
+install(TARGETS ${RCLCPP_LOCAL_BINARY_NAME}
+    DESTINATION lib/${PROJECT_NAME})
+
+unset(RCLCPP_LOCAL_BINARY_NAME)
+# ^^^^^^^^^^^^^^^^^^^^^^ #
+# CPP Binary Block [END] #
+##########################
+
+############################
+# Python Binding [BEGIN]   #
+# vvvvvvvvvvvvvvvvvvvvvvvv #
+# sas_robot_driver_gazebo._sas_robot_driver_gazebo: the C++ RobotDriverGazebo
+# for Python scripts (a marinholab.sas.core.RobotDriver).
+find_package(ament_cmake_python REQUIRED)
+
+pybind11_add_module(_sas_robot_driver_gazebo
+    src/python/sas_robot_driver_gazebo_py.cpp
+)
+
+target_link_libraries(_sas_robot_driver_gazebo PRIVATE
+    sas_robot_driver_gazebo_cpp
+)
+
+install(TARGETS _sas_robot_driver_gazebo
+    DESTINATION "${PYTHON_INSTALL_DIR}/${PROJECT_NAME}")
+# ^^^^^^^^^^^^^^^^^^^^^^ #
+# Python Binding [END]     #
 ##########################
 
 # Environment hooks
