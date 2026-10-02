@@ -43,7 +43,7 @@ Each node loads its parameters from a YAML configuration file. The default is
 
 | Property | Value |
 |---|---|
-| **Executable** | `sas_robot_driver_ros_gazebo.py` |
+| **Executable** | `sas_robot_driver_ros_gazebo_node` (C++, default of `robot_driver_server_launch.py`), or `sas_robot_driver_ros_gazebo.py` (`implementation:=python`) |
 | **ROS node name** | `ur3e_1` (set by the `name` launch argument of `robot_driver_server_launch.py`) |
 | **Description** | Bridges ROS and Gazebo. Subscribes to Gazebo joint states and publishes target joint positions, running the `RobotDriverROS` control loop. |
 
@@ -124,6 +124,35 @@ sdf2manipulator sdf/ur3e_world.sdf --model-scope "ur3e::ur3e_position_controller
 each) are ready-made model-file test inputs, and `r820_world.sdf` /
 `ur3e_world.sdf` are ready-made world-file inputs that nest the same robots
 behind `<include>` chains; all have every joint acting about +z.
+
+## The C++ driver
+
+`RobotDriverGazebo` is implemented in C++
+(`include/sas_robot_driver_gazebo/sas_robot_driver_gazebo.hpp`). The bridge
+node `sas_robot_driver_ros_gazebo_node` uses it directly; Python scripts use
+it through its pybind11 binding, re-exported by the package:
+
+```python
+from marinholab.sas.core import ShutdownSignaler
+from sas_robot_driver_gazebo import RobotDriverGazebo, RobotDriverGazeboConfiguration
+```
+
+`RobotDriverGazebo` is a `marinholab.sas.core.RobotDriver` that
+`sas_robot_driver.RobotDriverROS` accepts, with the constructor, methods and
+`configuration` attribute of the former pure-Python driver, which it
+replaces; its getters return NumPy arrays. The binding is built with the
+pybind11 that sas_robot_driver and marinholab-sas-core use (the `pybind11`
+submodule, branch v3.0, at sas_robot_driver's commit; run
+`git submodule update --init`) and `py::smart_holder`, as they bind
+`RobotDriver`.
+
+The pure-Python driver reported joint positions seconds behind Gazebo's, or
+not at all: `sas_robot_driver.RobotDriverROS.control_loop()` holds the Python
+interpreter lock while its C++ loop sleeps, so the gz-transport thread
+running its Python joint-state callback rarely ran. The C++ driver's callback
+takes no interpreter lock; with it, the bridge reports Gazebo's joints with no
+measurable lag at 2 ms and 1 ms. The measurements, the profile and how to
+reproduce them are in [BENCHMARK.md](BENCHMARK.md).
 
 ## Considerations
 

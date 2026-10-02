@@ -26,7 +26,8 @@
 @file sas_robot_driver_ros_gazebo.py
 @brief Gazebo robot driver bridge.
 
-Creates a RobotDriverROS instance backed by RobotDriverGazebo.
+Creates a RobotDriverROS instance backed by RobotDriverGazebo (C++, via pybind11).
+The C++ node sas_robot_driver_ros_gazebo_node does the same without Python.
 """
 
 import rclpy
@@ -71,7 +72,7 @@ def main():
 
         ss = ShutdownSignaler()
         gazebo_cfg = RobotDriverGazeboConfiguration()
-        gazebo_cfg.joint_names = joint_names
+        gazebo_cfg.joint_names = list(joint_names)
 
         gazebo_cfg.joint_positions_topic_prefix = joint_positions_topic_prefix#"/model/ur3e_1/joint/"
         gazebo_cfg.joint_states_topic = joint_states_topic#"/world/ur3e_position_world/model/ur3e_1/model/ur3e_1_position_controller/model/ur3e_1/joint_state"
