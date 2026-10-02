@@ -55,7 +55,7 @@ Each node loads its parameters from a YAML configuration file. The default is
 | `joint_positions_topic_prefix` | string | **Mandatory** | none — must be provided | Gazebo topic prefix for target joint positions |
 | `joint_states_topic` | string | **Mandatory** | none — must be provided | Gazebo topic of the joint states to read |
 | `robot_name` | string | **Mandatory** | none — must be provided | Name of the robot; used as the robot-driver topic prefix |
-| `thread_sampling_time_sec` | double | Optional | `0.01` | Sampling period of the control-loop thread (see [Bridge loop period](#bridge-loop-period)) |
+| `thread_sampling_time_sec` | double | Optional | `0.002` | Sampling period of the control-loop thread (see [Bridge loop period](#bridge-loop-period)) |
 
 ### Node: `sas_object_server_gazebo_node`
 
@@ -158,15 +158,13 @@ reproduce them are in [BENCHMARK.md](BENCHMARK.md).
 
 ### Bridge loop period
 
-The bridge (`sas_robot_driver_ros_gazebo.py`) runs its `RobotDriverROS` loop
-every `thread_sampling_time_sec`, 0.01 s (100 Hz) by default. At 0.002 s
-(500 Hz), the joint positions it reports lag Gazebo's, and the lag grows
-while the robot moves: in `ur3e_world.sdf` with `joint_interface_example.py`,
-about 0.4 s behind and up to 18° apart after 45 s, against no measurable lag
-(within 1.3°, one sample) at 0.01 s. The commands reach Gazebo at once. The
-joint-state callback, in Python, falls behind the 500 Hz loop, which calls
-into the Python driver every period; publishing the joint states less often
-(JointStatePublisher `update_rate` 50) does not help.
+The bridge runs its `RobotDriverROS` loop every `thread_sampling_time_sec`,
+0.002 s (500 Hz) by default, as the C++ driver keeps up at that rate and at
+0.001 s. With the former pure-Python driver it did not: its reported joint
+positions fell seconds behind Gazebo's, because
+`sas_robot_driver.RobotDriverROS.control_loop()` holds the Python interpreter
+lock while its C++ loop sleeps, and #20 set 0.01 s as a mitigation. See
+[The C++ driver](#the-c-driver) and [BENCHMARK.md](BENCHMARK.md).
 
 - `gz::sim::systems::PosePublisher` has been considered to read poses of entities. However, it's more convenient for `tf2` given how the frames are described. 
 - The translation tool inside Gazebo can be used to move objects and reading their pose works only after the motion is finished. The intermediate state is not reflected in the `pose` topic.
