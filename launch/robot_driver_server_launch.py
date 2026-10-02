@@ -37,8 +37,8 @@ def generate_launch_description():
             default_value=os.path.join(get_package_share_directory('sas_robot_driver_gazebo'), 'config', 'config.yaml')
         ),
         # 'cpp' (default): the C++ bridge, sas_robot_driver_ros_gazebo_node.
-        # 'python': the Python bridge, sas_robot_driver_ros_gazebo.py (its
-        # driver is the C++ RobotDriverGazebo unless use_cpp_driver is false).
+        # 'python': the Python script sas_robot_driver_ros_gazebo.py, with
+        # the same (C++) RobotDriverGazebo through its Python binding.
         DeclareLaunchArgument(
             'implementation',
             default_value='cpp',

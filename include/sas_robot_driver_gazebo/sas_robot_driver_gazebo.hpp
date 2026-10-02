@@ -32,8 +32,7 @@
  * @file sas_robot_driver_gazebo.hpp
  * @brief Gazebo implementation of sas::RobotDriver, in C++.
  *
- * The C++ counterpart of sas_robot_driver_gazebo.RobotDriverGazebo (Python):
- * publishes joint position commands to Gazebo's JointPositionController
+ * Publishes joint position commands to Gazebo's JointPositionController
  * topics and keeps the latest joint states from a JointStatePublisher topic.
  * The joint-state callback runs on gz-transport's thread and only copies the
  * configured joints into vectors under a mutex, so it never waits for the
@@ -102,6 +101,9 @@ public:
      */
     RobotDriverGazebo(const std::shared_ptr<ShutdownSignaler>& shutdown_signaler,
                       const RobotDriverGazeboConfiguration& configuration);
+
+    /// The configuration this driver was constructed with.
+    const RobotDriverGazeboConfiguration& get_configuration() const;
 
     Eigen::VectorXd get_joint_positions() override;
     void set_target_joint_positions(const Eigen::VectorXd& target_joint_positions_rad) override;

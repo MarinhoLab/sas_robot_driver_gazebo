@@ -95,6 +95,11 @@ Eigen::VectorXd RobotDriverGazebo::_copy_if_received(const Eigen::VectorXd& valu
     return values;
 }
 
+const RobotDriverGazeboConfiguration& RobotDriverGazebo::get_configuration() const
+{
+    return configuration_;
+}
+
 Eigen::VectorXd RobotDriverGazebo::get_joint_positions()
 {
     return _copy_if_received(positions_, "joint positions");

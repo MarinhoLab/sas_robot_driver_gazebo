@@ -32,8 +32,11 @@
  * @brief pybind11 bindings: sas_robot_driver_gazebo._sas_robot_driver_gazebo.
  *
  * Exposes the C++ RobotDriverGazebo and its configuration to Python, as a
- * subclass of marinholab.sas.core.RobotDriver, so that a Python script can
- * pass it to sas_robot_driver.RobotDriverROS in place of the Python driver.
+ * subclass of marinholab.sas.core.RobotDriver that
+ * sas_robot_driver.RobotDriverROS accepts. The package re-exports both
+ * (sas_robot_driver_gazebo.RobotDriverGazebo, ...Configuration); they replace
+ * the former pure-Python driver, with the same constructor, methods and
+ * `configuration` attribute (the getters return NumPy arrays).
  */
 
 #include <pybind11/pybind11.h>
@@ -69,6 +72,7 @@ PYBIND11_MODULE(_sas_robot_driver_gazebo, m)
              py::call_guard<py::gil_scoped_release>())
         .def("get_joint_velocities", &RobotDriverGazebo::get_joint_velocities, py::call_guard<py::gil_scoped_release>())
         .def("get_joint_torques", &RobotDriverGazebo::get_joint_torques, py::call_guard<py::gil_scoped_release>())
+        .def_property_readonly("configuration", &RobotDriverGazebo::get_configuration)
         .def("connect", &RobotDriverGazebo::connect)
         .def("disconnect", &RobotDriverGazebo::disconnect)
         .def("initialize", &RobotDriverGazebo::initialize, py::call_guard<py::gil_scoped_release>())

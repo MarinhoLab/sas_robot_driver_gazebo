@@ -26,7 +26,8 @@
 @file sas_robot_driver_ros_gazebo.py
 @brief Gazebo robot driver bridge.
 
-Creates a RobotDriverROS instance backed by RobotDriverGazebo.
+Creates a RobotDriverROS instance backed by RobotDriverGazebo (C++, via pybind11).
+The C++ node sas_robot_driver_ros_gazebo_node does the same without Python.
 """
 
 import rclpy
@@ -67,30 +68,14 @@ def main():
         rospy_node.declare_parameter('thread_sampling_time_sec', 0.002)
         sampling_time = rospy_node.get_parameter('thread_sampling_time_sec').get_parameter_value().double_value
 
-        # The C++ RobotDriverGazebo (pybind11) by default; the Python one
-        # with use_cpp_driver false. With the Python driver, its joint-state
-        # callback competes with this loop for the interpreter lock and the
-        # reported joint positions fall behind Gazebo's (see README).
-        rospy_node.declare_parameter('use_cpp_driver', True)
-        use_cpp_driver = rospy_node.get_parameter('use_cpp_driver').get_parameter_value().bool_value
-
         ss = ShutdownSignaler()
-        if use_cpp_driver:
-            from sas_robot_driver_gazebo._sas_robot_driver_gazebo import (
-                RobotDriverGazebo as RobotDriverGazeboCpp,
-                RobotDriverGazeboConfiguration as RobotDriverGazeboConfigurationCpp)
-            gazebo_cfg = RobotDriverGazeboConfigurationCpp()
-        else:
-            gazebo_cfg = RobotDriverGazeboConfiguration()
+        gazebo_cfg = RobotDriverGazeboConfiguration()
         gazebo_cfg.joint_names = list(joint_names)
 
         gazebo_cfg.joint_positions_topic_prefix = joint_positions_topic_prefix#"/model/ur3e_1/joint/"
         gazebo_cfg.joint_states_topic = joint_states_topic#"/world/ur3e_position_world/model/ur3e_1/model/ur3e_1_position_controller/model/ur3e_1/joint_state"
 
-        if use_cpp_driver:
-            srdg = RobotDriverGazeboCpp(ss, gazebo_cfg)
-        else:
-            srdg = RobotDriverGazebo(ss, gazebo_cfg)
+        srdg = RobotDriverGazebo(ss, gazebo_cfg)
 
         rdrg_cfg = RobotDriverROSConfiguration()
         rdrg_cfg.robot_driver_provider_prefix = robot_name
