@@ -4,6 +4,30 @@
 > Repository for this module: https://github.com/MarinhoLab/sas_robot_driver_gazebo <br/>
 > More information about SmartArmStack is available in https://smartarmstack.github.io/.
 
+## Worlds
+
+Each `sdf/*_world.sdf` file is a ready-made Gazebo world. Run
+`setup_vendor.sh ur` first to download the mesh models, then launch a world
+with `gz sim <world>.sdf`.
+
+| World file         | Robot                       | DOF |
+|--------------------|-----------------------------|-----|
+| `sdf/ur3e_world.sdf` | Universal Robots UR3e     | 6   |
+| `sdf/ur30_world.sdf` | Universal Robots UR30     | 6   |
+| `sdf/r820_world.sdf` | KUKA r820 (iiwa-style)    | 7   |
+
+### `ur3e_world`
+
+![UR3e in Gazebo Sim](docs/images/ur3e.png)
+
+### `ur30_world`
+
+![UR30 in Gazebo Sim](docs/images/ur30.png)
+
+### `r820_world`
+
+![KUKA r820 in Gazebo Sim](docs/images/r820.png)
+
 ## Licenses
 
 Check any licenses in repositories in `vendor` if you decide to use them. This repository's owner holds no
