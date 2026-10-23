@@ -8,6 +8,7 @@
   <license>LGPL</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
 
   <depend>rclcpp</depend>
   <depend>sas_core</depend>
@@ -17,12 +18,24 @@
        marinholab::sas::core::modeling::SerialManipulatorSimulatorFriendly
        kinematic model used by the SDF serial-manipulator loader. -->
   <depend>libmarinholab-sas-core</depend>
-  <!-- Provide the sdformat14 / gz-math7 CMake configs used by the
-       serial-manipulator-sdf loader. -->
+  <!-- Provide the sdformat14 / gz-math7 / gz-transport13 / gz-sim8 CMake
+       configs and headers used by the serial-manipulator-sdf loader and the
+       gz sim system plugins. -->
   <depend>sdformat_vendor</depend>
   <depend>gz_math_vendor</depend>
   <depend>gz_transport_vendor</depend>
-  <buildtool_depend>ament_cmake_python</buildtool_depend>
+  <depend>gz_sim_vendor</depend>
+  <depend>eigen</depend>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+
+  <!-- dqrobotics (C++ libdqrobotics and the `dqrobotics` Python bindings) has
+       no rosdep key; it comes from the DQ Robotics PPA and PyPI (see
+       https://github.com/marinholab/docker_recipes). -->
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
@@ -30,4 +43,4 @@
   <export>
     <build_type>ament_cmake</build_type>
   </export>
-</package>    
+</package>
