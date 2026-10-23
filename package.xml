@@ -14,15 +14,15 @@
   <depend>sas_core</depend>
   <depend>sas_common</depend>
   <depend>sas_robot_driver</depend>
-  <!-- The ROS-free SmartArmStack core (MarinhoLab/sas_cpp) provides the
+  <!-- ROS-free SmartArmStack core (MarinhoLab/sas_cpp); provides the
        marinholab::sas::core::modeling::SerialManipulatorSimulatorFriendly
        kinematic model used by the SDF serial-manipulator loader. It is
-       installed as the libmarinholab-sas-core .deb (see docker/Dockerfile)
-       and checked by find_package(marinholab_sas_core REQUIRED) in
-       CMakeLists.txt. It is a plain CMake package (no package.xml) with no
-       rosdep key, so it is intentionally not declared here: colcon cannot
-       resolve non-ament dependencies and rosdep install would fail on an
-       unknown key (same pattern as the sas_core package's .deb comment). -->
+       installed as the libmarinholab-sas-core .deb and checked by
+       find_package(marinholab_sas_core REQUIRED) in CMakeLists.txt. The key
+       is not in the stock rosdep index; the SmartArmStack release tooling
+       maps it to the real package (SmartArmStack/smart_arm_stack_ROS2,
+       jazzy/rosdep_sas_lgpl.yaml). -->
+  <depend>libmarinholab-sas-core</depend>
   <!-- Provide the sdformat14 / gz-math7 / gz-transport13 / gz-sim8 CMake
        configs and headers used by the serial-manipulator-sdf loader and the
        gz sim system plugins. -->
