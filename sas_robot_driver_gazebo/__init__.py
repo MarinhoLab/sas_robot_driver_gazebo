@@ -8,7 +8,10 @@ Re-exports the Gazebo robot driver classes, implemented in C++
 marinholab.sas.core.RobotDriver that sas_robot_driver.RobotDriverROS accepts.
 """
 
-from ._sas_robot_driver_gazebo import RobotDriverGazebo, RobotDriverGazeboConfiguration
+from sas_robot_driver_gazebo._sas_robot_driver_gazebo import (
+    RobotDriverGazebo,
+    RobotDriverGazeboConfiguration,
+)
 
 ## The names this package exports.
 __all__ = ["RobotDriverGazebo", "RobotDriverGazeboConfiguration"]
