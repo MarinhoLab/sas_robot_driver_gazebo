@@ -52,6 +52,7 @@ import rclpy
 from gz.msgs10.model_pb2 import Model
 from gz.transport13 import Node as GzNode
 from gz.transport13 import SubscribeOptions
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 from sensor_msgs.msg import JointState
@@ -81,10 +82,15 @@ def main():
                              QoSProfile(depth=1))
     rows = []
     start = time.monotonic()
-    while time.monotonic() - start < seconds:
-        rclpy.spin_once(node, timeout_sec=0.005)
-        if not rows or time.monotonic() - start - rows[-1][0] >= 0.02:
-            rows.append([time.monotonic() - start, *gazebo, *reported["q"]])
+    try:
+        while time.monotonic() - start < seconds:
+            rclpy.spin_once(node, timeout_sec=0.005)
+            if not rows or time.monotonic() - start - rows[-1][0] >= 0.02:
+                rows.append([time.monotonic() - start, *gazebo, *reported["q"]])
+    except (KeyboardInterrupt, ExternalShutdownException):
+        pass
+    except Exception as e:
+        print(e)
     rows = np.array(rows)
     t, g, r = rows[:, 0], rows[:, 1:1 + len(names)], rows[:, 1 + len(names):]
     ok = ~np.isnan(g).any(1) & ~np.isnan(r).any(1) & (t > min(10.0, seconds / 2))
