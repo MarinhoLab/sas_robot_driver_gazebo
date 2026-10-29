@@ -49,11 +49,12 @@ import time
 
 import numpy as np
 import rclpy
+from gz.msgs10.model_pb2 import Model
+from gz.transport13 import Node as GzNode
+from gz.transport13 import SubscribeOptions
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 from sensor_msgs.msg import JointState
-from gz.transport13 import Node as GzNode, SubscribeOptions
-from gz.msgs10.model_pb2 import Model
 
 
 def main():

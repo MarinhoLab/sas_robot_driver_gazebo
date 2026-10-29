@@ -32,10 +32,12 @@ The C++ node sas_robot_driver_ros_gazebo_node does the same without Python.
 
 import rclpy
 from rclpy.node import Node
+
+from sas_common import rclcpp_init, rclcpp_Node
 from sas_core import ShutdownSignaler
-from sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown
 from sas_robot_driver import RobotDriverROS, RobotDriverROSConfiguration
 from sas_robot_driver_gazebo import RobotDriverGazebo, RobotDriverGazeboConfiguration
+
 
 def main():
     """

@@ -17,10 +17,10 @@ Example (topic name exactly as reported by `gz topic -l`):
 import sys
 import time
 
-from PIL import Image
 from gz.msgs10 import image_pb2
 from gz.msgs10.image_pb2 import Image as GzImage
 from gz.transport13 import Node
+from PIL import Image
 
 # gz.msgs pixel-format enum value -> (Pillow mode, bytes per pixel)
 FORMAT_PIL = {
