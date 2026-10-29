@@ -92,8 +92,8 @@ def main():
         sas_robot_driver_ros.control_loop()
     except KeyboardInterrupt:
         pass
-    except ...:
-        pass
+    except Exception as e:
+        print("sas_robot_driver_ros_gazebo::Error::" + str(e))
 
 if __name__ == '__main__':
     main()
