@@ -451,6 +451,8 @@ SdfManipulatorResult SdfSerialManipulatorLoader::LoadFromModel(
     std::move(offset_after),
     lower_limits,
     upper_limits,
+    /*source_path=*/{},
+    /*source_scope=*/{},
   };
 }
 

@@ -49,9 +49,9 @@ import time
 
 import numpy as np
 import rclpy
-from gz.msgs10.model_pb2 import Model
+from gz.msgs10.model_pb2 import Model  # pyright: ignore[reportAttributeAccessIssue]
 from gz.transport13 import Node as GzNode
-from gz.transport13 import SubscribeOptions
+from gz.transport13 import SubscribeOptions  # pyright: ignore[reportAttributeAccessIssue]
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
@@ -78,8 +78,10 @@ def main():
     gz_node.subscribe(Model, gz_topic, on_gazebo, options)
     rclpy.init()
     node = Node("bridge_lag_monitor")
-    node.create_subscription(JointState, ros_topic, lambda m: reported.__setitem__("q", np.array(m.position)),
-                             QoSProfile(depth=1))
+    def on_ros(msg: JointState) -> None:
+        reported["q"] = np.array(msg.position)
+
+    node.create_subscription(JointState, ros_topic, on_ros, QoSProfile(depth=1))
     rows = []
     start = time.monotonic()
     try:
