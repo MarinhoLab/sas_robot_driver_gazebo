@@ -150,9 +150,7 @@ public:
      *         model is found, model_scope does not match, the selected model
      *         is not a serial manipulator, or a joint does not act about +z.
      */
-    SdfManipulatorResult LoadFromFile(
-      const std::string &path,
-      const std::string &model_scope = std::string()) const;
+    SdfManipulatorResult LoadFromFile(const std::string& path, const std::string& model_scope = std::string()) const;
 
     /**
      * @brief Parse an SDF model file and build the kinematic model.
@@ -161,7 +159,7 @@ public:
      * @throws std::runtime_error if the file cannot be parsed, is not a serial
      *         manipulator, or a joint does not act about the +z axis.
      */
-    SdfManipulatorResult LoadFromSdfFile(const std::string &path) const;
+    SdfManipulatorResult LoadFromSdfFile(const std::string& path) const;
 
     /**
      * @brief Build the kinematic model from an already-loaded SDF model.
@@ -169,7 +167,7 @@ public:
      * @return The loaded model and its joint/link names.
      * @throws std::runtime_error on structural or actuation violations.
      */
-    SdfManipulatorResult LoadFromModel(const sdf::Model *model) const;
+    SdfManipulatorResult LoadFromModel(const sdf::Model* model) const;
 };
 
 }  // namespace sas_robot_driver_gazebo

@@ -45,14 +45,13 @@ namespace sas
 {
 
 RobotDriverGazebo::RobotDriverGazebo(const std::shared_ptr<ShutdownSignaler>& shutdown_signaler,
-                                     const RobotDriverGazeboConfiguration& configuration):
-    RobotDriver(shutdown_signaler),
-    configuration_(configuration)
+                                     const RobotDriverGazeboConfiguration& configuration)
+    : RobotDriver(shutdown_signaler), configuration_(configuration)
 {
     const auto n = static_cast<Eigen::Index>(configuration_.joint_names.size());
-    if(n == 0)
+    if (n == 0)
         throw std::invalid_argument("RobotDriverGazebo: joint_names is empty.");
-    for(Eigen::Index i = 0; i < n; ++i)
+    for (Eigen::Index i = 0; i < n; ++i)
         joint_index_[configuration_.joint_names.at(static_cast<size_t>(i))] = static_cast<int>(i);
     positions_ = Eigen::VectorXd::Constant(n, std::nan(""));
     velocities_ = positions_;
@@ -65,10 +64,10 @@ RobotDriverGazebo::RobotDriverGazebo(const std::shared_ptr<ShutdownSignaler>& sh
 void RobotDriverGazebo::_joint_states_callback(const gz::msgs::Model& msg)
 {
     std::lock_guard<std::mutex> lock(mutex_);
-    for(const auto& joint: msg.joint())
+    for (const auto& joint : msg.joint())
     {
         const auto found = joint_index_.find(joint.name());
-        if(found == joint_index_.end())
+        if (found == joint_index_.end())
             continue;
         const auto i = found->second;
         const auto& axis = joint.axis1();
@@ -79,10 +78,10 @@ void RobotDriverGazebo::_joint_states_callback(const gz::msgs::Model& msg)
         limit_upper_(i) = axis.limit_upper();
         received_.at(static_cast<size_t>(i)) = true;
     }
-    if(!all_received_)
+    if (!all_received_)
     {
         all_received_ = true;
-        for(const bool r: received_)
+        for (const bool r : received_)
             all_received_ = all_received_ && r;
     }
 }
@@ -90,7 +89,7 @@ void RobotDriverGazebo::_joint_states_callback(const gz::msgs::Model& msg)
 Eigen::VectorXd RobotDriverGazebo::_copy_if_received(const Eigen::VectorXd& values, const std::string& what) const
 {
     std::lock_guard<std::mutex> lock(mutex_);
-    if(!all_received_)
+    if (!all_received_)
         throw std::runtime_error("RobotDriverGazebo: " + what + " not initialized.");
     return values;
 }
@@ -117,12 +116,12 @@ Eigen::VectorXd RobotDriverGazebo::get_joint_torques()
 
 void RobotDriverGazebo::set_target_joint_positions(const Eigen::VectorXd& target_joint_positions_rad)
 {
-    if(target_joint_positions_rad.size() != static_cast<Eigen::Index>(joint_publishers_.size()))
-        throw std::invalid_argument("RobotDriverGazebo::set_target_joint_positions: expected "
-                                    + std::to_string(joint_publishers_.size()) + " values, got "
-                                    + std::to_string(target_joint_positions_rad.size()) + ".");
+    if (target_joint_positions_rad.size() != static_cast<Eigen::Index>(joint_publishers_.size()))
+        throw std::invalid_argument("RobotDriverGazebo::set_target_joint_positions: expected " +
+                                    std::to_string(joint_publishers_.size()) + " values, got " +
+                                    std::to_string(target_joint_positions_rad.size()) + ".");
     gz::msgs::Double msg;
-    for(size_t i = 0; i < joint_publishers_.size(); ++i)
+    for (size_t i = 0; i < joint_publishers_.size(); ++i)
     {
         msg.set_data(target_joint_positions_rad(static_cast<Eigen::Index>(i)));
         joint_publishers_.at(i).Publish(msg);
@@ -132,17 +131,16 @@ void RobotDriverGazebo::set_target_joint_positions(const Eigen::VectorXd& target
 void RobotDriverGazebo::connect()
 {
     joint_publishers_.clear();
-    for(const auto& joint_name: configuration_.joint_names)
+    for (const auto& joint_name : configuration_.joint_names)
     {
         const auto topic = configuration_.joint_positions_topic_prefix + joint_name + "/0/cmd_pos";
         joint_publishers_.push_back(node_.Advertise<gz::msgs::Double>(topic));
-        if(!joint_publishers_.back())
+        if (!joint_publishers_.back())
             throw std::runtime_error("RobotDriverGazebo: failed to advertise [" + topic + "].");
     }
-    if(!node_.Subscribe(configuration_.joint_states_topic,
-                        &RobotDriverGazebo::_joint_states_callback, this))
-        throw std::runtime_error("RobotDriverGazebo: failed to subscribe to ["
-                                 + configuration_.joint_states_topic + "].");
+    if (!node_.Subscribe(configuration_.joint_states_topic, &RobotDriverGazebo::_joint_states_callback, this))
+        throw std::runtime_error("RobotDriverGazebo: failed to subscribe to [" + configuration_.joint_states_topic +
+                                 "].");
 }
 
 void RobotDriverGazebo::disconnect()
@@ -153,25 +151,23 @@ void RobotDriverGazebo::disconnect()
 void RobotDriverGazebo::initialize()
 {
     // Wait for every joint's state (positions and limits) from Gazebo.
-    while(true)
+    while (true)
     {
         {
             // Unlimited joints (e.g. continuous ones) report infinite limits.
             std::lock_guard<std::mutex> lock(mutex_);
-            if(all_received_ && !limit_lower_.array().isNaN().any() && !limit_upper_.array().isNaN().any())
+            if (all_received_ && !limit_lower_.array().isNaN().any() && !limit_upper_.array().isNaN().any())
                 break;
         }
-        if(shutdown_signaler_ && shutdown_signaler_->should_shutdown())
-            throw std::runtime_error("RobotDriverGazebo::initialize: shutdown while waiting for joint states on ["
-                                     + configuration_.joint_states_topic + "].");
+        if (shutdown_signaler_ && shutdown_signaler_->should_shutdown())
+            throw std::runtime_error("RobotDriverGazebo::initialize: shutdown while waiting for joint states on [" +
+                                     configuration_.joint_states_topic + "].");
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     std::lock_guard<std::mutex> lock(mutex_);
     set_joint_limits({limit_lower_, limit_upper_});
 }
 
-void RobotDriverGazebo::deinitialize()
-{
-}
+void RobotDriverGazebo::deinitialize() {}
 
-}
+}  // namespace sas

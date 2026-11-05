@@ -71,7 +71,7 @@ void sig_int_handler(int signal)
  */
 int main(int argc, char** argv)
 {
-    if(signal(SIGINT, sig_int_handler) == SIG_ERR)
+    if (signal(SIGINT, sig_int_handler) == SIG_ERR)
         throw std::runtime_error("::Error setting the signal int handler.");
 
     rclcpp::init(argc, argv, rclcpp::InitOptions(), rclcpp::SignalHandlerOptions::None);
@@ -93,13 +93,11 @@ int main(int argc, char** argv)
 
         auto shutdown_signaler = std::make_shared<sas::ShutdownSignaler>(&kill_this_process);
         auto robot_driver_gazebo = std::make_shared<sas::RobotDriverGazebo>(shutdown_signaler, configuration);
-        sas::RobotDriverROS robot_driver_ros(node,
-                                             robot_driver_gazebo,
-                                             robot_driver_ros_configuration,
+        sas::RobotDriverROS robot_driver_ros(node, robot_driver_gazebo, robot_driver_ros_configuration,
                                              shutdown_signaler);
         robot_driver_ros.control_loop();
     }
-    catch(const std::exception& e)
+    catch (const std::exception& e)
     {
         RCLCPP_ERROR_STREAM_ONCE(node->get_logger(), std::string("::Exception::") + e.what());
     }

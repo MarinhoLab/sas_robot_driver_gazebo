@@ -33,9 +33,7 @@
 /**
  * @brief Receive Gazebo service responses.
  */
-void response_callback(const gz::msgs::Boolean&, const bool)
-{
-}
+void response_callback(const gz::msgs::Boolean&, const bool) {}
 
 /**
  * @brief Run the Gazebo service timing tool.
@@ -45,30 +43,33 @@ void response_callback(const gz::msgs::Boolean&, const bool)
  */
 int main(int, char**)
 {
-  sas::Clock clock{0.001};
+    sas::Clock clock{0.001};
 
-  gz::transport::Node node;
-  gz::msgs::Pose req;
-  req.set_name("frame_x");
+    gz::transport::Node node;
+    gz::msgs::Pose req;
+    req.set_name("frame_x");
 
-  std::cout << "Press <CTRL-C> to exit" << std::endl;
+    std::cout << "Press <CTRL-C> to exit" << std::endl;
 
-  clock.init();
-  for(int i=0;i<50;i++)
-  {
-      auto z = 0.001 * i;
-      req.mutable_position()->set_z(z);
-      node.Request("/world/ur3e_position_world/set_pose", req, response_callback);
-      clock.update_and_sleep();
-  }
+    clock.init();
+    for (int i = 0; i < 50; i++)
+    {
+        auto z = 0.001 * i;
+        req.mutable_position()->set_z(z);
+        node.Request("/world/ur3e_position_world/set_pose", req, response_callback);
+        clock.update_and_sleep();
+    }
 
-  //Statistics
-  std::cout << "Statistics for the entire loop" << std::endl;
-  std::cout << "  Mean computation time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Computational) << std::endl;
-  std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Idle) << std::endl;
-  std::cout << "  Mean effective thread sampling time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::EffectiveSampling) << std::endl;
+    //Statistics
+    std::cout << "Statistics for the entire loop" << std::endl;
+    std::cout << "  Mean computation time: "
+              << clock.get_statistics(sas::Statistics::Mean, sas::Clock::TimeType::Computational) << std::endl;
+    std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean, sas::Clock::TimeType::Idle)
+              << std::endl;
+    std::cout << "  Mean effective thread sampling time: "
+              << clock.get_statistics(sas::Statistics::Mean, sas::Clock::TimeType::EffectiveSampling) << std::endl;
 
-  // Zzzzzz.
-  // gz::transport::waitForShutdown();
-  return 0;
+    // Zzzzzz.
+    // gz::transport::waitForShutdown();
+    return 0;
 }

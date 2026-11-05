@@ -76,7 +76,7 @@ PYBIND11_MODULE(_sas_robot_driver_gazebo, m)
     // py::smart_holder, as marinholab.sas.core binds RobotDriver: a std::shared_ptr
     // holder is refused by RobotDriverROS ("Non-owning holder (load_as_shared_ptr)").
     py::class_<RobotDriverGazebo, marinholab::sas::core::RobotDriver, py::smart_holder>(
-                m, "RobotDriverGazebo", "Gazebo implementation of RobotDriver (C++).")
+        m, "RobotDriverGazebo", "Gazebo implementation of RobotDriver (C++).")
         .def(py::init<const std::shared_ptr<marinholab::sas::core::ShutdownSignaler>&,
                       const RobotDriverGazeboConfiguration&>(),
              py::arg("shutdown_signaler"), py::arg("configuration"),

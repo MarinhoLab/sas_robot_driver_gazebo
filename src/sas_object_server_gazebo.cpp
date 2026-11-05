@@ -47,30 +47,29 @@ void ObjectServerGazebo::_set_pose_service_response_callback(const gz::msgs::Boo
 ObjectServerGazebo::ObjectServerGazebo(const std::shared_ptr<ObjectServer>& object_server,
                                        const std::string& gazebo_entity_name,
                                        const std::string& gazebo_set_pose_service_name,
-                                       const std::string& gazebo_world_dynamic_pose_topic):
-       sas::Object("sas::ObjectServerGazebo"),
-       object_server_(object_server),
-       gazebo_entity_name_(gazebo_entity_name),
-       gazebo_set_pose_service_name_(gazebo_set_pose_service_name)
+                                       const std::string& gazebo_world_dynamic_pose_topic)
+    : sas::Object("sas::ObjectServerGazebo"),
+      object_server_(object_server),
+      gazebo_entity_name_(gazebo_entity_name),
+      gazebo_set_pose_service_name_(gazebo_set_pose_service_name)
 {
     pose_to_gazebo_msg_.set_name(gazebo_entity_name_);
-    if(!pose_subscriber_)
+    if (!pose_subscriber_)
     {
         pose_subscriber_ = std::make_unique<PoseSubscriberSingleton>();
         pose_subscriber_->gazebo_node_.Subscribe(gazebo_world_dynamic_pose_topic,
-                                        &PoseSubscriberSingleton::_get_pose_subscriber_callback,
-                                        pose_subscriber_.get()
-                                        );
+                                                 &PoseSubscriberSingleton::_get_pose_subscriber_callback,
+                                                 pose_subscriber_.get());
     }
 }
 
 void ObjectServerGazebo::update()
 {
-    if(object_server_->is_enabled())
+    if (object_server_->is_enabled())
     {
         //Send target pose to Gazebo
         auto target_pose{object_server_->get_target_pose()};
-        if(target_pose != last_pose_to_gazebo_)
+        if (target_pose != last_pose_to_gazebo_)
         {
             auto r{target_pose.rotation()};
             auto t{target_pose.translation()};
@@ -84,14 +83,11 @@ void ObjectServerGazebo::update()
             pose_to_gazebo_msg_.mutable_orientation()->set_y(r.q[2]);
             pose_to_gazebo_msg_.mutable_orientation()->set_z(r.q[3]);
 
-            gazebo_node_.Request(gazebo_set_pose_service_name_,
-                                 pose_to_gazebo_msg_,
-                                 &ObjectServerGazebo::_set_pose_service_response_callback,
-                                 this);
+            gazebo_node_.Request(gazebo_set_pose_service_name_, pose_to_gazebo_msg_,
+                                 &ObjectServerGazebo::_set_pose_service_response_callback, this);
 
             last_pose_to_gazebo_ = target_pose;
         }
-
     }
     //Get current pose from Gazebo
     gz::msgs::Pose_V poses_from_gazebo;
@@ -99,27 +95,18 @@ void ObjectServerGazebo::update()
         std::scoped_lock lock(ObjectServerGazebo::pose_subscriber_->msg_mutex);
         poses_from_gazebo = ObjectServerGazebo::pose_subscriber_->poses_from_gazebo_;
     }
-    for(auto i=0;i<poses_from_gazebo.pose_size();i++)
+    for (auto i = 0; i < poses_from_gazebo.pose_size(); i++)
     {
         auto pose = poses_from_gazebo.pose(i);
-        if(pose.name() == gazebo_entity_name_)
+        if (pose.name() == gazebo_entity_name_)
         {
-            auto pose_r = DQ(
-                pose.orientation().w(),
-                pose.orientation().x(),
-                pose.orientation().y(),
-                pose.orientation().z()
-            );
-            auto pose_t = DQ(
-                0.0,
-                pose.position().x(),
-                pose.position().y(),
-                pose.position().z()
-            );
+            auto pose_r =
+                DQ(pose.orientation().w(), pose.orientation().x(), pose.orientation().y(), pose.orientation().z());
+            auto pose_t = DQ(0.0, pose.position().x(), pose.position().y(), pose.position().z());
             auto dq = (pose_r + 0.5 * E_ * pose_t * pose_r).normalize();
             object_server_->send_pose(dq);
         }
     }
 }
 
-}
+}  // namespace sas

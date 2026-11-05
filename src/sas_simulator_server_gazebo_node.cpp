@@ -43,7 +43,7 @@
 /*********************************************
  * SIGNAL HANDLER
  * *******************************************/
-#include<signal.h>
+#include <signal.h>
 static sas::ShutdownSignaler ss;
 void sig_int_handler(int)
 {
@@ -70,9 +70,7 @@ void start_simulation_callback(gz::transport::Node& node, const std::string& ser
 {
     gz::msgs::WorldControl msg;
     msg.set_pause(false);
-    node.Request(service_name,
-        msg,
-        &world_control_callback);
+    node.Request(service_name, msg, &world_control_callback);
 }
 
 /**
@@ -87,9 +85,7 @@ void stop_simulation_callback(gz::transport::Node& node, const std::string& serv
 {
     gz::msgs::WorldControl msg;
     msg.set_pause(true);
-    node.Request(service_name,
-        msg,
-        &world_control_callback);
+    node.Request(service_name, msg, &world_control_callback);
 }
 
 /**
@@ -98,27 +94,27 @@ void stop_simulation_callback(gz::transport::Node& node, const std::string& serv
  * Reads ROS parameters, binds Gazebo control requests to a SimulatorServer,
  * and processes ROS callbacks until shutdown.
  */
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
+    rclcpp::init(argc, argv, rclcpp::InitOptions(), rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_simulator_server_gazebo_node");
 
     try
     {
         gz::transport::Node gazebo_node;
 
-        std::string service_name; //Example: {"/world/shapes/control"};
-        sas::get_ros_parameter(node,"service_name",service_name);
+        std::string service_name;  //Example: {"/world/shapes/control"};
+        sas::get_ros_parameter(node, "service_name", service_name);
         double sampling_time;
-        sas::get_ros_optional_parameter(node, "thread_sampling_time_sec",sampling_time,0.01);
+        sas::get_ros_optional_parameter(node, "thread_sampling_time_sec", sampling_time, 0.01);
         bool autostart;
-        sas::get_ros_optional_parameter(node,"autostart",autostart,true);
+        sas::get_ros_optional_parameter(node, "autostart", autostart, true);
 
         sas::Clock clock{sampling_time};
 
         auto simulator_server = sas::SimulatorServer(node);
-        auto f1 = [&gazebo_node, &service_name](){start_simulation_callback(gazebo_node, service_name);};
-        auto f2 = [&gazebo_node, &service_name](){stop_simulation_callback(gazebo_node, service_name);};
+        auto f1 = [&gazebo_node, &service_name]() { start_simulation_callback(gazebo_node, service_name); };
+        auto f2 = [&gazebo_node, &service_name]() { stop_simulation_callback(gazebo_node, service_name); };
         simulator_server.set_start_simulation_callback(f1);
         simulator_server.set_stop_simulation_callback(f2);
 
@@ -129,7 +125,7 @@ int main(int argc, char **argv)
         }
 
         clock.init();
-        while(!ss.should_shutdown())
+        while (!ss.should_shutdown())
         {
             rclcpp::spin_some(node);
             clock.update_and_sleep();
@@ -137,10 +133,12 @@ int main(int argc, char **argv)
 
         //Statistics
         std::cout << "Statistics for the entire loop" << std::endl;
-        std::cout << "  Mean computation time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Computational) << std::endl;
-        std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Idle) << std::endl;
-        std::cout << "  Mean effective thread sampling time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::EffectiveSampling) << std::endl;
-
+        std::cout << "  Mean computation time: "
+                  << clock.get_statistics(sas::Statistics::Mean, sas::Clock::TimeType::Computational) << std::endl;
+        std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean, sas::Clock::TimeType::Idle)
+                  << std::endl;
+        std::cout << "  Mean effective thread sampling time: "
+                  << clock.get_statistics(sas::Statistics::Mean, sas::Clock::TimeType::EffectiveSampling) << std::endl;
     }
     catch (const std::exception& e)
     {

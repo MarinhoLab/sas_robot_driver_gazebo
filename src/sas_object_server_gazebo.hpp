@@ -52,9 +52,9 @@ namespace sas
  */
 struct ObjectServerGazeboConfiguration
 {
-    std::string set_pose_service_name; ///< Gazebo service used to set entity poses.
-    std::string get_pose_topic_name;   ///< Gazebo topic used to read entity poses.
-    std::vector<std::string> entity_names; ///< Entity names managed by the node.
+    std::string set_pose_service_name;      ///< Gazebo service used to set entity poses.
+    std::string get_pose_topic_name;        ///< Gazebo topic used to read entity poses.
+    std::vector<std::string> entity_names;  ///< Entity names managed by the node.
 };
 
 /**
@@ -64,41 +64,43 @@ struct ObjectServerGazeboConfiguration
  * Receives target poses from an ObjectServer instance, forwards them to Gazebo,
  * and publishes the current Gazebo pose back through the ObjectServer.
  */
-class ObjectServerGazebo: private sas::Object
+class ObjectServerGazebo : private sas::Object
 {
-    private:
-        class PoseSubscriberSingleton
-        {
-            public:
-            std::mutex msg_mutex;
-            void _get_pose_subscriber_callback(const gz::msgs::Pose_V& msg)
-            {
-                std::unique_lock<std::mutex> lock(msg_mutex, std::try_to_lock);
-                if (lock.owns_lock()) {
-                    poses_from_gazebo_ = msg;
-                }
-            }
-            gz::transport::Node gazebo_node_;
-            gz::msgs::Pose_V poses_from_gazebo_;
-        };
-
-        static std::unique_ptr<PoseSubscriberSingleton> pose_subscriber_;
-        std::shared_ptr<ObjectServer> object_server_;
-
-        std::string gazebo_entity_name_;
-        std::string gazebo_set_pose_service_name_;
-
-        gz::transport::Node gazebo_node_;
-        gz::msgs::Pose pose_to_gazebo_msg_;
-        DQ last_pose_to_gazebo_{0};
-
-        void _set_pose_service_response_callback(const gz::msgs::Boolean&, const bool);
+private:
+    class PoseSubscriberSingleton
+    {
     public:
-        ObjectServerGazebo() = delete;
-        ObjectServerGazebo(const ObjectServerGazebo&) = delete;
-        ObjectServerGazebo(ObjectServerGazebo&&) = default;
+        std::mutex msg_mutex;
+        void _get_pose_subscriber_callback(const gz::msgs::Pose_V& msg)
+        {
+            std::unique_lock<std::mutex> lock(msg_mutex, std::try_to_lock);
+            if (lock.owns_lock())
+            {
+                poses_from_gazebo_ = msg;
+            }
+        }
+        gz::transport::Node gazebo_node_;
+        gz::msgs::Pose_V poses_from_gazebo_;
+    };
 
-        /**
+    static std::unique_ptr<PoseSubscriberSingleton> pose_subscriber_;
+    std::shared_ptr<ObjectServer> object_server_;
+
+    std::string gazebo_entity_name_;
+    std::string gazebo_set_pose_service_name_;
+
+    gz::transport::Node gazebo_node_;
+    gz::msgs::Pose pose_to_gazebo_msg_;
+    DQ last_pose_to_gazebo_{0};
+
+    void _set_pose_service_response_callback(const gz::msgs::Boolean&, const bool);
+
+public:
+    ObjectServerGazebo() = delete;
+    ObjectServerGazebo(const ObjectServerGazebo&) = delete;
+    ObjectServerGazebo(ObjectServerGazebo&&) = default;
+
+    /**
          * @brief Construct an ObjectServerGazebo instance.
          *
          * @param object_server ObjectServer instance used for ROS communication.
@@ -106,19 +108,17 @@ class ObjectServerGazebo: private sas::Object
          * @param gazebo_set_pose_service_name Gazebo service used to set poses.
          * @param gazebo_world_dynamic_pose_topic Gazebo topic used to read poses.
          */
-        ObjectServerGazebo(const std::shared_ptr<ObjectServer>& object_server,
-                           const std::string& gazebo_entity_name,
-                           const std::string& gazebo_set_pose_service_name,
-                           const std::string& gazebo_world_dynamic_pose_topic);
+    ObjectServerGazebo(const std::shared_ptr<ObjectServer>& object_server, const std::string& gazebo_entity_name,
+                       const std::string& gazebo_set_pose_service_name,
+                       const std::string& gazebo_world_dynamic_pose_topic);
 
-        /**
+    /**
          * @brief Synchronize ObjectServer and Gazebo poses.
          *
          * Sends a new target pose to Gazebo when it changes and updates the
          * ObjectServer with the current pose reported by Gazebo.
          */
-        void update();
+    void update();
 };
 
-}
-
+}  // namespace sas

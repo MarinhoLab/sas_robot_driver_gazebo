@@ -41,7 +41,7 @@
 /*********************************************
  * SIGNAL HANDLER
  * *******************************************/
-#include<signal.h>
+#include <signal.h>
 static sas::ShutdownSignaler ss;
 void sig_int_handler(int)
 {
@@ -54,20 +54,19 @@ void sig_int_handler(int)
  * Reads ROS parameters, constructs one ObjectServerGazebo instance per entity,
  * and executes the interface loop until shutdown.
  */
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
+    rclcpp::init(argc, argv, rclcpp::InitOptions(), rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_object_server_gazebo_node");
 
     try
     {
-
         sas::ObjectServerGazeboConfiguration configuration;
-        sas::get_ros_parameter(node,"set_pose_service_name",configuration.set_pose_service_name);
-        sas::get_ros_parameter(node,"get_pose_topic_name",configuration.get_pose_topic_name);
-        sas::get_ros_parameter(node,"entity_names",configuration.entity_names);
+        sas::get_ros_parameter(node, "set_pose_service_name", configuration.set_pose_service_name);
+        sas::get_ros_parameter(node, "get_pose_topic_name", configuration.get_pose_topic_name);
+        sas::get_ros_parameter(node, "entity_names", configuration.entity_names);
         double sampling_time;
-        sas::get_ros_optional_parameter(node, "thread_sampling_time_sec",sampling_time,0.01);
+        sas::get_ros_optional_parameter(node, "thread_sampling_time_sec", sampling_time, 0.01);
 
         sas::Clock clock{sampling_time};
 
@@ -80,25 +79,20 @@ int main(int argc, char **argv)
         //    };
 
         std::vector<std::unique_ptr<sas::ObjectServerGazebo>> object_server_gazebo_list;
-        for(const std::string& entity_name: configuration.entity_names)
+        for (const std::string& entity_name : configuration.entity_names)
         {
-            object_server_gazebo_list.emplace_back(
-                std::make_unique<sas::ObjectServerGazebo>(
-                std::make_shared<sas::ObjectServer>(node, entity_name),
-                entity_name,
-                configuration.set_pose_service_name,
-                configuration.get_pose_topic_name
-                )
-            );
+            object_server_gazebo_list.emplace_back(std::make_unique<sas::ObjectServerGazebo>(
+                std::make_shared<sas::ObjectServer>(node, entity_name), entity_name,
+                configuration.set_pose_service_name, configuration.get_pose_topic_name));
         }
 
         clock.init();
-        while(!ss.should_shutdown())
+        while (!ss.should_shutdown())
         {
             rclcpp::spin_some(node);
             clock.update_and_sleep();
 
-            for(auto& object_server_gazebo: object_server_gazebo_list)
+            for (auto& object_server_gazebo : object_server_gazebo_list)
             {
                 object_server_gazebo->update();
             }
@@ -106,9 +100,12 @@ int main(int argc, char **argv)
 
         //Statistics
         std::cout << "Statistics for the entire loop" << std::endl;
-        std::cout << "  Mean computation time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Computational) << std::endl;
-        std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::Idle) << std::endl;
-        std::cout << "  Mean effective thread sampling time: " << clock.get_statistics(sas::Statistics::Mean,sas::Clock::TimeType::EffectiveSampling) << std::endl;
+        std::cout << "  Mean computation time: "
+                  << clock.get_statistics(sas::Statistics::Mean, sas::Clock::TimeType::Computational) << std::endl;
+        std::cout << "  Mean idle time: " << clock.get_statistics(sas::Statistics::Mean, sas::Clock::TimeType::Idle)
+                  << std::endl;
+        std::cout << "  Mean effective thread sampling time: "
+                  << clock.get_statistics(sas::Statistics::Mean, sas::Clock::TimeType::EffectiveSampling) << std::endl;
     }
     catch (const std::exception& e)
     {

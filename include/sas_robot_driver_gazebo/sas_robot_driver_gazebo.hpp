@@ -77,22 +77,23 @@ struct RobotDriverGazeboConfiguration
  * JointStatePublisher). Thread-safe: the joint-state callback and the
  * getters share the cached values under a mutex.
  */
-class RobotDriverGazebo: public RobotDriver
+class RobotDriverGazebo : public RobotDriver
 {
 private:
-    RobotDriverGazeboConfiguration configuration_;                  ///< Joints and Gazebo topics.
-    gz::transport::Node node_;                                       ///< gz-transport node of the publishers and the subscription.
-    std::vector<gz::transport::Node::Publisher> joint_publishers_;   ///< One command publisher per joint, in configuration order.
-    std::unordered_map<std::string, int> joint_index_;              ///< Index of each configured joint name.
+    RobotDriverGazeboConfiguration configuration_;  ///< Joints and Gazebo topics.
+    gz::transport::Node node_;                      ///< gz-transport node of the publishers and the subscription.
+    std::vector<gz::transport::Node::Publisher>
+        joint_publishers_;                              ///< One command publisher per joint, in configuration order.
+    std::unordered_map<std::string, int> joint_index_;  ///< Index of each configured joint name.
 
-    mutable std::mutex mutex_;          ///< Guards the cached joint states below.
-    Eigen::VectorXd positions_;         ///< Latest joint positions [rad] (NaN until received).
-    Eigen::VectorXd velocities_;        ///< Latest joint velocities [rad/s] (NaN until received).
-    Eigen::VectorXd torques_;           ///< Latest joint torques [N m] (NaN until received).
-    Eigen::VectorXd limit_lower_;       ///< Lower joint limits [rad], as Gazebo reports them.
-    Eigen::VectorXd limit_upper_;       ///< Upper joint limits [rad], as Gazebo reports them.
-    std::vector<bool> received_;        ///< Whether each joint's state has been received.
-    bool all_received_{false};          ///< Whether every joint's state has been received.
+    mutable std::mutex mutex_;     ///< Guards the cached joint states below.
+    Eigen::VectorXd positions_;    ///< Latest joint positions [rad] (NaN until received).
+    Eigen::VectorXd velocities_;   ///< Latest joint velocities [rad/s] (NaN until received).
+    Eigen::VectorXd torques_;      ///< Latest joint torques [N m] (NaN until received).
+    Eigen::VectorXd limit_lower_;  ///< Lower joint limits [rad], as Gazebo reports them.
+    Eigen::VectorXd limit_upper_;  ///< Upper joint limits [rad], as Gazebo reports them.
+    std::vector<bool> received_;   ///< Whether each joint's state has been received.
+    bool all_received_{false};     ///< Whether every joint's state has been received.
 
     /**
      * @brief Copy the configured joints' states from a Gazebo joint-state message.
@@ -112,9 +113,9 @@ private:
     Eigen::VectorXd _copy_if_received(const Eigen::VectorXd& values, const std::string& what) const;
 
 public:
-    RobotDriverGazebo(const RobotDriverGazebo&)=delete;   ///< Not copyable.
-    RobotDriverGazebo()=delete;                           ///< Needs a configuration.
-    ~RobotDriverGazebo() override = default;              ///< Destructor.
+    RobotDriverGazebo(const RobotDriverGazebo&) = delete;  ///< Not copyable.
+    RobotDriverGazebo() = delete;                          ///< Needs a configuration.
+    ~RobotDriverGazebo() override = default;               ///< Destructor.
 
     /**
      * @brief Construct a Gazebo robot driver.
@@ -182,4 +183,4 @@ public:
     void deinitialize() override;
 };
 
-}
+}  // namespace sas
